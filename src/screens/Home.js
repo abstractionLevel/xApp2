@@ -17,6 +17,7 @@ import {
 import { ScaledSheet } from 'react-native-size-matters';
 
 
+
 const Home = () => {
 
 

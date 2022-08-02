@@ -21,6 +21,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Home from "./src/screens/Home";
+import Account from "./src/screens/Account";
 import HomeTabNavigation from "./src/navigation/HomeTabNavigation";
 
 
@@ -32,12 +33,17 @@ const App = () => {
 	return (
 		<NavigationContainer>
      		<Stack.Navigator>
-        		
-				 <Stack.Screen
+				<Stack.Screen
                     name={"Home"}
                     component={HomeTabNavigation}
                     options={{ headerShown: false }}
-
+                />
+				<Stack.Screen
+                    name={"Account"}
+                    component={Account}
+                    options={{
+                        headerShown: true,
+                    }}
                 />
       		</Stack.Navigator>
     	</NavigationContainer>
