@@ -19,7 +19,7 @@ const HomeTabNavigation = () => {
             initialRouteName="Home"
             tabBarOptions={{
                 activeTintColor: 'orange',
-                keyboardHidesTabBar: true,
+                keyboardHidesTabBar: false,
                 style: {
                     position: 'absolute',
                     backgroundColor: 'white',
@@ -29,6 +29,7 @@ const HomeTabNavigation = () => {
                 name={'Home'}
                 component={Home}
                 options={{
+                    headerShown: false,
                     tabBarIcon: ({ color }) => (
                         <Fontisto name="search" size={25} color={color} />
                     ),

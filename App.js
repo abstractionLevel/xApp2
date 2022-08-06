@@ -22,6 +22,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Home from "./src/screens/Home";
 import Account from "./src/screens/Account";
+import ProfileWorker from "./src/screens/ProfileWorker";
 import HomeTabNavigation from "./src/navigation/HomeTabNavigation";
 
 
@@ -43,6 +44,13 @@ const App = () => {
                     component={Account}
                     options={{
                         headerShown: true,
+                    }}
+                />
+				<Stack.Screen
+                    name={"Profile Worker"}
+                    component={ProfileWorker}
+                    options={{
+                        headerShown: false,
                     }}
                 />
       		</Stack.Navigator>

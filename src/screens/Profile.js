@@ -32,6 +32,19 @@ const Profile = (props) => {
                     <Text style={styles.text} >Account</Text>
                     <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'gray'} />
                 </TouchableOpacity>
+                <TouchableOpacity 
+                    style={styles.button}
+                    onPress={() => navigation.navigate("Profile Worker")}
+                >
+                    <Text style={styles.text} >Profilo Lavoratore</Text>
+                    <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'gray'} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => console.local("signout")}>
+                    <Text style={styles.text} >Logout</Text>
+                    <MaterialCommunityIcons name="logout" style={styles.icon} size={30} color={'gray'} />
+                </TouchableOpacity>
             </View>
         </View>
     )

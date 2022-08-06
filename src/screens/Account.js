@@ -8,7 +8,7 @@ const Account = (props) => {
 
     return (
         <View>
-            
+            <Text>Account</Text>
         </View>
     )
 
