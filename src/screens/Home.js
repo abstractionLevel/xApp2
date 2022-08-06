@@ -17,6 +17,7 @@ import {
 } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import AddressComponent from '../components/AddressComponent';
+import SearchWorker from '../components/SearchWorker';
 import { Dimensions } from 'react-native';
 
 const Home = () => {
@@ -33,6 +34,7 @@ const Home = () => {
                 style={styles.imagePlumbers}
                 source={require('../../assets/plumbers.jpg')}
             />
+            <SearchWorker/>
         </View>
     )
 
@@ -41,28 +43,11 @@ const Home = () => {
 var { width, height } = Dimensions.get('window');
 
 const styles = ScaledSheet.create({
-    container: {
-        flex: 1,
-        height: '100%',
-        backgroundColor: 'white',
-    },
-    buttonAndress: {
-        flexDirection: 'row',
-        width: '80%',
-    },
-    textAndress: {
-        fontFamily: 'RobotoBoldItalic',
-        color: 'orange',
-        fontSize: '18@s',
-        textTransform: 'capitalize',
-        justifyContent: 'center',
-        flexShrink: 1,
-    },
     imagePlumbers: {
         resizeMode: "contain",
         width: width,
         height: '180@s',
-        opacity: 0.4,
+        opacity: 0.5,
     },
 
 
