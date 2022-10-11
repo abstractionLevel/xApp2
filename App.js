@@ -6,17 +6,7 @@
  * @flow strict-local
  */
 
-import React , {useState,useEffect} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  AsyncStorage 
-} from 'react-native';
+import React  from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -34,28 +24,8 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
 
-    const [userAuth,setUserAuth] = useState(false)
-
-    const retrieveData = async () => {
-        try {
-            const value = await AsyncStorage.getItem('token');
-            if (value !== null) {
-            setUserAuth(value)
-            console.log(value);
-            }
-        } catch (error) {
-            console.local(error)
-        }
-    };
-    useEffect(()=>{
-        retrieveData()
-    },[])
-
-    
-	
 	return (
         <>
-        {userAuth ?
             <NavigationContainer>
                 <Stack.Navigator>
                 <Stack.Screen
@@ -86,8 +56,6 @@ const App = () => {
                 />
                 </Stack.Navigator>
             </NavigationContainer>
-            : <Login/>
-        }
         </>
 		
 	)

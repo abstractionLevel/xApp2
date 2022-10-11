@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import { 
     NativeRouter, 
     Route,
@@ -14,32 +14,59 @@ import {
     View,
     TouchableOpacity,
     Image,
+    AsyncStorage,
 } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import AddressComponent from '../components/AddressComponent';
 import SearchWorker from '../components/SearchWorker';
 import { Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 
 const Home = () => {
 
+    const [userAuth,setUserAuth] = useState(false)
 
-    const onPressAndress = () => {
-        console.log("address");
-    }
+    const navigation = useNavigation()
+
+    
+
+    const retrieveToken = async () => {
+        try {
+            const value = await AsyncStorage.getItem('token')
+            if (value !== null) {
+                setUserAuth(value)
+            }
+            else {
+                navigation.navigate("Login")
+            }
+        } catch (error) {
+            console.local(error)
+        }
+    };
+    useEffect(()=>{
+        retrieveToken()
+    },[])
+ 
 
     return (
-        <View>
-            <AddressComponent/>
-            <Image
-                style={styles.imagePlumbers}
-                source={require('../../assets/plumbers.jpg')}
-            />
-            <SearchWorker/>
-            <Image
-                style={styles.imageConnectionWorkers}
-                source={require('../../assets/connectionWorker2.png')}
-            />
-        </View>
+        <>
+        {userAuth &&
+            <View>
+                <AddressComponent/>
+                <Image
+                    style={styles.imagePlumbers}
+                    source={require('../../assets/plumbers.jpg')}
+                />
+                <SearchWorker/>
+                <Image
+                    style={styles.imageConnectionWorkers}
+                    source={require('../../assets/connectionWorker2.png')}
+                />
+            </View>
+            
+        }
+        </>
     )
 
 };
