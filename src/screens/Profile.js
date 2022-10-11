@@ -8,11 +8,16 @@ import {
     TouchableOpacity,
     View,
     Image,
+    AsyncStorage,
 } from 'react-native';
 
 const Profile = (props) => {
 
     const navigation = useNavigation();
+
+    const removeData = async () => {
+        await AsyncStorage.removeItem('token');
+    }
 
     return (
         <View style={styles.container}>
@@ -41,7 +46,7 @@ const Profile = (props) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => console.local("signout")}>
+                    onPress={removeData}>
                     <Text style={styles.text} >Logout</Text>
                     <MaterialCommunityIcons name="logout" style={styles.icon} size={30} color={'gray'} />
                 </TouchableOpacity>

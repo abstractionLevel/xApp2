@@ -35,6 +35,10 @@ const Home = () => {
                 source={require('../../assets/plumbers.jpg')}
             />
             <SearchWorker/>
+            <Image
+                style={styles.imageConnectionWorkers}
+                source={require('../../assets/connectionWorker2.png')}
+            />
         </View>
     )
 
@@ -48,6 +52,13 @@ const styles = ScaledSheet.create({
         width: width,
         height: '180@s',
         opacity: 0.5,
+    },
+    imageConnectionWorkers: {
+        resizeMode: "contain",
+        width: width,
+        marginTop: 20,
+        justifyContent: 'center',
+        opacity: 0.4,
     },
 
 
