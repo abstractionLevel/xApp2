@@ -26,13 +26,11 @@ import {useGlobalContext} from '../../context';
 
 const Home = ({ route, navigation }) => {
 
-    const {auth} =  useGlobalContext()
 
-  console.log("sono nella hoome ", auth)
 
     return (
         <>
-        {auth ? 
+        
             <View>
                 <AddressComponent/>
                 <Image
@@ -45,8 +43,8 @@ const Home = ({ route, navigation }) => {
                     source={require('../../assets/connectionWorker2.png')}
                 />
             </View>
-            : <Login/>
-        }
+         
+        
         </>
     )
 

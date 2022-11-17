@@ -2,6 +2,7 @@ import React, {useState,useEffect} from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import Home from '../screens/Home';
+import Login from '../screens/Login';
 import Profile from '../screens/Profile';
 import SavedWorker from '../screens/SavedWorker';
 import Chat from '../screens/Chat';
@@ -68,8 +69,8 @@ const HomeTabNavigation = () => {
                     <Stack.Navigator>
                        
                     <Stack.Screen
-                        name={"Home"}
-                        component={Home}
+                        name={"Login"}
+                        component={Login}
                         options={{ headerShown: false }}
                     />
                      </Stack.Navigator>

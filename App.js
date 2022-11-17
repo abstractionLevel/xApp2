@@ -26,7 +26,6 @@ const App = () => {
     const {auth}  = useGlobalContext()
     useEffect(()=>{
     },[])
-console.log("sono nel app ")
 	return (
         <>
                 <NavigationContainer>
