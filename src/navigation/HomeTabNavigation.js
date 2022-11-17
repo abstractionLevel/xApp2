@@ -1,5 +1,6 @@
 import React, {useState,useEffect} from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
 import Home from '../screens/Home';
 import Profile from '../screens/Profile';
 import SavedWorker from '../screens/SavedWorker';
@@ -9,16 +10,21 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Feather  from 'react-native-vector-icons/Feather';
 import {useGlobalContext} from '../../context'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const HomeTabNavigation = () => {
 
     const Tab = createBottomTabNavigator();
+    const Stack = createNativeStackNavigator();
+
     const {auth} = useGlobalContext()
 
     return (
+        <>
+        {auth ?
         <Tab.Navigator
             >
-        <Tab.Screen
+            <Tab.Screen
                 name={'Home'}
                 component={Home}
                 options={{
@@ -58,6 +64,18 @@ const HomeTabNavigation = () => {
 
             />
         </Tab.Navigator>
+        : <>
+                    <Stack.Navigator>
+                       
+                    <Stack.Screen
+                        name={"Home"}
+                        component={Home}
+                        options={{ headerShown: false }}
+                    />
+                     </Stack.Navigator>
+        </>
+            }
+        </>
     )
 
 
