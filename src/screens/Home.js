@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState,useEffect,useContext} from 'react';
 import { 
     NativeRouter, 
     Route,
@@ -21,37 +21,20 @@ import AddressComponent from '../components/AddressComponent';
 import SearchWorker from '../components/SearchWorker';
 import { Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import Login from './Login'
+import {useGlobalContext} from '../../context';
 
+const Home = ({ route, navigation }) => {
 
-const Home = () => {
+    const {auth} =  useGlobalContext()
 
+    const {logout } = route.params  || {};
     const [userAuth,setUserAuth] = useState(false)
 
-    const navigation = useNavigation()
-
-    
-
-    const retrieveToken = async () => {
-        try {
-            const value = await AsyncStorage.getItem('token')
-            if (value !== null) {
-                setUserAuth(value)
-            }
-            else {
-                navigation.navigate("Login")
-            }
-        } catch (error) {
-            console.local(error)
-        }
-    };
-    useEffect(()=>{
-        retrieveToken()
-    },[])
- 
-
+   console.log("aut ", auth)
     return (
         <>
-        {userAuth &&
+        {auth ? 
             <View>
                 <AddressComponent/>
                 <Image
@@ -64,7 +47,7 @@ const Home = () => {
                     source={require('../../assets/connectionWorker2.png')}
                 />
             </View>
-            
+            : <Login/>
         }
         </>
     )

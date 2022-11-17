@@ -16,15 +16,7 @@ const HomeTabNavigation = () => {
 
     return (
         <Tab.Navigator
-            initialRouteName="Home"
-            tabBarOptions={{
-                activeTintColor: 'orange',
-                keyboardHidesTabBar: false,
-                style: {
-                    position: 'absolute',
-                    backgroundColor: 'white',
-                },
-        }}>
+            >
         <Tab.Screen
                 name={'Home'}
                 component={Home}

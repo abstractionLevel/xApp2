@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import services from '../services';
 import { ScaledSheet } from 'react-native-size-matters';
+import { useNavigation } from '@react-navigation/native';
 
 const Login = () => {
 
@@ -19,21 +20,25 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [state,setState] = useState({})
 
+    const navigation = useNavigation()
+
 
     const storeJwt = async (jwt) => {
         try {
           await AsyncStorage.setItem("token",jwt);
+          
         } catch (error) {
           console.log(error)
         }
       };
 
 
-    const saveForm = () => {
+    const login = () => {
         const payload = {username:email,password:password}
         services.login(payload).then(response=>{
             if(response) {
                 storeJwt(response.accessToken)
+                navigation.navigate("Home", {logout:false })
             }
         })
     }
@@ -59,7 +64,7 @@ const Login = () => {
                     />
                     <TouchableOpacity 
                         style={styles.loginBtn}
-                        onPress={saveForm}>
+                        onPress={login}>
                         <Text style={styles.loginText}>LOGIN</Text>
                     </TouchableOpacity>
             </View>

@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState,useEffect,useContext} from 'react';
 import { ScaledSheet } from 'react-native-size-matters';
 import { Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -15,8 +15,15 @@ const Profile = (props) => {
 
     const navigation = useNavigation();
 
-    const removeData = async () => {
-        await AsyncStorage.removeItem('token');
+
+    const removeToken = async () => {
+        try {
+            await AsyncStorage.removeItem("token");
+            navigation.navigate('Home', {logout:true })
+        }catch(err) {
+            console.log(err)
+        }
+       
     }
 
     return (
@@ -46,7 +53,7 @@ const Profile = (props) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={removeData}>
+                    onPress={removeToken}>
                     <Text style={styles.text} >Logout</Text>
                     <MaterialCommunityIcons name="logout" style={styles.icon} size={30} color={'gray'} />
                 </TouchableOpacity>
