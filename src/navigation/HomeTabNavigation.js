@@ -8,11 +8,12 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Feather  from 'react-native-vector-icons/Feather';
+import {useGlobalContext} from '../../context'
 
 const HomeTabNavigation = () => {
 
     const Tab = createBottomTabNavigator();
-
+    const {auth} = useGlobalContext()
 
     return (
         <Tab.Navigator

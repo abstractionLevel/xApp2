@@ -13,6 +13,7 @@ import {
 import services from '../services';
 import { ScaledSheet } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
+import {useGlobalContext} from '../../context';
 
 const Login = () => {
 
@@ -21,23 +22,16 @@ const Login = () => {
     const [state,setState] = useState({})
 
     const navigation = useNavigation()
+    const {addTokenAuth} = useGlobalContext()
 
-
-    const storeJwt = async (jwt) => {
-        try {
-          await AsyncStorage.setItem("token",jwt);
-          
-        } catch (error) {
-          console.log(error)
-        }
-      };
+  
 
 
     const login = () => {
         const payload = {username:email,password:password}
         services.login(payload).then(response=>{
             if(response) {
-                storeJwt(response.accessToken)
+                addTokenAuth(response.accessToken),
                 navigation.navigate("Home", {logout:false })
             }
         })

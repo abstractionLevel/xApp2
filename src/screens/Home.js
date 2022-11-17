@@ -28,10 +28,8 @@ const Home = ({ route, navigation }) => {
 
     const {auth} =  useGlobalContext()
 
-    const {logout } = route.params  || {};
-    const [userAuth,setUserAuth] = useState(false)
+  console.log("sono nella hoome ", auth)
 
-   console.log("aut ", auth)
     return (
         <>
         {auth ? 

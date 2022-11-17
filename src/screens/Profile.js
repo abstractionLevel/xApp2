@@ -10,21 +10,14 @@ import {
     Image,
     AsyncStorage,
 } from 'react-native';
+import {useGlobalContext} from '../../context';
 
 const Profile = (props) => {
 
     const navigation = useNavigation();
+    const {removeTokenAuth} = useGlobalContext()
 
-
-    const removeToken = async () => {
-        try {
-            await AsyncStorage.removeItem("token");
-            navigation.navigate('Home', {logout:true })
-        }catch(err) {
-            console.log(err)
-        }
-       
-    }
+   
 
     return (
         <View style={styles.container}>
@@ -53,7 +46,10 @@ const Profile = (props) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={removeToken}>
+                    onPress={()=>{
+                        removeTokenAuth()
+                        navigation.navigate('Home', {logout:true })
+                    }}>
                     <Text style={styles.text} >Logout</Text>
                     <MaterialCommunityIcons name="logout" style={styles.icon} size={30} color={'gray'} />
                 </TouchableOpacity>

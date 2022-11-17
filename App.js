@@ -19,22 +19,18 @@ import HomeTabNavigation from "./src/navigation/HomeTabNavigation";
 import {
     AsyncStorage,
 } from 'react-native';
-import {AppProvider,useGlobalContext} from './context'
+import {useGlobalContext} from './context'
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-
-    // const {auth}  = useGlobalContext()
-    const auth = false
+    const {auth}  = useGlobalContext()
     useEffect(()=>{
     },[])
-
 	return (
-        <AppProvider>
+        <>
                 <NavigationContainer>
                     <Stack.Navigator>
-                        {!auth ? (
-                        <>
+                       
                     <Stack.Screen
                         name={"Home"}
                         component={HomeTabNavigation}
@@ -55,22 +51,11 @@ const App = () => {
                         }}
                     />
                     
-                    </>  )  :  (
-
-                        <>
-                    <Stack.Screen   
-                        name={"Login"}
-                        component={Login}
-                        options={{
-                            headerShown: false,
-                        }}
-                    />
-                    </>)}
+                   
 
                     </Stack.Navigator>
                 </NavigationContainer>
-          
-		</AppProvider>
+		</>
 	)
 };
 export default App;
