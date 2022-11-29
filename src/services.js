@@ -16,7 +16,16 @@ const  login = (payload) => {
         })
 }
 
-
+const signUp = (payload) => {
+    return axios.post("http://192.168.1.5:5000/api/signUp",payload,headers)
+        .then((response) => {
+            return response;
+        })
+        .catch((error) => {
+            console.log(error.message);
+        })
+}
 export default {
     login,
+    signUp,
 }
