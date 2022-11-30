@@ -11,9 +11,7 @@ const  login = (payload) => {
         .then((response) => {
             return response.data;
         })
-        .catch((error) => {
-            console.log(error.message);
-        })
+      
 }
 
 const signUp = (payload) => {
@@ -21,9 +19,7 @@ const signUp = (payload) => {
         .then((response) => {
             return response;
         })
-        .catch((error) => {
-            console.log(error.message);
-        })
+        
 }
 export default {
     login,
