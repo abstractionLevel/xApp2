@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import services from '../services'
 import {View, FlatList, Dimensions, AppRegistry,Text} from 'react-native'
+import WorkerItem from "./WorkerItem"
 
 const WorkerList = props => {
     const [workers, setWorkers] = useState(null)
@@ -30,7 +31,7 @@ const WorkerList = props => {
         <View>
             <FlatList 
                 data={workers && workers} 
-                renderItem={({item})=> <Item item={item} />}
+                renderItem={({item})=> <WorkerItem item={item} />}
                 keyExtractor={item => item.id}    
                 />
         </View>
