@@ -7,10 +7,13 @@ import {
     Dimensions
 } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
+import {useNavigation} from '@react-navigation/native'
 
 const SearchWorker = (props) => {
     
+    const [searched,setSearched] = useState(null)
 
+    const navigation = useNavigation()
 
     return (
         <View style={styles.container}>
@@ -18,13 +21,13 @@ const SearchWorker = (props) => {
                 placeholderTextColor="gray"
                 underlineColorAndroid="white"
                 style={styles.inputSearch}
-                placeholder='Cerca Il Professionista'
-                onChangeText={(val) => console.log("")}
-                value={''}
+                placeholder='Cosa Cerchi?'
+                onChangeText={(val) => setSearched(val)}
+                value={searched}
             />
             <TouchableOpacity
                 style={styles.buttonSearch}
-                onPress={() => console.log()}>
+                onPress={() => navigation.navigate('WorkerList', {searched: searched})}>
                 <Text style={styles.buttonText} >Cerca</Text>
             </TouchableOpacity>
         </View>
