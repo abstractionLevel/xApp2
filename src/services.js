@@ -22,7 +22,6 @@ const signUp = payload => {
 }
 
 const findWorkers = payload => {
-    console.log("res ", payload)
     return axios
         .post('http://192.168.1.5:5000/api/findWorkers', payload, headers)
         .then(response => {

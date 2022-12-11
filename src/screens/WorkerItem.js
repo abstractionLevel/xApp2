@@ -3,6 +3,8 @@ import React, {useEffect, useState} from 'react'
 import {View, Text, ImageBackground, TouchableOpacity,Dimensions} from 'react-native'
 import {useNavigation} from '@react-navigation/native'
 import { ScaledSheet } from 'react-native-size-matters'
+import { Rating } from 'react-native-ratings';
+import { calcultate5starsVote } from '../utils/calculate5starsVote';
 
 // create a component
 const WorkerItem = props => {
@@ -11,9 +13,9 @@ const WorkerItem = props => {
     // const user = props.worker.worker.user
     // const distance = props.worker.distance
 
-    const {type,vote,avarage_vote,citta} = props.item
+    const {type,vote,avarage_vote,citta,username} = props.item
 
-
+console.log()
     const [avarageVote, setAvarageVote] = useState()
     const [isAvarageVote, setIsAvarageVote] = useState(false)
     const [totalVote, setTotalVote] = useState(0)
@@ -54,8 +56,7 @@ const WorkerItem = props => {
                 />
                 <View style={styles.titles}>
                     <Text style={styles.title}>
-                        {/* {user.name} {user.lastname} */}
-
+                        {username}
                     </Text>
                     <Text style={styles.subtitle}>{type}</Text>
                 </View>
@@ -63,17 +64,20 @@ const WorkerItem = props => {
                     <Text style={styles.labelPosition}>12334</Text>
                 </View>
                 <View style={styles.voted}>
-                    {/* <Rating
-                        type='custom'
-                        ratingColor='gold'
-                        ratingCount={5}
-                        imageSize={30}
-                        ratingBackgroundColor='black'
-                        tintColor='white'
-                        showRating={false}
-                        readonly
-                        startingValue={avarageVote}
-                    /> */}
+                    {avarage_vote &&
+                     <Rating
+                     type='custom'
+                     ratingColor='gold'
+                     ratingCount={5}
+                     imageSize={30}
+                     ratingBackgroundColor='black'
+                     tintColor='white'
+                     showRating={false}
+                     readonly
+                     startingValue={calcultate5starsVote([1,3,4,10,10])}
+                 />
+                    }
+                   
 
                     <Text style={styles.totalVoted}>{avarage_vote} </Text>
                 </View>
