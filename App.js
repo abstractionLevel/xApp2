@@ -63,6 +63,13 @@ const App = () => {
                             headerShown: false,
                         }}
                     />
+                    <Stack.Screen
+                        name={'ProfileWorker'}
+                        component={ProfileWorker}
+                        options={{
+                            headerShown: false,
+                        }}
+                    />
                 </Stack.Navigator>
             </NavigationContainer>
         </>

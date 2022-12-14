@@ -23,7 +23,21 @@ const signUp = payload => {
 
 const findWorkers = payload => {
     return axios
-        .post('http://192.168.1.5:5000/api/findWorkers', payload, headers)
+        .post('http://192.168.1.5:5000/api/worker', payload, headers)
+        .then(response => {
+            return response
+        })
+}
+
+const findWorkerById = (id) => {
+    return axios.get('http://192.168.1.5:5000/api/worker/' + id, headers)
+        .then(response => {
+            return response
+        })
+}
+
+const getReviewOfWorkerById = (id) => {
+    return axios.get("http://192.168.1.5:5000/api/worker/"+id+"/review", headers)
         .then(response => {
             return response
         })
@@ -32,4 +46,6 @@ export default {
     login,
     signUp,
     findWorkers,
+    findWorkerById,
+    getReviewOfWorkerById
 }

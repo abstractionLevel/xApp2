@@ -8,14 +8,14 @@ import { calcultate5starsVote } from '../utils/calculate5starsVote';
 
 // create a component
 const WorkerItem = props => {
+    
     const navigation = useNavigation()
     // const {job, id} = props.worker.worker
     // const user = props.worker.worker.user
     // const distance = props.worker.distance
 
-    const {type,vote,avarage_vote,citta,username} = props.item
+    const {type,vote,avarage_vote,citta,username,id_user} = props.item
 
-console.log()
     const [avarageVote, setAvarageVote] = useState()
     const [isAvarageVote, setIsAvarageVote] = useState(false)
     const [totalVote, setTotalVote] = useState(0)
@@ -84,7 +84,7 @@ console.log()
                 <View style={styles.buttonsContainer}>
                     <TouchableOpacity
                         style={styles.buttonGoToProfile}
-                        onPress={() => navigation.navigate('Worker', {id, id})}>
+                        onPress={() => navigation.navigate('ProfileWorker', {id_user, id_user})}>
                         <Text style={styles.buttonText}>Profile</Text>
                     </TouchableOpacity>
                 </View>
