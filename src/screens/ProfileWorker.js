@@ -5,13 +5,23 @@ import { useNavigation } from '@react-navigation/native'
 import services from '../services';
 import { Rating } from 'react-native-ratings';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import ComponentModal from '../components/ComponentModal';
+import ReviewList from '../components/ReviewList';
 
 const ProfileWorker = (props) => {
 
     const [worker, setWorker] = useState()
     const [reviews, setReviews] = useState()
     const [activateFollow, setActivateFollow] = useState(true)
+    const [visibleModalReview, setVisibleModalReview] = useState(false);
+
+
     const id_user = props.route.params.id_user
+
+
+    const toggleModalReview = () => {
+        setVisibleModalReview(true);
+    }
 
 
     useEffect(() => {
@@ -22,7 +32,6 @@ const ProfileWorker = (props) => {
                     services.getReviewOfWorkerById(response.data.id)
                         .then(resp => {
                             if (resp) {
-                                console.log("ecco il re ", resp.data)
                                 setReviews(resp.data)
 
                             }
@@ -35,7 +44,6 @@ const ProfileWorker = (props) => {
             })
 
     }, [])
-
 
 
 
@@ -111,7 +119,7 @@ const ProfileWorker = (props) => {
                                 </TouchableOpacity>**/}
                                 <TouchableOpacity
                                     style={styles.reviewButton}
-                                    onPress={() => console.log("")}>
+                                    onPress={() => toggleModalReview()}>
                                     <FontAwesome name="comments-o" size={30} color={'#1d4e89'} />
                                     <Text style={styles.review}>{worker.vote}</Text>
                                 </TouchableOpacity>
@@ -124,9 +132,9 @@ const ProfileWorker = (props) => {
                             </View>
                         </View>
                     </View>
-                    {/* <WriteReviewModal visible={visibleModalWriteReview} onPressClose={() => setVisibleModalWriteReview(false)} userId={auth.attributes.sub} workerId={worker.id} />
+                    {/* <WriteReviewModal visible={visibleModalWriteReview} onPressClose={() => setVisibleModalWriteReview(false)} userId={auth.attributes.sub} workerId={worker.id} /> */}
                     <ComponentModal visible={visibleModalReview} component={<ReviewList reviews={reviews} />} onPressClose={() => setVisibleModalReview(false)} />
-                    <CustomModal visible={visibleModalPrice} component={<PriceList idWorker={idWorker} />} onPressClose={() => setVisibleModalPrice(false)} /> */}
+                    {/* <CustomModal visible={visibleModalPrice} component={<PriceList idWorker={idWorker} />} onPressClose={() => setVisibleModalPrice(false)} /> */}
                 </>}
         </View>
     )
