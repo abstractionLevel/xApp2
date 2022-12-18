@@ -7,6 +7,7 @@ import { Rating } from 'react-native-ratings';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ComponentModal from '../components/ComponentModal';
 import ReviewList from '../components/ReviewList';
+import WriteReviewModal from '../components/WriteReviewModal';
 
 const ProfileWorker = (props) => {
 
@@ -14,13 +15,17 @@ const ProfileWorker = (props) => {
     const [reviews, setReviews] = useState()
     const [activateFollow, setActivateFollow] = useState(true)
     const [visibleModalReview, setVisibleModalReview] = useState(false);
-
+    const [visibleModalWriteReview, setVisibleModalWriteReview] = useState(false);
 
     const id_user = props.route.params.id_user
 
 
     const toggleModalReview = () => {
         setVisibleModalReview(true);
+    }
+
+    const onPressWriteReview = () => {
+        setVisibleModalWriteReview(true)
     }
 
 
@@ -33,9 +38,8 @@ const ProfileWorker = (props) => {
                         .then(resp => {
                             if (resp) {
                                 setReviews(resp.data)
-
                             }
-                        }).catch(e=>{
+                        }).catch(e => {
                             console.log("error review ", e)
                         })
                 }
@@ -62,7 +66,6 @@ const ProfileWorker = (props) => {
                             <View style={styles.nameView}>
                                 <Text style={styles.name} >
                                     {worker.username}
-
                                 </Text>
                             </View>
                             <View style={styles.workView}>
@@ -89,7 +92,7 @@ const ProfileWorker = (props) => {
                             <View style={styles.reviewView}>
                                 <TouchableOpacity
                                     style={styles.buttonReview}
-                                    onPress={() => console.log("")}>
+                                    onPress={() => onPressWriteReview()}>
                                     <Text style={styles.contact} >lascia una recensione</Text>
                                 </TouchableOpacity>
                             </View>
@@ -106,7 +109,7 @@ const ProfileWorker = (props) => {
                         <View style={styles.bodyLeft}>
                             <Text style={styles.descriptionTitle}>Descrizione</Text>
                             <Text style={styles.descriptionText} >
-                                {worker['description']}
+                                {worker.descrizione}
                             </Text>
                         </View>
                         <View style={styles.bodyRight}>
@@ -132,7 +135,7 @@ const ProfileWorker = (props) => {
                             </View>
                         </View>
                     </View>
-                    {/* <WriteReviewModal visible={visibleModalWriteReview} onPressClose={() => setVisibleModalWriteReview(false)} userId={auth.attributes.sub} workerId={worker.id} /> */}
+                    <WriteReviewModal visible={visibleModalWriteReview} onPressClose={() => setVisibleModalWriteReview(false)} userId={id_user} workerId={worker.id} />
                     <ComponentModal visible={visibleModalReview} component={<ReviewList reviews={reviews} />} onPressClose={() => setVisibleModalReview(false)} />
                     {/* <CustomModal visible={visibleModalPrice} component={<PriceList idWorker={idWorker} />} onPressClose={() => setVisibleModalPrice(false)} /> */}
                 </>}
@@ -178,7 +181,7 @@ const styles = ScaledSheet.create({
     },
     infoWorkerView: {
         width: '70%',
-        height: '28%',
+        height: '38%',
         marginTop: '50@s',
         marginLeft: '16@s',
     },
@@ -198,7 +201,7 @@ const styles = ScaledSheet.create({
         fontSize: '16@s',
         includeFontPadding: false,
         fontFamily: 'RobotoItalic',
-        marginTop: '4@s',
+        // marginTop: '0@s',
     },
 
     contactBar: {
