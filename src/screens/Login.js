@@ -9,7 +9,8 @@ import {
     StatusBar,
     Button,
     AsyncStorage,
-    Alert
+    Alert,
+    
 } from 'react-native'
 import services from '../services'
 import {ScaledSheet} from 'react-native-size-matters'
@@ -17,23 +18,34 @@ import {useNavigation} from '@react-navigation/native'
 import {useGlobalContext} from '../../context'
 
 const Login = props => {
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [state, setState] = useState({})
+    const [state, setState] = useState({
+        emailErr: false,
+        passError:false
+    })
 
     const navigation = useNavigation()
     const {addTokenAuth} = useGlobalContext()
 
     const login = () => {
-        const payload = {email: email, password: password}
-        services.login(payload).then(response => {
-            if (response) {
-                addTokenAuth(response.accessToken),
-                    navigation.navigate('Home', {logout: false})
-            }
-        }).catch((error) => {
-            Alert.alert(error.response.data)
-        })
+        if(!email.trim() || !password.trim()) {
+            Alert.alert("I campi sono obbligatori")
+        } else {
+            const payload = {email: email, password: password}
+            services.signIn(payload).then(response => {
+                if (response) {
+                    addTokenAuth(response.accessToken),
+                        navigation.navigate('Home', {logout: false})
+                }
+            }).catch((error) => {
+                if(error.response.status===404) {
+                    Alert.alert("email o password sbagliata")
+                }
+            })
+        }
+    
     }
 
     return (
@@ -46,6 +58,7 @@ const Login = props => {
                     placeholder={'Email'}
                     style={styles.inputText}
                 />
+                {state.emailErr && <Text style={styles.title}>campo obbligatorio</Text>}
                 <TextInput
                     value={password}
                     PP

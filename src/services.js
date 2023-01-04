@@ -5,9 +5,9 @@ const headers = {
     'Access-Control-Allow-Origin': '*',
 }
 
-const login = payload => {
+const signIn = payload => {
     return axios
-        .post('http://192.168.1.5:5000/api/login', payload, headers)
+        .post('http://192.168.1.5:5000/api/signIn', payload, headers)
         .then(response => {
             return response.data
         })
@@ -37,15 +37,23 @@ const findWorkerById = (id) => {
 }
 
 const getReviewOfWorkerById = (id) => {
-    return axios.get("http://192.168.1.5:5000/api/worker/"+id+"/review", headers)
+    return axios.get("http://192.168.1.5:5000/api/worker/" + id + "/review", headers)
+        .then(response => {
+            return response
+        })
+}
+
+const doReview = (payload) => {
+    return axios.post("http://192.168.1.5:5000/api/worker/" + payload.workerId + "/review", payload, headers)
         .then(response => {
             return response
         })
 }
 export default {
-    login,
+    signIn,
     signUp,
     findWorkers,
     findWorkerById,
-    getReviewOfWorkerById
+    getReviewOfWorkerById,
+    doReview,
 }

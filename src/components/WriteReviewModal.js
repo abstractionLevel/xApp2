@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView } from 'r
 import { Rating } from 'react-native-ratings';
 import Modal from 'react-native-modal';
 import { ScaledSheet } from 'react-native-size-matters';
+import services from '../services';
 
 
 
@@ -12,7 +13,6 @@ const WriteReviewModal = (props) => {
     const onPressClose = props.onPressClose;
     const userID = props.userId
     const workerID = props.workerId
-    console.log(userID + " " +  workerID)
 
     const [review, setReview] = useState(null)
     const [rating, setRating] = useState()
@@ -21,24 +21,22 @@ const WriteReviewModal = (props) => {
         setRating(rating)
     }
 
-    const onPressSend = async () => {
-        // try {
-        //     const reviewData = await API.graphql(
-        //         graphqlOperation(
-        //             createWorkerReview, {
-        //             input: {
-        //                 review: review,
-        //                 rating: rating,
-        //                 userID: userID,
-        //                 workerID, workerID
-        //             }
-        //         })
-        //     )
-        //     onPressClose()
-        //     props.updateWorker(UPDATE_WORKER)
-        // } catch (e) {
-        //     console.log(e)
-        // }
+    const save = () => {
+        const payload = {
+            review: review,
+            rating: rating,
+            userId: userID,
+            workerId: workerID
+        }
+        services.doReview(payload)
+            .then(response => {
+                console.log("res ", response)
+            }).catch(err => {
+                console.log("error ", err)
+            })
+            setReview(null)
+            setRating(null)
+            onPressClose()
     }
 
     useEffect(() => {
@@ -69,7 +67,7 @@ const WriteReviewModal = (props) => {
 
                     <TouchableOpacity
                         style={styles.buttonClose}
-                        onPress={onPressSend}>
+                        onPress={save}>
                         <Text style={styles.buttonText} >Invia</Text>
                     </TouchableOpacity>
                 </View>
