@@ -1,5 +1,8 @@
 import axios from 'axios'
 
+
+const localhost = "http://192.168.1.10:5000/api/"
+
 const headers = {
     'Content-Type': 'text/json',
     'Access-Control-Allow-Origin': '*',
@@ -7,16 +10,17 @@ const headers = {
 
 const signIn = payload => {
     return axios
-        .post('http://192.168.1.5:5000/api/signIn', payload, headers)
+        .post(localhost + 'signIn', payload, headers)
         .then(response => {
             return response.data
         })
 }
 
 const signUp = payload => {
-    return axios
-        .post('http://192.168.1.5:5000/api/signUp', payload, headers)
+    
+    return axios.post(localhost+'signUp', payload, headers)
         .then(response => {
+            console.log("ress ", response)
             return response
         })
 }
