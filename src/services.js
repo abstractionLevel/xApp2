@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 
-const localhost = "http://192.168.1.10:5000/api/"
+const localhost = "http://192.168.1.18:5000/api/"
 
 const headers = {
     'Content-Type': 'text/json',
@@ -16,11 +16,9 @@ const signIn = payload => {
         })
 }
 
-const signUp = payload => {
-    
+const signUp = payload => { 
     return axios.post(localhost+'signUp', payload, headers)
         .then(response => {
-            console.log("ress ", response)
             return response
         })
 }

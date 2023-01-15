@@ -19,45 +19,47 @@ const SignUp = props => {
     
     const navigation = useNavigation()
 
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [name, setName] = useState('')
-    const [errMessage, setErrMessage] = useState('')
+    const [email, setEmail] = useState(null)
+    const [password, setPassword] = useState(null)
+    const [name, setName] = useState(null)
     const [stateError, setStateError] = useState({
         email:null,
         password:null,
         name:null,
     }) 
 
-    const validateEmail = (mail) => {
-        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
-            return (true)
-        }
-        return (false)
-    }
+    // const validateEmail = (mail) => {
+    //     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+    //         return (true)
+    //     }
+    //     return (false)
+    // }
 
     const validatePassword  = password => {
-        var re =  /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
-        if(!password.trim()) {
+        var rgx =  /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+        if(password === null) {
             return "campo obbligatorio"
         }
-        else if(!re.test(password)) {
+        else if(!rgx.test(password)) {
+            console.log("password sbagliata ")
             return "la password deve contenere un carattere minuscolo,maiuscolo ,caratteri speciali e numeri"
         }
         return null
     }
 
     const isBlank = (val) => {
-        if(!val.trim()) {
+        if(val === null) {
             return "campo obbligatorio"
         }
         return null
     }
 
-    const validateEmailNew = (val) => {
-        if(!val.trim()) {
+    const validateEmail = (val) => {
+        let rgx  = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+
+        if(val === null) {
             return "campo obbligatoriddo"
-        } else if(!validateEmail(val)) {
+        } else if(!rgx.test(val)) {
             return "assicurati di aver inserito un email valida"
         }
         return null
@@ -65,14 +67,20 @@ const SignUp = props => {
 
     const save = () => {
         if (!name || !email || !password) {
-            setStateError({...stateError, password:validatePassword(password),email: validateEmailNew(email), name: isBlank(name)})
+            setStateError({...stateError, password:validatePassword(password),email: validateEmail(email), name: isBlank(name)})
         } 
         else {
+            
             const payload = { username: name, password: password, email: email }
+            setPassword(null)
+                    setEmail(null)
+                    setName(null)
             services.signUp(payload).then(response => {
-                console.log(":res ", response)
                 if (response) {
                     navigation.navigate('Login')
+                    setPassword(null)
+                    setEmail(null)
+                    setEmail(null)
                 }
             }).catch(err => {
                 if (err.response.status == 409) {
@@ -86,7 +94,6 @@ const SignUp = props => {
 }, [])
     return (
         <View style={styles.container}>
-            {errMessage && <Text>{errMessage}</Text>}
             <Text style={styles.title}>Benvenuto</Text>
             <View style={styles.containerForm}>
                 <TextInput
@@ -103,7 +110,7 @@ const SignUp = props => {
                     value={name}
                     onChangeText={name => {
                         setName(name)
-                        setStateError({...stateError, password:null})
+                        setStateError({...stateError, name:null})
                     }}
                     placeholder={'name'}
                     style={styles.inputText}
@@ -130,11 +137,6 @@ const SignUp = props => {
                     style={styles.buttonRouteR}
                     onPress={() => navigation.navigate('Login')}>
                     <Text style={styles.buttonTexRoute}>Login</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.buttonRouteL}
-                    onPress={() => navigation.navigate('SignUp')}>
-                    <Text style={styles.buttonTexRoute}>Registrati</Text>
                 </TouchableOpacity>
             </View>
         </View>

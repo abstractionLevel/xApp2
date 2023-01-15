@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     Text,
     View,
@@ -10,42 +10,49 @@ import {
     Button,
     AsyncStorage,
     Alert,
-    
+
 } from 'react-native'
 import services from '../services'
-import {ScaledSheet} from 'react-native-size-matters'
-import {useNavigation} from '@react-navigation/native'
-import {useGlobalContext} from '../../context'
+import { ScaledSheet } from 'react-native-size-matters'
+import { useNavigation } from '@react-navigation/native'
+import { useGlobalContext } from '../../context'
 
 const Login = props => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [state, setState] = useState({
+    const [stateError, setStateError] = useState({
         emailErr: false,
-        passError:false
+        passError: false
     })
 
     const navigation = useNavigation()
-    const {addTokenAuth} = useGlobalContext()
+    const { addTokenAuth } = useGlobalContext()
+
+    const isBlank = (val) => {
+        if (!val.trim()) {
+            return "campo obbligatorio"
+        }
+        return null
+    }
 
     const login = () => {
-        if(!email.trim() || !password.trim()) {
-            Alert.alert("I campi sono obbligatori")
+        if (!email.trim() || !password.trim()) {
+            setStateError({ ...stateError, emailErr: isBlank(email), passError: isBlank(password) })
         } else {
-            const payload = {email: email, password: password}
+            const payload = { email: email, password: password }
             services.signIn(payload).then(response => {
                 if (response) {
                     addTokenAuth(response.accessToken),
-                        navigation.navigate('Home', {logout: false})
+                        navigation.navigate('Home', { logout: false })
                 }
             }).catch((error) => {
-                if(error.response.status===404) {
+                if (error.response.status === 404) {
                     Alert.alert("email o password sbagliata")
                 }
             })
         }
-    
+
     }
 
     return (
@@ -54,19 +61,25 @@ const Login = props => {
             <View style={styles.containerForm}>
                 <TextInput
                     value={email}
-                    onChangeText={email => setEmail(email)}
+                    onChangeText={email => {
+                        setEmail(email)
+                        setStateError({...stateError, emailErr:null})
+                    }}
                     placeholder={'Email'}
                     style={styles.inputText}
                 />
-                {state.emailErr && <Text style={styles.title}>campo obbligatorio</Text>}
+                {stateError.emailErr && <Text style={styles.errorMessage}>{stateError.emailErr}</Text>}
                 <TextInput
                     value={password}
-                    PP
-                    onChangeText={password => setPassword(password)}
+                    onChangeText={password => {
+                        setPassword(password)
+                        setStateError({...stateError,passError:null})
+                    }}
                     placeholder={'Password'}
                     secureTextEntry={true}
                     style={styles.inputText}
                 />
+                {stateError.passError && <Text style={styles.errorMessage}>{stateError.passError}</Text>}
                 <TouchableOpacity style={styles.loginBtn} onPress={login}>
                     <Text style={styles.loginText}>LOGIN</Text>
                 </TouchableOpacity>
@@ -149,6 +162,9 @@ const styles = ScaledSheet.create({
     buttonTexRoute: {
         fontSize: 17,
     },
+    errorMessage: {
+        color: 'red',
+    }
 })
 
 export default Login
