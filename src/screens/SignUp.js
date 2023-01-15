@@ -16,13 +16,18 @@ import { useNavigation } from '@react-navigation/native'
 import services from '../services'
 
 const SignUp = props => {
+    
     const navigation = useNavigation()
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [name, setName] = useState('')
     const [errMessage, setErrMessage] = useState('')
-    const [state, setState] = useState({})
+    const [stateError, setStateError] = useState({
+        email:null,
+        password:null,
+        name:null,
+    }) 
 
     const validateEmail = (mail) => {
         if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
@@ -33,26 +38,37 @@ const SignUp = props => {
 
     const validatePassword  = password => {
         var re =  /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
-        if(re.test(password)) {
-            return true
+        if(!password.trim()) {
+            return "campo obbligatorio"
         }
-        return false
+        else if(!re.test(password)) {
+            return "la password deve contenere un carattere minuscolo,maiuscolo ,caratteri speciali e numeri"
+        }
+        return null
+    }
+
+    const isBlank = (val) => {
+        if(!val.trim()) {
+            return "campo obbligatorio"
+        }
+        return null
+    }
+
+    const validateEmailNew = (val) => {
+        if(!val.trim()) {
+            return "campo obbligatoriddo"
+        } else if(!validateEmail(val)) {
+            return "assicurati di aver inserito un email valida"
+        }
+        return null
     }
 
     const save = () => {
-        if (!validateEmail(email)) {
-            Alert.alert("email non valida")
-        }
-        if(!validatePassword(password)) {
-            Alert.alert("la password deve contenere un carattere minuscolo,maiuscolo ,caratteri speciali e numeri ")
-        }
-        if (!name.trim() || !password.trim() || !email.trim()) {
-            Alert.alert("I campi sono obbligatori")
-        }
-        
+        if (!name || !email || !password) {
+            setStateError({...stateError, password:validatePassword(password),email: validateEmailNew(email), name: isBlank(name)})
+        } 
         else {
             const payload = { username: name, password: password, email: email }
-            console.log(":res ", payload)
             services.signUp(payload).then(response => {
                 console.log(":res ", response)
                 if (response) {
@@ -62,14 +78,12 @@ const SignUp = props => {
                 if (err.response.status == 409) {
                     Alert.alert('email esistente')
                 }
-
             })
         }
-
     }
 
-    useEffect(() => { }, [])
-
+    useEffect(() => {console.log('stat errof' , stateError)
+}, [])
     return (
         <View style={styles.container}>
             {errMessage && <Text>{errMessage}</Text>}
@@ -77,24 +91,36 @@ const SignUp = props => {
             <View style={styles.containerForm}>
                 <TextInput
                     value={email}
-                    onChangeText={email => setEmail(email)}
+                    onChangeText={email => {
+                        setEmail(email)
+                        setStateError({...stateError, email:null})
+                    }}
                     placeholder={'Email'}
                     style={styles.inputText}
                 />
+                {stateError.email && <Text style={styles.errorMessage}>{stateError.email}</Text>}
                 <TextInput
                     value={name}
-                    onChangeText={name => setName(name)}
+                    onChangeText={name => {
+                        setName(name)
+                        setStateError({...stateError, password:null})
+                    }}
                     placeholder={'name'}
                     style={styles.inputText}
                 />
+                {stateError.name && <Text style={styles.errorMessage}>{stateError.name}</Text>}
                 <TextInput
                     value={password}
                     PP
-                    onChangeText={password => setPassword(password)}
+                    onChangeText={password => {
+                        setPassword(password)
+                        setStateError({...stateError, password:null})
+                    }}
                     placeholder={'Password'}
                     secureTextEntry={true}
                     style={styles.inputText}
                 />
+                {stateError.password && <Text style={styles.errorMessage}>{stateError.password}</Text>}
                 <TouchableOpacity style={styles.loginBtn} onPress={save}>
                     <Text style={styles.loginText}>REGISTRATI</Text>
                 </TouchableOpacity>
@@ -174,6 +200,9 @@ const styles = ScaledSheet.create({
     buttonTexRoute: {
         fontSize: 17,
     },
+    errorMessage: {
+        color: 'red',
+    }
 })
 
 export default SignUp
