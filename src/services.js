@@ -25,28 +25,28 @@ const signUp = payload => {
 
 const findWorkers = payload => {
     return axios
-        .post('http://192.168.1.5:5000/api/worker', payload, headers)
+        .post(localhost + '/worker', payload, headers)
         .then(response => {
             return response
         })
 }
 
 const findWorkerById = (id) => {
-    return axios.get('http://192.168.1.5:5000/api/worker/' + id, headers)
+    return axios.get(localhost+'/worker/' + id, headers)
         .then(response => {
             return response
         })
 }
 
 const getReviewOfWorkerById = (id) => {
-    return axios.get("http://192.168.1.5:5000/api/worker/" + id + "/review", headers)
+    return axios.get(localhost+"/worker/" + id + "/review", headers)
         .then(response => {
             return response
         })
 }
 
 const doReview = (payload) => {
-    return axios.post("http://192.168.1.5:5000/api/worker/" + payload.workerId + "/review", payload, headers)
+    return axios.post(localhost+"/worker/" + payload.workerId + "/review", payload, headers)
         .then(response => {
             return response
         })

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, AsyncStorage } from 'react-native';
 import { Rating } from 'react-native-ratings';
 import Modal from 'react-native-modal';
 import { ScaledSheet } from 'react-native-size-matters';
@@ -16,31 +16,37 @@ const WriteReviewModal = (props) => {
 
     const [review, setReview] = useState(null)
     const [rating, setRating] = useState()
+    const [auth, setAuth] = useState(null)
 
     const ratingCompleted = rating => {
         setRating(rating)
+    }
+
+    const getAuth = async () => {
+        const auth = await AsyncStorage.getItem('auth')
+        setAuth(JSON.parse(auth))
     }
 
     const save = () => {
         const payload = {
             review: review,
             rating: rating,
-            userId: userID,
+            userId: auth.id,
             workerId: workerID
         }
         services.doReview(payload)
             .then(response => {
-                console.log("res ", response)
+                // console.log("res ", response)
             }).catch(err => {
-                console.log("error ", err)
+                // console.log("error ", err)
             })
-            setReview(null)
-            setRating(null)
-            onPressClose()
+        setReview(null)
+        setRating(null)
+        onPressClose()
     }
 
     useEffect(() => {
-
+        getAuth()
     }, [])
 
 

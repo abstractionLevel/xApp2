@@ -8,8 +8,7 @@ const ReviewList = (props) => {
 
 
     const reviews = props.reviews
-
-    console.log("sono nella reviewLIst")
+    console.log("review" , reviews.map(item=>item.review))
 
     return (
         <View >

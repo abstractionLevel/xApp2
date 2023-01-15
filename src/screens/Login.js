@@ -2,15 +2,10 @@ import React, { useState, useEffect } from 'react'
 import {
     Text,
     View,
-    KeyboardAvoidingView,
     TextInput,
     TouchableOpacity,
-    ScrollView,
-    StatusBar,
-    Button,
     AsyncStorage,
     Alert,
-
 } from 'react-native'
 import services from '../services'
 import { ScaledSheet } from 'react-native-size-matters'
@@ -36,15 +31,16 @@ const Login = props => {
         return null
     }
 
-    const login = () => {
+    const login =  () => {
         if (!email.trim() || !password.trim()) {
             setStateError({ ...stateError, emailErr: isBlank(email), passError: isBlank(password) })
         } else {
             const payload = { email: email, password: password }
-            services.signIn(payload).then(response => {
+             services.signIn(payload).then(response  => {
                 if (response) {
-                    addTokenAuth(response.accessToken),
-                        navigation.navigate('Home', { logout: false })
+                    addTokenAuth(JSON.stringify(response))
+                    saveAuth(response)
+                    navigation.navigate('Home', { logout: false })
                 }
             }).catch((error) => {
                 if (error.response.status === 404) {
@@ -63,7 +59,7 @@ const Login = props => {
                     value={email}
                     onChangeText={email => {
                         setEmail(email)
-                        setStateError({...stateError, emailErr:null})
+                        setStateError({ ...stateError, emailErr: null })
                     }}
                     placeholder={'Email'}
                     style={styles.inputText}
@@ -73,7 +69,7 @@ const Login = props => {
                     value={password}
                     onChangeText={password => {
                         setPassword(password)
-                        setStateError({...stateError,passError:null})
+                        setStateError({ ...stateError, passError: null })
                     }}
                     placeholder={'Password'}
                     secureTextEntry={true}

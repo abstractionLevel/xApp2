@@ -84,7 +84,7 @@ const WorkerItem = props => {
                 <View style={styles.buttonsContainer}>
                     <TouchableOpacity
                         style={styles.buttonGoToProfile}
-                        onPress={() => navigation.navigate('ProfileWorker', {id_user, id_user})}>
+                        onPress={() => navigation.navigate('ProfileWorker', {id_worker:id_user})}>
                         <Text style={styles.buttonText}>Profile</Text>
                     </TouchableOpacity>
                 </View>

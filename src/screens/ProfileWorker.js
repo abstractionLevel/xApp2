@@ -17,8 +17,7 @@ const ProfileWorker = (props) => {
     const [visibleModalReview, setVisibleModalReview] = useState(false);
     const [visibleModalWriteReview, setVisibleModalWriteReview] = useState(false);
 
-    const id_user = props.route.params.id_user
-
+    const id_worker = props.route.params.id_worker
 
     const toggleModalReview = () => {
         setVisibleModalReview(true);
@@ -30,7 +29,7 @@ const ProfileWorker = (props) => {
 
 
     useEffect(() => {
-        services.findWorkerById(id_user)
+        services.findWorkerById(id_worker)
             .then(response => {
                 if (response) {
                     setWorker(response.data)
@@ -46,7 +45,6 @@ const ProfileWorker = (props) => {
             }).catch(e => {
                 console.log("errore ", e)
             })
-
     }, [])
 
 
@@ -135,7 +133,7 @@ const ProfileWorker = (props) => {
                             </View>
                         </View>
                     </View>
-                    <WriteReviewModal visible={visibleModalWriteReview} onPressClose={() => setVisibleModalWriteReview(false)} userId={id_user} workerId={worker.id} />
+                    <WriteReviewModal visible={visibleModalWriteReview} onPressClose={() => setVisibleModalWriteReview(false)} workerId={worker.id} />
                     <ComponentModal visible={visibleModalReview} component={<ReviewList reviews={reviews} />} onPressClose={() => setVisibleModalReview(false)} />
                     {/* <CustomModal visible={visibleModalPrice} component={<PriceList idWorker={idWorker} />} onPressClose={() => setVisibleModalPrice(false)} /> */}
                 </>}

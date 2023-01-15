@@ -8,7 +8,6 @@ const ReviewItem = (props) => {
 
     const review = props.review;
 
-    console.log("sono nel reviewItedm ", review)
 
     return (
         <View style={styles.container}>
@@ -16,7 +15,7 @@ const ReviewItem = (props) => {
                 <View style={styles.imageProfileView}>
                     <Image source={{ uri: "review.user.imageUri "}} style={styles.image} />
                 </View>
-                <View style={styles.infoComment}>
+                <View style={styles.infoComment}>   
                     <View style={styles.nameView}>
                         <Text style={styles.name}>{review.username}</Text>
                         <Rating

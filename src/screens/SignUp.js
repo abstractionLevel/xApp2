@@ -72,9 +72,7 @@ const SignUp = props => {
         else {
             
             const payload = { username: name, password: password, email: email }
-            setPassword(null)
-                    setEmail(null)
-                    setName(null)
+          
             services.signUp(payload).then(response => {
                 if (response) {
                     navigation.navigate('Login')
@@ -90,7 +88,7 @@ const SignUp = props => {
         }
     }
 
-    useEffect(() => {console.log('stat errof' , stateError)
+    useEffect(() => {
 }, [])
     return (
         <View style={styles.container}>
