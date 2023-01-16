@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, Dimensions ,AsyncStorage} from 'react-native';
+import { View, Text, Image, TouchableOpacity, Dimensions, AsyncStorage } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native'
 import services from '../services';
@@ -14,12 +14,11 @@ const ProfileWorker = (props) => {
     const [worker, setWorker] = useState()
     const [reviews, setReviews] = useState()
     const [auth, setAuth] = useState()
-    const [activateFollow, setActivateFollow] = useState(true)
+    const [isFollowed, setIsFollowed] = useState(true)
     const [visibleModalReview, setVisibleModalReview] = useState(false);
     const [visibleModalWriteReview, setVisibleModalWriteReview] = useState(false);
 
-    const id_worker = props.route.params.id_worker
-
+    const idUserOfWorker = props.route.params.id_worker
     const toggleModalReview = () => {
         setVisibleModalReview(true);
     }
@@ -30,15 +29,28 @@ const ProfileWorker = (props) => {
 
 
     const saveWorker = () => {
-        services.saveWorker({userid:auth.id, workerid:worker.id})
-            .then(response=>{
-                if(response) {
-                    console.log("salvato")
-                }
-            })
-            .catch(err=>{
-                console.log(err)
-            })
+        if (!isFollowed) {
+            services.saveWorker({ userid: auth.id, workerid: worker.id })
+                .then(response => {
+                    if (response) {
+                        setIsFollowed(true)
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        } else {
+            services.deleteSavedWorker({ userId: auth.id, workerId: worker.id })
+                .then(response => {
+                    if (response) {
+                        setIsFollowed(false)
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
+
     }
 
     const getAuth = async () => {
@@ -46,26 +58,37 @@ const ProfileWorker = (props) => {
         setAuth(JSON.parse(auth))
     }
 
+    const findSaveWorkerByWorkerId = (workerId, userId) => {
+        services.findSaveWorker(workerId, userId)
+            .then(response => {
+                response.data.length > 0 ? setIsFollowed(true) : setIsFollowed(false)
+            })
+            .catch(err => {
+            })
+    }
+
+    console.log(isFollowed)
+
     useEffect(() => {
-       
+
         getAuth()
 
-        services.findWorkerById(id_worker)
+        services.findWorkerById(idUserOfWorker)
             .then(response => {
                 if (response) {
                     setWorker(response.data)
+                    findSaveWorkerByWorkerId(response.data.id, auth.id)
                     services.getReviewOfWorkerById(response.data.id)
                         .then(resp => {
                             if (resp) {
                                 setReviews(resp.data)
                             }
                         }).catch(e => {
-                            console.log("error review ", e)
                         })
                 }
             }).catch(e => {
-                console.log("errore ", e)
             })
+
     }, [])
 
 
@@ -149,7 +172,7 @@ const ProfileWorker = (props) => {
                                     style={styles.reviewButton}
                                     onPress={saveWorker}
                                 >
-                                    <FontAwesome name="heart" size={30} color={activateFollow === true ? 'red' : '#1d4e89'} />
+                                    <FontAwesome name="heart" size={30} color={isFollowed === true ? 'red' : '#1d4e89'} />
                                 </TouchableOpacity>
                             </View>
                         </View>

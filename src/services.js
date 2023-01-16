@@ -58,6 +58,21 @@ const saveWorker = (payload) => {
             return response
         })
 }
+
+const findSaveWorker = (workerId,userId) => {
+    return axios.get(localhost+"/worker/saved/"+workerId+"/"+userId,headers)
+        .then(response=>{
+            return response
+        })
+}
+
+const deleteSavedWorker = (payload) => {
+    return axios.post(localhost+"/worker/deleteSavedWorker",payload,headers)
+        .then(response=>{
+            return response
+        })
+}
+
 export default {
     signIn,
     signUp,
@@ -66,4 +81,6 @@ export default {
     getReviewOfWorkerById,
     doReview,
     saveWorker,
+    findSaveWorker,
+    deleteSavedWorker
 }
