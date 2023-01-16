@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Dimensions ,AsyncStorage} from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native'
 import services from '../services';
@@ -13,6 +13,7 @@ const ProfileWorker = (props) => {
 
     const [worker, setWorker] = useState()
     const [reviews, setReviews] = useState()
+    const [auth, setAuth] = useState()
     const [activateFollow, setActivateFollow] = useState(true)
     const [visibleModalReview, setVisibleModalReview] = useState(false);
     const [visibleModalWriteReview, setVisibleModalWriteReview] = useState(false);
@@ -28,7 +29,27 @@ const ProfileWorker = (props) => {
     }
 
 
+    const saveWorker = () => {
+        services.saveWorker({userid:auth.id, workerid:worker.id})
+            .then(response=>{
+                if(response) {
+                    console.log("salvato")
+                }
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+    }
+
+    const getAuth = async () => {
+        const auth = await AsyncStorage.getItem('auth')
+        setAuth(JSON.parse(auth))
+    }
+
     useEffect(() => {
+       
+        getAuth()
+
         services.findWorkerById(id_worker)
             .then(response => {
                 if (response) {
@@ -126,7 +147,7 @@ const ProfileWorker = (props) => {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={styles.reviewButton}
-                                    onPress={() => console.log("")}
+                                    onPress={saveWorker}
                                 >
                                     <FontAwesome name="heart" size={30} color={activateFollow === true ? 'red' : '#1d4e89'} />
                                 </TouchableOpacity>

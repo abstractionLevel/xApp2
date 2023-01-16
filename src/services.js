@@ -51,6 +51,13 @@ const doReview = (payload) => {
             return response
         })
 }
+
+const saveWorker = (payload) => {
+    return axios.post(localhost+"/worker/save",payload,headers)
+        .then(response=>{
+            return response
+        })
+}
 export default {
     signIn,
     signUp,
@@ -58,4 +65,5 @@ export default {
     findWorkerById,
     getReviewOfWorkerById,
     doReview,
+    saveWorker,
 }
