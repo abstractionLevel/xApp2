@@ -52,22 +52,22 @@ const doReview = (payload) => {
         })
 }
 
-const saveWorker = (payload) => {
-    return axios.post(localhost+"/worker/save",payload,headers)
+const followWorker = (payload) => {
+    return axios.post(localhost+"/worker/follow",payload,headers)
         .then(response=>{
             return response
         })
 }
 
-const findSaveWorker = (workerId,userId) => {
+const findFollowedWorker = (workerId,userId) => {
     return axios.get(localhost+"/worker/saved/"+workerId+"/"+userId,headers)
         .then(response=>{
             return response
         })
 }
 
-const deleteSavedWorker = (payload) => {
-    return axios.post(localhost+"/worker/deleteSavedWorker",payload,headers)
+const deleteFollowedWorker = (payload) => {
+    return axios.post(localhost+"/worker/deleteFollowedWorker",payload,headers)
         .then(response=>{
             return response
         })
@@ -80,7 +80,7 @@ export default {
     findWorkerById,
     getReviewOfWorkerById,
     doReview,
-    saveWorker,
-    findSaveWorker,
-    deleteSavedWorker
+    followWorker,
+    findFollowedWorker,
+    deleteFollowedWorker
 }

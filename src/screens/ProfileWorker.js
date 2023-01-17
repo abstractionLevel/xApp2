@@ -28,9 +28,9 @@ const ProfileWorker = (props) => {
     }
 
 
-    const saveWorker = () => {
+    const toggleFollow  = () => {
         if (!isFollowed) {
-            services.saveWorker({ userid: auth.id, workerid: worker.id })
+            services.followWorker({ userid: auth.id, workerid: worker.id })
                 .then(response => {
                     if (response) {
                         setIsFollowed(true)
@@ -40,7 +40,7 @@ const ProfileWorker = (props) => {
                     console.log(err)
                 })
         } else {
-            services.deleteSavedWorker({ userId: auth.id, workerId: worker.id })
+            services.deleteFollowedWorker ({ userId: auth.id, workerId: worker.id })
                 .then(response => {
                     if (response) {
                         setIsFollowed(false)
@@ -59,7 +59,7 @@ const ProfileWorker = (props) => {
     }
 
     const findSaveWorkerByWorkerId = (workerId, userId) => {
-        services.findSaveWorker(workerId, userId)
+        services.findFollowedWorker (workerId, userId)
             .then(response => {
                 response.data.length > 0 ? setIsFollowed(true) : setIsFollowed(false)
             })
@@ -67,7 +67,6 @@ const ProfileWorker = (props) => {
             })
     }
 
-    console.log(isFollowed)
 
     useEffect(() => {
 
@@ -170,7 +169,7 @@ const ProfileWorker = (props) => {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={styles.reviewButton}
-                                    onPress={saveWorker}
+                                    onPress={toggleFollow}
                                 >
                                     <FontAwesome name="heart" size={30} color={isFollowed === true ? 'red' : '#1d4e89'} />
                                 </TouchableOpacity>
