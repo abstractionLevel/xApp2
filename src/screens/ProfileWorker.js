@@ -11,14 +11,16 @@ import WriteReviewModal from '../components/WriteReviewModal';
 
 const ProfileWorker = (props) => {
 
-    const [worker, setWorker] = useState()
-    const [reviews, setReviews] = useState()
-    const [auth, setAuth] = useState()
-    const [isFollowed, setIsFollowed] = useState(true)
+    const [worker, setWorker] = useState();
+    const [reviews, setReviews] = useState();
+    const [auth, setAuth] = useState();
+    const [isFollowed, setIsFollowed] = useState(null);
+    const [followedWorker, setFollowedWorker] =  useState(null);
     const [visibleModalReview, setVisibleModalReview] = useState(false);
     const [visibleModalWriteReview, setVisibleModalWriteReview] = useState(false);
 
     const idUserOfWorker = props.route.params.id_worker
+
     const toggleModalReview = () => {
         setVisibleModalReview(true);
     }
@@ -28,7 +30,7 @@ const ProfileWorker = (props) => {
     }
 
 
-    const toggleFollow  = () => {
+    const toggleFollow = () => {
         if (!isFollowed) {
             services.followWorker({ userid: auth.id, workerid: worker.id })
                 .then(response => {
@@ -40,17 +42,16 @@ const ProfileWorker = (props) => {
                     console.log(err)
                 })
         } else {
-            services.deleteFollowedWorker ({ userId: auth.id, workerId: worker.id })
+            services.deleteFollowedWorker(followedWorker.id)
                 .then(response => {
                     if (response) {
                         setIsFollowed(false)
                     }
                 })
                 .catch(err => {
-                    console.log(err)
+                    console.log("errore ", err.message)
                 })
         }
-
     }
 
     const getAuth = async () => {
@@ -58,12 +59,19 @@ const ProfileWorker = (props) => {
         setAuth(JSON.parse(auth))
     }
 
-    const findSaveWorkerByWorkerId = (workerId, userId) => {
-        services.findFollowedWorker (workerId, userId)
+    const isUserFollowedWorker = (workerId, userId) => {
+        
+        services.fetchUserFollowedWorker({ workerId: workerId, userId: userId })
             .then(response => {
-                response.data.length > 0 ? setIsFollowed(true) : setIsFollowed(false)
+                if (response.data) {
+                    setIsFollowed(true)
+                    setFollowedWorker(response.data);
+                }
             })
             .catch(err => {
+                if(err.response.status===401) {
+                    setIsFollowed(false)
+                }
             })
     }
 
@@ -76,7 +84,7 @@ const ProfileWorker = (props) => {
             .then(response => {
                 if (response) {
                     setWorker(response.data)
-                    findSaveWorkerByWorkerId(response.data.id, auth.id)
+                    isUserFollowedWorker(response.data.id, auth.id)
                     services.getReviewOfWorkerById(response.data.id)
                         .then(resp => {
                             if (resp) {

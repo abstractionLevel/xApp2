@@ -17,8 +17,6 @@ const Profile = (props) => {
     const navigation = useNavigation();
     const {removeTokenAuth} = useGlobalContext()
 
-   
-
     return (
         <View style={styles.container}>
             <View style={styles.head}>

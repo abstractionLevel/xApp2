@@ -18,8 +18,9 @@ const WriteReviewModal = (props) => {
     const [rating, setRating] = useState()
     const [auth, setAuth] = useState(null)
 
-    const ratingCompleted = rating => {
-        setRating(rating)
+    const ratingCompleted = (rating) => {
+        console.log("rating , ", rating)
+         setRating(rating)
     }
 
     const getAuth = async () => {
@@ -47,8 +48,8 @@ const WriteReviewModal = (props) => {
 
     useEffect(() => {
         getAuth()
+        
     }, [])
-
 
     return (
         <Modal
@@ -86,9 +87,9 @@ const WriteReviewModal = (props) => {
                         imageSize={40}
                         ratingBackgroundColor='gray'
                         tintColor='white'
-                        showRating={false}
                         startingValue={0}
-                        onFinishRating={ratingCompleted} />
+                        onFinishRating={ratingCompleted} 
+                        />
                 </View>
                 <View style={styles.textAreaContainer} >
                     <TextInput

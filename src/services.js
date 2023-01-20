@@ -1,12 +1,29 @@
 import axios from 'axios'
+import { AsyncStorage } from 'react-native';
 
 
 const localhost = "http://192.168.1.18:5000/api/"
 
+
+let token = null
+
 const headers = {
     'Content-Type': 'text/json',
     'Access-Control-Allow-Origin': '*',
+    'Authorization': 'Bear' + token
 }
+
+const getHeaders = async () => {
+    const userAuth = await AsyncStorage.getItem('auth');
+    const userAuthJson = JSON.parse(userAuth)
+    return {
+        headers: {
+            'Authorization': 'Bear ' + userAuthJson.accessToken
+        }
+    }
+}
+
+getHeaders()
 
 const signIn = payload => {
     return axios
@@ -16,62 +33,68 @@ const signIn = payload => {
         })
 }
 
-const signUp = payload => { 
-    return axios.post(localhost+'signUp', payload, headers)
+const signUp = payload => {
+    return axios.post(localhost + 'signUp', payload, headers)
         .then(response => {
             return response
         })
 }
 
-const findWorkers = payload => {
+const findWorkers = async payload => {
+    const header = await getHeaders()
     return axios
-        .post(localhost + '/worker', payload, headers)
+        .post(localhost + '/workers', payload, header)
         .then(response => {
             return response
         })
 }
 
 const findWorkerById = (id) => {
-    return axios.get(localhost+'/worker/' + id, headers)
+    return axios.get(localhost + '/workers/' + id, headers)
         .then(response => {
             return response
         })
 }
 
 const getReviewOfWorkerById = (id) => {
-    return axios.get(localhost+"/worker/" + id + "/review", headers)
+    return axios.get(localhost + "/workers/" + id + "/review", headers)
         .then(response => {
             return response
         })
 }
 
 const doReview = (payload) => {
-    return axios.post(localhost+"/worker/" + payload.workerId + "/review", payload, headers)
+    return axios.post(localhost + "/workers/" + payload.workerId + "/review", payload, headers)
         .then(response => {
             return response
         })
 }
 
 const followWorker = (payload) => {
-    return axios.post(localhost+"/worker/follow",payload,headers)
-        .then(response=>{
+    return axios.post(localhost + "/worker/follow", payload, headers)
+        .then(response => {
             return response
         })
 }
 
-const findFollowedWorker = (workerId,userId) => {
-    return axios.get(localhost+"/worker/saved/"+workerId+"/"+userId,headers)
-        .then(response=>{
+
+
+const deleteFollowedWorker = (id) => {
+    return axios.delete(localhost + "/followedWorker/"+id)
+        .then(response => {
             return response
         })
 }
 
-const deleteFollowedWorker = (payload) => {
-    return axios.post(localhost+"/worker/deleteFollowedWorker",payload,headers)
-        .then(response=>{
+const fetchUserFollowedWorker = (params) => {
+    console.log("fetchFOllowedWOrker ", params)
+    return axios.get(localhost + "users/" + params.userId + "/followedWorker/" + params.workerId,headers)
+        .then(response => {
             return response
         })
 }
+
+
 
 export default {
     signIn,
@@ -81,6 +104,6 @@ export default {
     getReviewOfWorkerById,
     doReview,
     followWorker,
-    findFollowedWorker,
-    deleteFollowedWorker
+    deleteFollowedWorker,
+    fetchUserFollowedWorker 
 }
