@@ -20,7 +20,6 @@ const ProfileWorker = (props) => {
     const [visibleModalWriteReview, setVisibleModalWriteReview] = useState(false);
 
     const idUserOfWorker = props.route.params.id_worker
-
     const toggleModalReview = () => {
         setVisibleModalReview(true);
     }
@@ -71,15 +70,15 @@ const ProfileWorker = (props) => {
             .catch(err => {
                 if(err.response.status===401) {
                     setIsFollowed(false)
+                }else {
+                    console.log(err)
                 }
             })
     }
 
 
     useEffect(() => {
-
         getAuth()
-
         services.findWorkerById(idUserOfWorker)
             .then(response => {
                 if (response) {
@@ -91,11 +90,12 @@ const ProfileWorker = (props) => {
                                 setReviews(resp.data)
                             }
                         }).catch(e => {
+                            console.log("getReviewOfWorkerById " , e.response.data.message)
                         })
                 }
             }).catch(e => {
+                console.log(e.response.data.message)
             })
-
     }, [])
 
 

@@ -49,15 +49,15 @@ const findWorkers = async payload => {
         })
 }
 
-const findWorkerById = (id) => {
-    return axios.get(localhost + '/workers/' + id, headers)
+const findWorkerById = async (id) => {
+    return axios.get(localhost + '/workers/' + id, await getHeaders())
         .then(response => {
             return response
         })
 }
 
-const getReviewOfWorkerById = (id) => {
-    return axios.get(localhost + "/workers/" + id + "/review", headers)
+const getReviewOfWorkerById = async (id) => {
+    return axios.get(localhost + "/workers/" + id + "/review", await getHeaders())
         .then(response => {
             return response
         })
@@ -70,8 +70,8 @@ const doReview = (payload) => {
         })
 }
 
-const followWorker = (payload) => {
-    return axios.post(localhost + "/worker/follow", payload, headers)
+const followWorker = async (payload) => {
+    return axios.post(localhost + "/worker/follow", payload, await getHeaders())
         .then(response => {
             return response
         })
@@ -79,16 +79,15 @@ const followWorker = (payload) => {
 
 
 
-const deleteFollowedWorker = (id) => {
-    return axios.delete(localhost + "/followedWorker/"+id)
+const deleteFollowedWorker = async  (id) => {
+    return axios.delete(localhost + "/followedWorker/"+id, await getHeaders())
         .then(response => {
             return response
         })
 }
 
-const fetchUserFollowedWorker = (params) => {
-    console.log("fetchFOllowedWOrker ", params)
-    return axios.get(localhost + "users/" + params.userId + "/followedWorker/" + params.workerId,headers)
+const fetchUserFollowedWorker = async (params) => {
+    return axios.get(localhost + "users/" + params.userId + "/followedWorker/" + params.workerId,await getHeaders())
         .then(response => {
             return response
         })

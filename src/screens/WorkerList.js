@@ -13,7 +13,6 @@ const WorkerList = props => {
 
 
     useEffect(() => {
-        console.log("workerList ", props.route.params.searched)
         services
             .findWorkers({
                 worker: props.route.params.searched,
