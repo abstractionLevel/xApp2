@@ -2,7 +2,7 @@ import axios from 'axios'
 import { AsyncStorage } from 'react-native';
 
 
-const localhost = "http://192.168.1.18:5000/api/"
+const localhost = "http://192.168.1.5:8080/public/api/auth"
 
 
 let token = null
@@ -25,19 +25,15 @@ const getHeaders = async () => {
 
 getHeaders()
 
-const signIn = payload => {
-    return axios
-        .post(localhost + 'signIn', payload, headers)
-        .then(response => {
-            return response.data
-        })
+const signIn = async payload => {
+    const response = await axios
+        .post(localhost + '/authenticate', payload, headers);
+    return response.data;
 }
 
-const signUp = payload => {
-    return axios.post(localhost + 'signUp', payload, headers)
-        .then(response => {
-            return response
-        })
+const signUp = async payload => {
+    const response = await axios.post(localhost + '/register', payload, headers);
+    return response;
 }
 
 const findWorkers = async payload => {

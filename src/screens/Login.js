@@ -11,6 +11,8 @@ import services from '../services'
 import { ScaledSheet } from 'react-native-size-matters'
 import { useNavigation } from '@react-navigation/native'
 import { useGlobalContext } from '../../context'
+import Toast from 'react-native-toast-message';
+import { useRoute } from '@react-navigation/native';
 
 const Login = props => {
 
@@ -20,6 +22,8 @@ const Login = props => {
         emailErr: false,
         passError: false
     })
+    const route = useRoute();
+    const [isRegistered,setIsRegistered] = useState(false);
 
     const navigation = useNavigation()
     const { addTokenAuth } = useGlobalContext()
@@ -31,29 +35,41 @@ const Login = props => {
         return null
     }
 
-    const login =  () => {
+    const login = () => {
         if (!email.trim() || !password.trim()) {
             setStateError({ ...stateError, emailErr: isBlank(email), passError: isBlank(password) })
         } else {
             const payload = { email: email, password: password }
-             services.signIn(payload).then(response  => {
+            services.signIn(payload).then(response => {
                 if (response) {
                     addTokenAuth(JSON.stringify(response))
                     saveAuth(response)
                     navigation.navigate('Home', { logout: false })
                 }
             }).catch((error) => {
-                if (error.response.status === 404) {
-                    Alert.alert("email o password sbagliata")
-                }
+                console.log(error)
+
             })
         }
-
     }
+
+    const showToast = () => {
+        Toast.show({
+            type: 'success',
+            text1: 'registration done',
+        });
+    }
+
+    useEffect(()=>{
+        if(route.params?.isRegistered) {
+            showToast();
+        }       
+    })
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Benvenuto</Text>
+            <Text style={styles.title}>Welcome</Text>
+            <Toast/>
             <View style={styles.containerForm}>
                 <TextInput
                     value={email}
@@ -85,13 +101,13 @@ const Login = props => {
                     style={styles.buttonRouteR}
                     onPress={() => navigation.navigate('SignUp')}>
                     <Text style={styles.buttonTexRoute}>
-                        Password Dimenticata
+                        Forgot  Password
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.buttonRouteL}
                     onPress={() => navigation.navigate('SignUp')}>
-                    <Text style={styles.buttonTexRoute}>Registrati</Text>
+                    <Text style={styles.buttonTexRoute}>SignUp</Text>
                 </TouchableOpacity>
             </View>
         </View>

@@ -16,17 +16,15 @@ import { useNavigation } from '@react-navigation/native'
 import services from '../services'
 
 const SignUp = props => {
-    
+
     const navigation = useNavigation()
 
     const [email, setEmail] = useState(null)
     const [password, setPassword] = useState(null)
-    const [name, setName] = useState(null)
     const [stateError, setStateError] = useState({
-        email:null,
-        password:null,
-        name:null,
-    }) 
+        email: null,
+        password: null,
+    })
 
     // const validateEmail = (mail) => {
     //     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
@@ -35,12 +33,12 @@ const SignUp = props => {
     //     return (false)
     // }
 
-    const validatePassword  = password => {
-        var rgx =  /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
-        if(password === null) {
+    const validatePassword = password => {
+        var rgx = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+        if (password === null) {
             return "campo obbligatorio"
         }
-        else if(!rgx.test(password)) {
+        else if (!rgx.test(password)) {
             console.log("password sbagliata ")
             return "la password deve contenere un carattere minuscolo,maiuscolo ,caratteri speciali e numeri"
         }
@@ -48,78 +46,64 @@ const SignUp = props => {
     }
 
     const isBlank = (val) => {
-        if(val === null) {
+        if (val === null) {
             return "campo obbligatorio"
         }
         return null
     }
 
     const validateEmail = (val) => {
-        let rgx  = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+        let rgx = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 
-        if(val === null) {
+        if (val === null) {
             return "campo obbligatoriddo"
-        } else if(!rgx.test(val)) {
+        } else if (!rgx.test(val)) {
             return "assicurati di aver inserito un email valida"
         }
         return null
     }
-
     const save = () => {
-        if (!name || !email || !password) {
-            setStateError({...stateError, password:validatePassword(password),email: validateEmail(email), name: isBlank(name)})
-        } 
+        if (!email || !password) {
+            setStateError({ ...stateError, password: validatePassword(password), email: validateEmail(email) })
+        }
         else {
-            
-            const payload = { username: name, password: password, email: email }
-          
+            const payload = { password: password, email: email }
             services.signUp(payload).then(response => {
-                if (response) {
-                    navigation.navigate('Login')
-                    setPassword(null)
-                    setEmail(null)
-                    setEmail(null)
-                }
+                navigation.navigate('Login', { isRegistered: true });
+                setPassword(null);
+                setEmail(null);
+
             }).catch(err => {
-                if (err.response.status == 409) {
-                    Alert.alert('email esistente')
-                }
+                console.log(err)
             })
         }
     }
 
+
+
     useEffect(() => {
-}, [])
+    }, [])
+
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Benvenuto</Text>
+            <Text style={styles.title}>SignUp</Text>
             <View style={styles.containerForm}>
                 <TextInput
                     value={email}
                     onChangeText={email => {
                         setEmail(email)
-                        setStateError({...stateError, email:null})
+                        setStateError({ ...stateError, email: null })
                     }}
                     placeholder={'Email'}
                     style={styles.inputText}
                 />
                 {stateError.email && <Text style={styles.errorMessage}>{stateError.email}</Text>}
                 <TextInput
-                    value={name}
-                    onChangeText={name => {
-                        setName(name)
-                        setStateError({...stateError, name:null})
-                    }}
-                    placeholder={'name'}
-                    style={styles.inputText}
-                />
-                {stateError.name && <Text style={styles.errorMessage}>{stateError.name}</Text>}
-                <TextInput
                     value={password}
                     PP
                     onChangeText={password => {
                         setPassword(password)
-                        setStateError({...stateError, password:null})
+                        setStateError({ ...stateError, password: null })
                     }}
                     placeholder={'Password'}
                     secureTextEntry={true}

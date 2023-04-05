@@ -12,6 +12,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import Feather from 'react-native-vector-icons/Feather'
 import {useGlobalContext} from '../../context'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
+import Welcome from '../screens/Welcome'
 
 const HomeTabNavigation = () => {
   const Tab = createBottomTabNavigator()
