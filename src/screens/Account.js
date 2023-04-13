@@ -3,48 +3,42 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import Modal from 'react-native-modal';
 import { ScaledSheet } from 'react-native-size-matters';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Urls from '../utils/Urls';
+import axios from 'axios';
 
 const Account = (props) => {
 
-    const [imageProfile, setImageProfile] = useState()
-
-    const [state, setState] = useState({
-        name: '',
-        lastname: '',
-    })
-
-    const [userId, setUserId] = useState()
-    const [isVisibleModalAccount, setIsVisibleModalAccount] = useState(false)
-
     const { navigation } = props;
+    const [imageProfile, setImageProfile] = useState()
+    const [state, setState] = useState({
+        email:null,
+        fullName:null,
+    })
+    const [isVisibleModalAccount, setIsVisibleModalAccount] = useState(false)
+   
 
-
-
-    const onSubmit = async () => {
-
-        navigation.navigate("Home")
-    }
-
-    const fetchUser = async () => {
-
-    }
-
-    const pickImage = async () => {
-
-    };
-
-    const uploadImage = async (image) => {
-
-    }
-
-    const deleteAccount = async () => {
-    }
+    const save = () => {}
+    const deleteAccount = () => {}
 
     useEffect(() => {
-        fetchUser()
+       axios.get(Urls.fetchUser+"/1")
+        .then(response=>{
+            if(response.data) {
+                setState(prevState=>({
+                    ...prevState,
+                    email:response.data.email,
+                    fullName:response.data.fullName,
+                    address:response.data.address,
+                }))
+            }
+        }).catch((e)=>{
+            console.log(e)
+        })
     }, []);
 
     return (
+       
         <View style={styles.container}>
             <>
                 <View style={styles.head}>
@@ -79,15 +73,7 @@ const Account = (props) => {
                         <Text style={styles.label}>EMAIL</Text>
                         <TextInput
                             style={styles.input}
-                            value={state.name}
-                            autoCapitalize="none"
-                            placeholderTextColor='black'
-                            onChangeText={(val) => setState({ ...state, name: val })}
-                        />
-                        <Text style={styles.label}>PASSWORD</Text>
-                        <TextInput
-                            style={styles.input}
-                            value={state.name}
+                            value={state.email}
                             autoCapitalize="none"
                             placeholderTextColor='black'
                             onChangeText={(val) => setState({ ...state, name: val })}
@@ -100,6 +86,36 @@ const Account = (props) => {
                             placeholderTextColor='black'
                             onChangeText={(val) => setState({ ...state, name: val })}
                         />
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => {
+                                removeTokenAuth()
+                                navigation.navigate('Home', { logout: true })
+                            }}>
+                            <Text style={styles.text} >Change Password</Text>
+                            <AntDesign name="right" style={styles.icon} size={30} color={'gray'} />
+                        </TouchableOpacity>
+                        <View style={{
+                                  alignItems: 'center'
+                                }}>
+                            <TouchableOpacity
+                                style={{
+                                    marginTop: 30,
+                                    backgroundColor: 'orange',
+                                    width: '80%',
+                                    height: 40,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    borderRadius: 20,
+
+                                }}
+                                onPress={save}>
+                                <Text style={{
+                                  color: 'white',
+                                  fontSize: 22
+                                }} >Save</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </ScrollView>
                 <Modal
@@ -127,6 +143,7 @@ const Account = (props) => {
                                 onPress={() => setIsVisibleModalAccount(false)}>
                                 <Text style={styles.buttonText} >No</Text>
                             </TouchableOpacity>
+
                         </View>
                     </View>
                 </Modal>
@@ -191,8 +208,24 @@ const styles = ScaledSheet.create({
     label: {
         marginTop: 20,
         fontWeight: '500',
-        letterSpacing:2,
-    }
+        letterSpacing: 2,
+    },
+    button: {
+        flexDirection: 'row',
+        height: '60@s',
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+        borderRadius: 6,
+        marginTop: '20@s',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    text: {
+        fontFamily: 'RobotoLight',
+        fontSize: '20@s',
+        marginLeft: '4@s',
+    },
 
 
 });

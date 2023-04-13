@@ -2,7 +2,10 @@ import axios from 'axios'
 import { AsyncStorage } from 'react-native';
 
 
-const localhost = "http://192.168.1.5:8080/public/api/auth"
+const url = "http://192.168.1.5:8080/";
+const localhost = url+"/public/api/auth";
+const apiUsers = url + "/public/api/users";
+
 
 
 let token = null
@@ -89,6 +92,12 @@ const fetchUserFollowedWorker = async (params) => {
         })
 }
 
+const getUserById = async (id) => {
+    return axios.get(url + apiUsers + id,await getHeaders())
+        .then(response => {
+            return response
+        })
+}
 
 
 export default {
@@ -100,5 +109,6 @@ export default {
     doReview,
     followWorker,
     deleteFollowedWorker,
-    fetchUserFollowedWorker 
+    fetchUserFollowedWorker,
+    getUserById,
 }

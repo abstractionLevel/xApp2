@@ -1,6 +1,6 @@
 import React, {useState,useEffect,useContext} from 'react';
 import { ScaledSheet } from 'react-native-size-matters';
-import { Dimensions } from 'react-native';
+import { Button, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
@@ -16,6 +16,8 @@ const Profile = (props) => {
 
     const navigation = useNavigation();
     const {removeTokenAuth} = useGlobalContext()
+
+
 
     return (
         <View style={styles.container}>
@@ -51,6 +53,7 @@ const Profile = (props) => {
                     <Text style={styles.text} >Logout</Text>
                     <MaterialCommunityIcons name="logout" style={styles.icon} size={30} color={'gray'} />
                 </TouchableOpacity>
+              
             </View>
         </View>
     )
