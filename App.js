@@ -14,20 +14,19 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack'
 // import Home from "./src/screens/Home";
 import Account from './src/screens/Account'
 import ProfileWorker from './src/screens/ProfileWorker'
-import Login from './src/screens/Login'
 import WorkerList from './src/screens/WorkerList'
 import HomeTabNavigation from './src/navigation/HomeTabNavigation'
-import {AsyncStorage} from 'react-native'
-import {useGlobalContext} from './context'
 import SignUp from './src/screens/SignUp'
+import AppContext from './src/context/appContext'
 
-const Stack = createNativeStackNavigator()
+const Stack = createNativeStackNavigator();
 
 const App = () => {
-    const {auth} = useGlobalContext()
-    useEffect(() => {}, [])
+
+    const [auth,setAuth] = useState(null);
+
     return (
-        <>
+        <AppContext.Provider value={{auth,setAuth}}>
             <NavigationContainer>
                 <Stack.Navigator>
                     <Stack.Screen
@@ -72,7 +71,7 @@ const App = () => {
                     />
                 </Stack.Navigator>
             </NavigationContainer>
-        </>
+        </AppContext.Provider>
     )
 }
 export default App

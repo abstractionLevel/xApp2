@@ -1,4 +1,4 @@
-import React, {useState,useEffect,useContext} from 'react';
+import React, { useContext } from 'react';
 import { ScaledSheet } from 'react-native-size-matters';
 import { Button, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -10,14 +10,21 @@ import {
     Image,
     AsyncStorage,
 } from 'react-native';
-import {useGlobalContext} from '../../context';
+import AppContext from '../context/appContext';
 
 const Profile = (props) => {
 
     const navigation = useNavigation();
-    const {removeTokenAuth} = useGlobalContext()
 
+    const {setAuth} = useContext(AppContext);
 
+    const removeTokenAuth = async () => {
+        try {
+            await AsyncStorage.removeItem('token');
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -25,19 +32,19 @@ const Profile = (props) => {
                 <View style={styles.profileImageView}>
                     <Image
                         style={styles.profileImage}
-                        source={{ uri: false ? true: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" }}
+                        source={{ uri: false ? true : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" }}
                     />
                 </View>
             </View>
             <View style={styles.body}>
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={styles.button}
                     onPress={() => navigation.navigate("Account")}
                 >
                     <Text style={styles.text} >Account</Text>
                     <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'gray'} />
                 </TouchableOpacity>
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={styles.button}
                     onPress={() => navigation.navigate("Profile Worker")}
                 >
@@ -46,14 +53,15 @@ const Profile = (props) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={()=>{
+                    onPress={() => {
                         removeTokenAuth()
-                        navigation.navigate('Home', {logout:true })
+                        setAuth(false);
+                        navigation.navigate('Home');
                     }}>
                     <Text style={styles.text} >Logout</Text>
                     <MaterialCommunityIcons name="logout" style={styles.icon} size={30} color={'gray'} />
                 </TouchableOpacity>
-              
+
             </View>
         </View>
     )

@@ -6,39 +6,41 @@ import { ScaledSheet } from 'react-native-size-matters';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Urls from '../utils/Urls';
 import axios from 'axios';
+import Url from '../utils/Urls';
 
 const Account = (props) => {
 
     const { navigation } = props;
     const [imageProfile, setImageProfile] = useState()
     const [state, setState] = useState({
-        email:null,
-        fullName:null,
+        email: null,
+        fullName: null,
     })
     const [isVisibleModalAccount, setIsVisibleModalAccount] = useState(false)
-   
 
-    const save = () => {}
-    const deleteAccount = () => {}
+    const save = () => { 
+        // axios.post(Url.saveUser + )
+    }
+    const deleteAccount = () => { }
 
     useEffect(() => {
-       axios.get(Urls.fetchUser+"/1")
-        .then(response=>{
-            if(response.data) {
-                setState(prevState=>({
-                    ...prevState,
-                    email:response.data.email,
-                    fullName:response.data.fullName,
-                    address:response.data.address,
-                }))
-            }
-        }).catch((e)=>{
-            console.log(e)
-        })
+        axios.get(Urls.fetchUser + "/1")
+            .then(response => {
+                if (response.data) {
+                    setState(prevState => ({
+                        ...prevState,
+                        email: response.data.email,
+                        fullName: response.data.fullName,
+                        address: response.data.address,
+                    }))
+                }
+            }).catch((e) => {
+                console.log(e)
+            })
     }, []);
 
     return (
-       
+
         <View style={styles.container}>
             <>
                 <View style={styles.head}>
@@ -72,6 +74,7 @@ const Account = (props) => {
                         />
                         <Text style={styles.label}>EMAIL</Text>
                         <TextInput
+                            editable={false}
                             style={styles.input}
                             value={state.email}
                             autoCapitalize="none"
@@ -96,8 +99,8 @@ const Account = (props) => {
                             <AntDesign name="right" style={styles.icon} size={30} color={'gray'} />
                         </TouchableOpacity>
                         <View style={{
-                                  alignItems: 'center'
-                                }}>
+                            alignItems: 'center'
+                        }}>
                             <TouchableOpacity
                                 style={{
                                     marginTop: 30,
@@ -111,8 +114,8 @@ const Account = (props) => {
                                 }}
                                 onPress={save}>
                                 <Text style={{
-                                  color: 'white',
-                                  fontSize: 22
+                                    color: 'white',
+                                    fontSize: 22
                                 }} >Save</Text>
                             </TouchableOpacity>
                         </View>

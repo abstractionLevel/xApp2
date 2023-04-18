@@ -4,6 +4,7 @@ import { AsyncStorage } from 'react-native';
 const AppContext = React.createContext();
 
 export function AppProvider({ children }) {
+	
 	const [auth, setAuth] = useState(false);
 
 	const retrieveTokenAuth = async () => {

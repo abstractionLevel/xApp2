@@ -26,12 +26,8 @@ import {useGlobalContext} from '../../context';
 
 const Home = ({ route, navigation }) => {
 
-    
-
-
     return (
         <>
-        
             <View>
                 <AddressComponent/>
                 <Image

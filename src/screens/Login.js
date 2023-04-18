@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useContext } from 'react'
 import {
     Text,
     View,
     TextInput,
     TouchableOpacity,
     AsyncStorage,
-    Alert,
 } from 'react-native'
 import services from '../services'
 import { ScaledSheet } from 'react-native-size-matters'
 import { useNavigation } from '@react-navigation/native'
-import { useGlobalContext } from '../../context'
 import Toast from 'react-native-toast-message';
 import { useRoute } from '@react-navigation/native';
+import axios from 'axios'
+import Url from '../utils/Urls';
+import { EventEmitter } from 'events';
+import AppContext from '../context/appContext';
 
 const Login = props => {
 
@@ -22,11 +24,10 @@ const Login = props => {
         emailErr: false,
         passError: false
     })
-    const route = useRoute();
-    const [isRegistered,setIsRegistered] = useState(false);
 
+    const {setAuth} = useContext(AppContext);
+    const route = useRoute();
     const navigation = useNavigation()
-    const { addTokenAuth } = useGlobalContext()
 
     const isBlank = (val) => {
         if (!val.trim()) {
@@ -35,21 +36,39 @@ const Login = props => {
         return null
     }
 
+    const saveToken = async (token) => {
+        try {
+            await AsyncStorage.setItem('token', token);
+        } catch (error) {
+            console.log('Errore nel salvataggio del token:', error);
+        }
+    };
+
     const login = () => {
         if (!email.trim() || !password.trim()) {
             setStateError({ ...stateError, emailErr: isBlank(email), passError: isBlank(password) })
         } else {
             const payload = { email: email, password: password }
-            services.signIn(payload).then(response => {
-                if (response) {
-                    addTokenAuth(JSON.stringify(response))
-                    saveAuth(response)
-                    navigation.navigate('Home', { logout: false })
-                }
-            }).catch((error) => {
-                console.log(error)
+            axios.post(Url.login, payload)
+                .then(response => {
+                    if (response) {
+                        saveToken(response.data.token);
+                        setAuth(true);
+                        navigation.navigate('Home');
+                        
+                    }
+                }).catch((error) => {
+                    console.log(error)
+                })
+            // services.signIn(payload).then(response => {
+            //     if (response) {
+            //         saveToken(response)
+            //         navigation.navigate('Home', { logout: false })
+            //     }
+            // }).catch((error) => {
+            //     console.log(error)
 
-            })
+            // })
         }
     }
 
@@ -60,16 +79,16 @@ const Login = props => {
         });
     }
 
-    useEffect(()=>{
-        if(route.params?.isRegistered) {
+    useEffect(() => {
+        if (route.params?.isRegistered) {
             showToast();
-        }       
+        }
     })
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Welcome</Text>
-            <Toast/>
+            <Toast />
             <View style={styles.containerForm}>
                 <TextInput
                     value={email}
