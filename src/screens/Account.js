@@ -7,6 +7,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Urls from '../utils/Urls';
 import axios from 'axios';
 import Url from '../utils/Urls';
+import { AsyncStorage } from 'react-native';
 
 const Account = (props) => {
 
@@ -18,15 +19,22 @@ const Account = (props) => {
     })
     const [isVisibleModalAccount, setIsVisibleModalAccount] = useState(false)
 
-    const save = () => { 
+    const save = () => {
         // axios.post(Url.saveUser + )
     }
     const deleteAccount = () => { }
 
-    useEffect(() => {
-        axios.get(Urls.fetchUser + "/1")
+
+    const getUserInfo = async () => {
+        const token = await AsyncStorage.getItem('token');
+        axios.get(Url.fetchUser + "/" + token, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
             .then(response => {
                 if (response.data) {
+                    console.log(response.data)
                     setState(prevState => ({
                         ...prevState,
                         email: response.data.email,
@@ -35,8 +43,13 @@ const Account = (props) => {
                     }))
                 }
             }).catch((e) => {
-                console.log(e)
+                console.log(e);
             })
+
+    }
+
+    useEffect(() => {
+        getUserInfo();
     }, []);
 
     return (
@@ -67,7 +80,7 @@ const Account = (props) => {
                         <Text style={styles.label}>FULL NAME</Text>
                         <TextInput
                             style={styles.input}
-                            value={state.name}
+                            value={state.fullName}
                             autoCapitalize="none"
                             placeholderTextColor='black'
                             onChangeText={(val) => setState({ ...state, name: val })}
