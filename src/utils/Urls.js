@@ -6,5 +6,6 @@ const Url = {
     fetchUser: url + apiUser,
     saveUser: url + apiUser,
     login: url + auth + "/authenticate",
+    register: url + auth + "/register",
 }
 export default Url; 

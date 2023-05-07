@@ -29,8 +29,7 @@ const getHeaders = async () => {
 getHeaders()
 
 const signIn = async payload => {
-    const response = await axios
-        .post(localhost + '/authenticate', payload, headers);
+    const response = await axios.post(localhost + '/authenticate', payload, headers);
     return response.data;
 }
 

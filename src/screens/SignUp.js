@@ -14,6 +14,8 @@ import {
 import { ScaledSheet } from 'react-native-size-matters'
 import { useNavigation } from '@react-navigation/native'
 import services from '../services'
+import axios from 'axios'
+import Url from '../utils/Urls'
 
 const SignUp = props => {
 
@@ -68,18 +70,19 @@ const SignUp = props => {
         }
         else {
             const payload = { password: password, email: email }
-            services.signUp(payload).then(response => {
-                navigation.navigate('Login', { isRegistered: true });
-                setPassword(null);
-                setEmail(null);
-
-            }).catch(err => {
-                console.log(err)
-            })
+            axios.post(Url.register, payload)
+                .then(response => {
+                    if (response) {
+                        navigation.navigate('Login', { isRegistered: true });
+                        setPassword(null);
+                        setEmail(null);
+                        
+                    }
+                }).catch((error) => {
+                    console.log(error)
+                })
         }
     }
-
-
 
     useEffect(() => {
     }, [])
