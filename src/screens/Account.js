@@ -13,20 +13,20 @@ const Account = (props) => {
 
     const { navigation } = props;
     const [imageProfile, setImageProfile] = useState()
+    const [tokenAuth, setTokenAuth] = useState();
     const [state, setState] = useState({
         email: null,
         fullName: null,
     })
     const [isVisibleModalAccount, setIsVisibleModalAccount] = useState(false)
 
-    const save = () => {
-        // axios.post(Url.saveUser + )
-    }
+
     const deleteAccount = () => { }
 
 
     const getUserInfo = async () => {
-        const token = await AsyncStorage.getItem('token');
+        const token = await AsyncStorage.getItem('logged');
+        setTokenAuth(token);
         axios.get(Url.fetchUser + "/" + token, {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -34,7 +34,6 @@ const Account = (props) => {
         })
             .then(response => {
                 if (response.data) {
-                    console.log(response.data)
                     setState(prevState => ({
                         ...prevState,
                         email: response.data.email,
@@ -45,125 +44,157 @@ const Account = (props) => {
             }).catch((e) => {
                 console.log(e);
             })
+    }
 
+    const updateUser = async () => {
+        const payload = {
+            fullName: state.fullName,
+            address: state.address,
+            email: state.email
+        }
+        axios.put(Urls.saveUser, payload, {
+            headers: {
+                'Authorization': 'Bearer ' + tokenAuth
+            }
+        })
+        .then(response => {
+            setState(prevState => ({
+                ...prevState,
+                address:response.data.address,
+                fullName:response.data.fullName
+            }))
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
 
     useEffect(() => {
         getUserInfo();
     }, []);
 
+
+    const removeTokenAuth = async (token) => {
+        try {
+            await AsyncStorage.removeItem('logged', token);
+        } catch (error) {
+            console.log('Erro delete token:', error);
+        }
+    };
     return (
 
         <View style={styles.container}>
-            <>
-                <View style={styles.head}>
-                    <View style={styles.profileImageView}>
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate('Foto', { image: imageProfile })}>
-                            <Image
-                                style={styles.profileImage}
-                                source={{ uri: imageProfile ? imageProfile : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" }}
+            <ScrollView>
+                <>
+                    <View style={styles.head}>
+                        <View style={styles.profileImageView}>
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate('Foto', { image: imageProfile })}>
+                                <Image
+                                    style={styles.profileImage}
+                                    source={{ uri: imageProfile ? imageProfile : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" }}
 
-                            />
-                        </TouchableOpacity>
+                                />
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
-                <ScrollView style={styles.contentContainerStyle}>
-                    {/* <View style={styles.viewEditImage}>
+                    <View style={styles.contentContainerStyle}>
+                        {/* <View style={styles.viewEditImage}>
                         <TouchableOpacity
                             style={styles.buttonAddEditImage}
                             onPress={pickImage}>
                             <Text style={styles.pictText}>Edit Foto</Text>
                         </TouchableOpacity>
                     </View> */}
-                    <View style={styles.body}>
-                        <Text style={styles.label}>FULL NAME</Text>
-                        <TextInput
-                            style={styles.input}
-                            value={state.fullName}
-                            autoCapitalize="none"
-                            placeholderTextColor='black'
-                            onChangeText={(val) => setState({ ...state, name: val })}
-                        />
-                        <Text style={styles.label}>EMAIL</Text>
-                        <TextInput
-                            editable={false}
-                            style={styles.input}
-                            value={state.email}
-                            autoCapitalize="none"
-                            placeholderTextColor='black'
-                            onChangeText={(val) => setState({ ...state, name: val })}
-                        />
-                        <Text style={styles.label}>ADDRESS</Text>
-                        <TextInput
-                            style={styles.input}
-                            value={state.name}
-                            autoCapitalize="none"
-                            placeholderTextColor='black'
-                            onChangeText={(val) => setState({ ...state, name: val })}
-                        />
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => {
-                                removeTokenAuth()
-                                navigation.navigate('Home', { logout: true })
+                        <View style={styles.body}>
+                            <Text style={styles.label}>FULL NAME</Text>
+                            <TextInput
+                                style={styles.input}
+                                value={state.fullName}
+                                autoCapitalize="none"
+                                placeholderTextColor='black'
+                                onChangeText={(val) => setState({ ...state, fullName: val })}
+                            />
+                            <Text style={styles.label}>EMAIL</Text>
+                            <TextInput
+                                editable={false}
+                                style={styles.input}
+                                value={state.email}
+                                autoCapitalize="none"
+                                placeholderTextColor='black'
+                                onChangeText={(val) => setState({ ...state, email: val })}
+                            />
+                            <Text style={styles.label}>ADDRESS</Text>
+                            <TextInput
+                                style={styles.input}
+                                value={state.address}
+                                autoCapitalize="none"
+                                placeholderTextColor='black'
+                                onChangeText={(val) => setState({ ...state, address: val })}
+                            />
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={() => {
+                                    removeTokenAuth()
+                                    navigation.navigate('Home', { logout: true })
+                                }}>
+                                <Text style={styles.text} >Change Password</Text>
+                                <AntDesign name="right" style={styles.icon} size={30} color={'gray'} />
+                            </TouchableOpacity>
+                            <View style={{
+                                alignItems: 'center'
                             }}>
-                            <Text style={styles.text} >Change Password</Text>
-                            <AntDesign name="right" style={styles.icon} size={30} color={'gray'} />
-                        </TouchableOpacity>
-                        <View style={{
-                            alignItems: 'center'
-                        }}>
-                            <TouchableOpacity
-                                style={{
-                                    marginTop: 30,
-                                    backgroundColor: 'orange',
-                                    width: '80%',
-                                    height: 40,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    borderRadius: 20,
+                                <TouchableOpacity
+                                    style={{
+                                        marginTop: 30,
+                                        backgroundColor: 'orange',
+                                        width: '80%',
+                                        height: 40,
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        borderRadius: 20,
 
-                                }}
-                                onPress={save}>
-                                <Text style={{
-                                    color: 'white',
-                                    fontSize: 22
-                                }} >Save</Text>
-                            </TouchableOpacity>
+                                    }}
+                                    onPress={updateUser}>
+                                    <Text style={{
+                                        color: 'white',
+                                        fontSize: 22
+                                    }} >Save</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
-                </ScrollView>
-                <Modal
-                    style={{ margin: 0 }}
-                    testID={'modal'}
-                    isVisible={isVisibleModalAccount}
-                    backdropOpacity={1}
-                    animationIn="zoomInDown"
-                    animationOut="zoomOutUp"
-                    animationInTiming={600}
-                    animationOutTiming={600}
-                    backdropTransitionInTiming={600}
-                    backdropTransitionOutTiming={600}>
-                    <View style={styles.modalView} >
-                        <Text style={styles.labelDeleteAccount}>Vuoi cancellare  il tuo Account?</Text>
-                        <View style={styles.buttonView}>
-                            <TouchableOpacity
-                                style={styles.buttonSureDeleteAccountYes}
-                                onPress={deleteAccount}>
-                                <Text style={styles.buttonText} >Si </Text>
-                            </TouchableOpacity>
+                    <Modal
+                        style={{ margin: 0 }}
+                        testID={'modal'}
+                        isVisible={isVisibleModalAccount}
+                        backdropOpacity={1}
+                        animationIn="zoomInDown"
+                        animationOut="zoomOutUp"
+                        animationInTiming={600}
+                        animationOutTiming={600}
+                        backdropTransitionInTiming={600}
+                        backdropTransitionOutTiming={600}>
+                        <View style={styles.modalView} >
+                            <Text style={styles.labelDeleteAccount}>Vuoi cancellare  il tuo Account?</Text>
+                            <View style={styles.buttonView}>
+                                <TouchableOpacity
+                                    style={styles.buttonSureDeleteAccountYes}
+                                    onPress={deleteAccount}>
+                                    <Text style={styles.buttonText} >Si </Text>
+                                </TouchableOpacity>
 
-                            <TouchableOpacity
-                                style={styles.buttonSureDeleteAccountNo}
-                                onPress={() => setIsVisibleModalAccount(false)}>
-                                <Text style={styles.buttonText} >No</Text>
-                            </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={styles.buttonSureDeleteAccountNo}
+                                    onPress={() => setIsVisibleModalAccount(false)}>
+                                    <Text style={styles.buttonText} >No</Text>
+                                </TouchableOpacity>
 
+                            </View>
                         </View>
-                    </View>
-                </Modal>
-            </>
+                    </Modal>
+                </>
+            </ScrollView>
         </View>
     );
 };
