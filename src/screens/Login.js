@@ -38,7 +38,7 @@ const Login = props => {
 
     const saveToken = async (token) => {
         try {
-            await AsyncStorage.setItem('token', token);
+            await AsyncStorage.setItem('logged', token);
         } catch (error) {
             console.log('Errore nel salvataggio del token:', error);
         }

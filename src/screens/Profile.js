@@ -20,7 +20,7 @@ const Profile = (props) => {
 
     const removeTokenAuth = async () => {
         try {
-            await AsyncStorage.removeItem('token');
+            await AsyncStorage.removeItem('logged');
         } catch (error) {
             console.log(error);
         }

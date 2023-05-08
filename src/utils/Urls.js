@@ -1,4 +1,4 @@
-const url = "http://192.168.1.5:8080";
+const url = "http://192.168.1.7:8080";
 const apiUser = "/api/users";
 const auth = "/public/api/auth";
 

@@ -35,8 +35,9 @@ const HomeTabNavigation = () => {
 
 	const getToken = async () => {
 		try {
-			const token = await AsyncStorage.getItem('token');
-			setAuthUser(token)
+			const logged = await AsyncStorage.getItem('logged');
+			console.log(logged)
+			setAuthUser(logged)
 		} catch (error) {
 			console.log(error);
 		}

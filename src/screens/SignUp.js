@@ -70,16 +70,21 @@ const SignUp = props => {
         }
         else {
             const payload = { password: password, email: email }
-            axios.post(Url.register, payload)
+            const headers = {
+                'Content-Type': 'text/json',
+                'Access-Control-Allow-Origin': '*',
+            }
+            axios.post(Url.register, payload,headers)
                 .then(response => {
                     if (response) {
                         navigation.navigate('Login', { isRegistered: true });
                         setPassword(null);
                         setEmail(null);
                         
+                        
                     }
                 }).catch((error) => {
-                    console.log(error)
+                    console.log("Errore:" + error)
                 })
         }
     }

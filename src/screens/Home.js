@@ -1,30 +1,14 @@
-import React, {useState,useEffect,useContext} from 'react';
-import { 
-    NativeRouter, 
-    Route,
-    Link 
-} from "react-router-native";
+import React from 'react';
 import {
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    useColorScheme,
     View,
-    TouchableOpacity,
     Image,
-    AsyncStorage,
 } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import AddressComponent from '../components/AddressComponent';
 import SearchWorker from '../components/SearchWorker';
 import { Dimensions } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import Login from './Login'
-import {useGlobalContext} from '../../context';
 
-const Home = ({ route, navigation }) => {
+const Home = () => {
 
     return (
         <>
