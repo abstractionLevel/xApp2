@@ -55,7 +55,6 @@ const Login = props => {
                         saveToken(response.data.token);
                         setAuth(true);
                         navigation.navigate('Home');
-                        
                     }
                 }).catch((error) => {
                     console.log(error)

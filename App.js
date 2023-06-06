@@ -18,6 +18,7 @@ import WorkerList from './src/screens/WorkerList'
 import HomeTabNavigation from './src/navigation/HomeTabNavigation'
 import SignUp from './src/screens/SignUp'
 import AppContext from './src/context/appContext'
+import { navigationRef } from './src/utils/navigationRef'
 
 const Stack = createNativeStackNavigator();
 
@@ -26,8 +27,8 @@ const App = () => {
     const [auth,setAuth] = useState(null);
 
     return (
-        <AppContext.Provider value={{auth,setAuth}}>
-            <NavigationContainer>
+        <AppContext.Provider value={{auth,setAuth}} >
+            <NavigationContainer ref={navigationRef}>
                 <Stack.Navigator>
                     <Stack.Screen
                         name={'Home'}

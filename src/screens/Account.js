@@ -5,9 +5,11 @@ import Modal from 'react-native-modal';
 import { ScaledSheet } from 'react-native-size-matters';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Urls from '../utils/Urls';
-import axios from 'axios';
+import axios from '../http/axios';
 import Url from '../utils/Urls';
 import { AsyncStorage } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
+import FlashMessage from 'react-native-flash-message';
 
 const Account = (props) => {
 
@@ -23,6 +25,14 @@ const Account = (props) => {
 
     const deleteAccount = () => { }
 
+    const showRegistrationAlert = () => {
+        showMessage({
+            message: 'Profilo aggiornato',
+            type: 'success',
+            duration: 3000,
+            autoHide: true,
+        });
+      };
 
     const getUserInfo = async () => {
         const token = await AsyncStorage.getItem('logged');
@@ -63,6 +73,8 @@ const Account = (props) => {
                 address:response.data.address,
                 fullName:response.data.fullName
             }))
+            showRegistrationAlert();
+
         })
         .catch(error => {
             console.log(error);
@@ -85,7 +97,7 @@ const Account = (props) => {
 
         <View style={styles.container}>
             <ScrollView>
-                <>
+                <> 
                     <View style={styles.head}>
                         <View style={styles.profileImageView}>
                             <TouchableOpacity
@@ -195,6 +207,7 @@ const Account = (props) => {
                     </Modal>
                 </>
             </ScrollView>
+            <FlashMessage position="top" />
         </View>
     );
 };

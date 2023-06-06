@@ -14,8 +14,9 @@ import { AsyncStorage } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import AppContext from '../context/appContext';
 
-const HomeTabNavigation = () => {
+const HomeTabNavigation = ({ route }) => {
 
+	const  logout = route.params?.logout;
 	const Tab = createBottomTabNavigator();
 	const Stack = createNativeStackNavigator();
 
@@ -32,16 +33,19 @@ const HomeTabNavigation = () => {
 		getToken();
 	}, [auth]);
 
+	useEffect(() => {
+		getToken();
+	}, [logout]);
 
 	const getToken = async () => {
 		try {
 			const logged = await AsyncStorage.getItem('logged');
-			console.log(logged)
 			setAuthUser(logged)
 		} catch (error) {
-			console.log(error);
+			console.log(error)
 		}
 	}
+
 	return (
 		<>
 			{authUser ? (
