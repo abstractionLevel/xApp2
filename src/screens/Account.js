@@ -147,8 +147,7 @@ const Account = (props) => {
                             <TouchableOpacity
                                 style={styles.button}
                                 onPress={() => {
-                                    removeTokenAuth()
-                                    navigation.navigate('Home', { logout: true })
+                                    navigation.navigate('ChangePassword');
                                 }}>
                                 <Text style={styles.text} >Change Password</Text>
                                 <AntDesign name="right" style={styles.icon} size={30} color={'gray'} />
@@ -261,7 +260,7 @@ const styles = ScaledSheet.create({
         height: 50,
         fontSize: 18,
         borderBottomWidth: 1,
-        paddingLeft: 10,
+        // paddingLeft: 10,
         backgroundColor: 'white',
         borderColor: 'rgba(0, 0, 0, 0.2)',
     },

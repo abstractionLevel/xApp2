@@ -17,7 +17,6 @@ const configureResponseInterceptor = () => {
         (response) =>  response,
         (error) => {
             if (error.response && error.response.status === 403) {
-                console.log("dovrebbe disconnettersi")
                 logout();
             }
             return Promise.reject(error);

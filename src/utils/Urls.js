@@ -7,5 +7,6 @@ const Url = {
     saveUser: url + apiUser,
     login: url + auth + "/authenticate",
     register: url + auth + "/register",
+    changePassword: url + apiUser  
 }
 export default Url; 

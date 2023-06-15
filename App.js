@@ -19,6 +19,7 @@ import HomeTabNavigation from './src/navigation/HomeTabNavigation'
 import SignUp from './src/screens/SignUp'
 import AppContext from './src/context/appContext'
 import { navigationRef } from './src/utils/navigationRef'
+import ChangePassword from './src/screens/ChangePassword'
 
 const Stack = createNativeStackNavigator();
 
@@ -66,6 +67,13 @@ const App = () => {
                     <Stack.Screen
                         name={'ProfileWorker'}
                         component={ProfileWorker}
+                        options={{
+                            headerShown: false,
+                        }}
+                    />
+                    <Stack.Screen
+                        name={'ChangePassword'}
+                        component={ChangePassword}
                         options={{
                             headerShown: false,
                         }}

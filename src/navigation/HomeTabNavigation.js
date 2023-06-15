@@ -11,8 +11,8 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import Feather from 'react-native-vector-icons/Feather'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { AsyncStorage } from 'react-native';
-import { useRoute } from '@react-navigation/native';
 import AppContext from '../context/appContext';
+import ChangePassword from '../screens/ChangePassword'
 
 const HomeTabNavigation = ({ route }) => {
 
