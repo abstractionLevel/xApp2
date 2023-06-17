@@ -46,9 +46,9 @@ const Profile = (props) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => navigation.navigate("Profile Worker")}
+                    onPress={() => navigation.navigate("JobProfile")}
                 >
-                    <Text style={styles.text} >Profilo Lavoratore</Text>
+                    <Text style={styles.text} >Informazioni Lavorative</Text>
                     <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'gray'} />
                 </TouchableOpacity>
                 <TouchableOpacity

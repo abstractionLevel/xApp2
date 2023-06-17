@@ -20,6 +20,7 @@ import SignUp from './src/screens/SignUp'
 import AppContext from './src/context/appContext'
 import { navigationRef } from './src/utils/navigationRef'
 import ChangePassword from './src/screens/ChangePassword'
+import JobProfile from './src/screens/JobProfile'
 
 const Stack = createNativeStackNavigator();
 
@@ -41,13 +42,6 @@ const App = () => {
                         component={Account}
                         options={{
                             headerShown: true,
-                        }}
-                    />
-                    <Stack.Screen
-                        name={'Profile Worker'}
-                        component={ProfileWorker}
-                        options={{
-                            headerShown: false,
                         }}
                     />
                     <Stack.Screen
@@ -74,6 +68,13 @@ const App = () => {
                     <Stack.Screen
                         name={'ChangePassword'}
                         component={ChangePassword}
+                        options={{
+                            headerShown: false,
+                        }}
+                    />
+                    <Stack.Screen
+                        name={'JobProfile'}
+                        component={JobProfile}
                         options={{
                             headerShown: false,
                         }}
