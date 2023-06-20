@@ -11,6 +11,10 @@ import { ScaledSheet } from 'react-native-size-matters';
 import axios from '../http/axios';
 import Url from "../utils/Urls";
 import { AsyncStorage } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import CustomModal from "../components/CustomModal";
+import AddProfession from "../components/AddProfession";
+
 
 
 const JobProfile = (props) => {
@@ -18,6 +22,7 @@ const JobProfile = (props) => {
     const [jobs, setJobs] = useState();
     const [searchJob, setSearchJob] = useState();
     const [filterJobs, setFilterJobs] = useState([]);
+    const [isModalAddProfession,setIsModalProfession] = useState(false);
 
     const getJobs = async () => {
         const token = await AsyncStorage.getItem('logged');
@@ -66,6 +71,14 @@ const JobProfile = (props) => {
         setFilterJobs([]);
     }
 
+    const openModalAddProfession = () => {
+        setIsModalProfession(true);
+    }
+
+    const closeModalAddProfession = () => {
+        setIsModalProfession(false);
+    }
+
     useEffect(() => {
         getJobs();
     }, [])
@@ -74,7 +87,14 @@ const JobProfile = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.inner}>
-                <Text style={styles.label} >Aggiungi La Tua Professione</Text>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={openModalAddProfession}
+                >
+                    <Text style={styles.labelButton} >Aggiungi Professione</Text>
+                    <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'gray'} />
+                </TouchableOpacity>
+                {/* <Text style={styles.label} >Aggiungi La Tua Professione</Text>
                 <TextInput
                     style={styles.inputAddWork}
                     placeholder='Aggiungi la tua professione'
@@ -89,8 +109,8 @@ const JobProfile = (props) => {
                         keyExtractor={(item, index) => { return index.toString() }}
                         renderItem={itemViewJob}
                     />
-                </View>
-                <Text style={styles.label} >Aggiungi una descrizione  </Text>
+                </View> */}
+                {/* <Text style={styles.label} >Aggiungi una descrizione  </Text>
                 <View style={styles.textAreaContainer} >
                     <TextInput
                         style={styles.textArea}
@@ -99,18 +119,23 @@ const JobProfile = (props) => {
                         placeholderTextColor="grey"
                         numberOfLines={20}
                         multiline={true}
-                    // onChangeText={(text) => setState({ ...state, description: text })}
-                    // value={state.description}
+                    onChangeText={(text) => setState({ ...state, description: text })}
+                    value={state.description}
                     />
                 </View>
-                {/* <Text style={styles.error}>{error.description}</Text> */}
+                <Text style={styles.error}>{error.description}</Text>
                 <TouchableOpacity
                     style={styles.buttonSave}
-                // onPress={() => onSubmit()}
+                onPress={() => onSubmit()}
                 >
                     <Text style={styles.saveWorkText} >Save</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
+            <CustomModal  
+                visible={isModalAddProfession} 
+                onPressClose={closeModalAddProfession}
+                component={<AddProfession/>}
+            />
         </View>
     )
 }
@@ -196,6 +221,27 @@ const styles = ScaledSheet.create({
         width: '100%',
         borderColor: '#0088ff',
     },
+    icon: {
+        alignItems: 'flex-end',
+        marginRight: '10@s',
+    },
+    button: {
+        flexDirection: 'row',
+        width: '100%',
+        height: '60@s',
+        borderWidth: 1,
+        borderColor: 'white',
+        backgroundColor: 'white',
+        borderRadius: 6,
+        marginTop: '20@s',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    labelButton: {
+        fontFamily: 'RobotoLight',
+        fontSize: '20@s',
+        marginLeft: '4@s',
+    }
 });
 
 export default JobProfile;
