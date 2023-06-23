@@ -15,10 +15,12 @@ import { ScaledSheet } from 'react-native-size-matters';
 const AddProfession = (props) => {
 
     const [jobs, setJobs] = useState();
-    const [searchJob, setSearchJob] = useState();
+    const [searchJob, setSearchJob] = useState(null);
     const [filterJobs, setFilterJobs] = useState([]);
-    const onPressClose = props.onPressClose;
+    const [principal, setPrincipal] = useState();
 
+    const onPressClose = props.onPressClose;
+    
 
     const getJobs = async () => {
         const token = await AsyncStorage.getItem('logged');
@@ -33,6 +35,26 @@ const AddProfession = (props) => {
             .catch(e => {
                 console.log(e);
             })
+    }
+
+    const saveJob = async () => {
+        const token = await AsyncStorage.getItem('logged');
+        const principalStored = await AsyncStorage.getItem("principal")
+        const principal = JSON.parse(principalStored)
+        if(searchJob !== null) {
+            axios.put(Url.worker + "/" + principal.userId + "/job" , {job:searchJob}, {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(response=>{
+                console.log(response.data)
+            }).catch(error=>{
+                console.log("ce un errore nel salvataggio del job ", error);
+            })
+        } else {
+            console.log("searchJob e' null");
+        }
     }
 
     const itemViewJob = ({ item }) => {
@@ -69,6 +91,7 @@ const AddProfession = (props) => {
 
     useEffect(() => {
         getJobs();
+        setSearchJob(props.job ? props.job : null);
     }, [])
 
 
@@ -107,7 +130,7 @@ const AddProfession = (props) => {
             <View style={styles.buttonView}>
                 <TouchableOpacity
                     style={styles.buttonClose}
-                    onPress={onPressClose}
+                    onPress={saveJob}
                 >
                     <Text style={styles.buttonText} >Salva</Text>
                 </TouchableOpacity>
@@ -129,7 +152,7 @@ const styles = ScaledSheet.create({
         flex: 1,
     },
     inner: {
-        flex:1,
+        flex: 1,
         padding: 24,
         // justifyContent: 'center',
         // alignItems: 'center',
