@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ScaledSheet } from 'react-native-size-matters';
 import { Button, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -11,12 +11,15 @@ import {
     AsyncStorage,
 } from 'react-native';
 import AppContext from '../context/appContext';
+import axios from '../http/axios';
+import Url from '../utils/Urls';
 
 const Profile = (props) => {
 
     const navigation = useNavigation();
 
-    const {setAuth} = useContext(AppContext);
+    const [principal, setPrincipal] = useState();
+    const { setAuth } = useContext(AppContext);
 
     const removeTokenAuth = async () => {
         try {
@@ -25,6 +28,62 @@ const Profile = (props) => {
             console.log(error);
         }
     };
+
+    const getPrincipal = async () => {
+        const principaStored = await AsyncStorage.getItem('principal');
+        if (principaStored) {
+            setPrincipal(JSON.parse(principaStored));
+        } else {
+            console.log("principal non esiste");
+        }
+    }
+
+    const savePrincipal = async (user) => {
+        try {
+            await AsyncStorage.setItem('principal', JSON.stringify(user));
+        } catch (error) {
+            console.log('Errore nel savlare il principal ', error);
+        }
+    }
+
+    useEffect(() => {
+        getPrincipal();
+    }, []);
+
+    const getUser = (token) => {
+        axios.get(Url.fetchUser + "/" + token, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+            .then(response => {
+                savePrincipal(response.data);
+                setPrincipal(response.data)
+            }).catch(error=>{
+                console.log(error);
+            })
+    }
+
+    const becomeWorker = async () => {
+        const token = await AsyncStorage.getItem('logged');
+        const payload = {
+            userId: principal.userId
+        }
+        axios.post(Url.worker, payload, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+            .then(response => {
+                if (response.data) {
+                    getUser(token);
+                    navigation.navigate("JobProfile")
+                }
+            })
+            .catch(error => {
+                console.log("ce un errore ", error)
+            })
+    }
 
     return (
         <View style={styles.container}>
@@ -44,13 +103,24 @@ const Profile = (props) => {
                     <Text style={styles.text} >Account</Text>
                     <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'gray'} />
                 </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => navigation.navigate("JobProfile")}
-                >
-                    <Text style={styles.text} >Informazioni Lavorative</Text>
-                    <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'gray'} />
-                </TouchableOpacity>
+                {principal && principal.isWorker ?
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => navigation.navigate("JobProfile")}
+                    >
+                        <Text style={styles.text} >Informazioni Lavorative</Text>
+                        <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'gray'} />
+                    </TouchableOpacity>
+                    :
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={becomeWorker}
+                    >
+                        <Text style={styles.text} >Diventa un Worker</Text>
+                        <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'gray'} />
+                    </TouchableOpacity>
+                }
+
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => {

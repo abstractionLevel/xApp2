@@ -13,7 +13,8 @@ import Url from "../utils/Urls";
 import { AsyncStorage } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomModal from "../components/CustomModal";
-import AddProfession from "../components/AddProfession";
+import AddProfession from "./AddProfession";
+import AddDescriptionProfession from "./addDescriptionProfession";
 
 
 
@@ -22,7 +23,8 @@ const JobProfile = (props) => {
     const [jobs, setJobs] = useState();
     const [searchJob, setSearchJob] = useState();
     const [filterJobs, setFilterJobs] = useState([]);
-    const [isModalAddProfession,setIsModalProfession] = useState(false);
+    const [isModalAddProfession, setIsModalProfession] = useState(false);
+    const [isModalAddDescriptionProfession, setIsModalDescriptionProfession] = useState(false);
 
     const getJobs = async () => {
         const token = await AsyncStorage.getItem('logged');
@@ -75,6 +77,10 @@ const JobProfile = (props) => {
         setIsModalProfession(true);
     }
 
+    const openModalAddDescriptionProfession = () => {
+        setIsModalDescriptionProfession(true);
+    }
+
     const closeModalAddProfession = () => {
         setIsModalProfession(false);
     }
@@ -92,6 +98,13 @@ const JobProfile = (props) => {
                     onPress={openModalAddProfession}
                 >
                     <Text style={styles.labelButton} >Aggiungi Professione</Text>
+                    <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'gray'} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={openModalAddDescriptionProfession}
+                >
+                    <Text style={styles.labelButton} >Scrivi qualcosa sulla tua  professione</Text>
                     <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'gray'} />
                 </TouchableOpacity>
                 {/* <Text style={styles.label} >Aggiungi La Tua Professione</Text>
@@ -131,10 +144,14 @@ const JobProfile = (props) => {
                     <Text style={styles.saveWorkText} >Save</Text>
                 </TouchableOpacity> */}
             </View>
-            <CustomModal  
-                visible={isModalAddProfession} 
+            <CustomModal
+                visible={isModalAddProfession}
                 onPressClose={closeModalAddProfession}
-                component={<AddProfession/>}
+                component={<AddProfession onPressClose={(() => setIsModalProfession(false))}/>}
+            />
+            <CustomModal
+                visible={isModalAddDescriptionProfession}
+                component={<AddDescriptionProfession  onPressClose={(() => setIsModalDescriptionProfession(false))}/>}
             />
         </View>
     )

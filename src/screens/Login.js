@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import {
     Text,
     View,
@@ -25,7 +25,7 @@ const Login = props => {
         passError: false
     })
 
-    const {setAuth} = useContext(AppContext);
+    const { setAuth} = useContext(AppContext);
     const route = useRoute();
     const navigation = useNavigation()
 
@@ -44,6 +44,14 @@ const Login = props => {
         }
     };
 
+    const savePrincipal = async (user) => {
+        try {
+            await AsyncStorage.setItem('principal', JSON.stringify(user));
+        } catch (error) {
+            console.log('Errore nel savlare il principal ', error);
+        }
+    }
+
     const login = () => {
         if (!email.trim() || !password.trim()) {
             setStateError({ ...stateError, emailErr: isBlank(email), passError: isBlank(password) })
@@ -53,6 +61,7 @@ const Login = props => {
                 .then(response => {
                     if (response) {
                         saveToken(response.data.token);
+                        savePrincipal(response.data);
                         setAuth(true);
                         navigation.navigate('Home');
                     }

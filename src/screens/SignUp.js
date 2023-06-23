@@ -69,7 +69,7 @@ const SignUp = props => {
             setStateError({ ...stateError, password: validatePassword(password), email: validateEmail(email) })
         }
         else {
-            const payload = { password: password, email: email }
+            const payload = { password: password, email: email,isWorker: false }
             const headers = {
                 'Content-Type': 'text/json',
                 'Access-Control-Allow-Origin': '*',
