@@ -77,6 +77,10 @@ const JobProfile = (props) => {
         getWorkerInfo();
     }, [])
 
+    useEffect(() => {
+        getJobs();
+        getWorkerInfo();
+    }, [isModalAddDescriptionProfession || isModalAddProfession])
 
     return (
         <View style={styles.container}>
@@ -102,23 +106,38 @@ const JobProfile = (props) => {
                         <MaterialCommunityIcons name="pen" style={styles.icon} size={30} color={'gray'} />
                     </TouchableOpacity>
                 }
+                {worker && worker.descriptionJob
+                    ?
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={openModalAddDescriptionProfession}
+                    >
+                        <View style={{
+                            flex: 1,
+                        }}>
+                            <Text style={styles.labelJobEdit} >Informazioni Professionali</Text>
+                            <Text style={styles.labelButton} >{worker.descriptionJob}</Text>
+                        </View>
+                        <MaterialIcons name="edit" style={styles.icon} size={30} color={'gray'} />
+                    </TouchableOpacity>
+                    :
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={openModalAddDescriptionProfession}
+                    >
+                        <Text style={styles.labelButton} >Scrivi qualcosa sulla tua  professione</Text>
+                        <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'gray'} />
+                    </TouchableOpacity>}
 
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={openModalAddDescriptionProfession}
-                >
-                    <Text style={styles.labelButton} >Scrivi qualcosa sulla tua  professione</Text>
-                    <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'gray'} />
-                </TouchableOpacity>
             </View>
             <CustomModal
                 visible={isModalAddProfession}
                 onPressClose={closeModalAddProfession}
-                component={<AddProfession onPressClose={(() => setIsModalProfession(false))} job={worker && worker.job}/>}
+                component={<AddProfession onPressClose={(() => setIsModalProfession(false))} job={worker && worker.job} />}
             />
             <CustomModal
                 visible={isModalAddDescriptionProfession}
-                component={<AddDescriptionProfession onPressClose={(() => setIsModalDescriptionProfession(false))} />}
+                component={<AddDescriptionProfession onPressClose={(() => setIsModalDescriptionProfession(false))} descriptionJob={worker && worker.descriptionJob} />}
             />
         </View>
     )
@@ -212,7 +231,7 @@ const styles = ScaledSheet.create({
     button: {
         flexDirection: 'row',
         width: '100%',
-        height: '60@s',
+        height: '160@s',
         borderWidth: 1,
         borderColor: 'white',
         backgroundColor: 'white',
@@ -222,11 +241,11 @@ const styles = ScaledSheet.create({
         justifyContent: 'space-between',
     },
     labelButton: {
+        flex: 1,
         fontSize: '16@s',
         marginLeft: '4@s',
-        
     },
-    labelJobEdit:{
+    labelJobEdit: {
         fontFamily: 'RobotoLight',
         fontSize: '20@s',
         marginLeft: '4@s',

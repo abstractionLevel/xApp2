@@ -17,10 +17,7 @@ const AddProfession = (props) => {
     const [jobs, setJobs] = useState();
     const [searchJob, setSearchJob] = useState(null);
     const [filterJobs, setFilterJobs] = useState([]);
-    const [principal, setPrincipal] = useState();
-
     const onPressClose = props.onPressClose;
-    
 
     const getJobs = async () => {
         const token = await AsyncStorage.getItem('logged');
@@ -48,7 +45,7 @@ const AddProfession = (props) => {
                 }
             })
             .then(response=>{
-                console.log(response.data)
+                onPressClose();
             }).catch(error=>{
                 console.log("ce un errore nel salvataggio del job ", error);
             })
