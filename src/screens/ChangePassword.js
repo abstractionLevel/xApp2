@@ -102,16 +102,7 @@ const ChangePassword = (props) => {
                 />
                 <Text style={styles.label}>{passwords.error}</Text>
                 <TouchableOpacity
-                    style={{
-                        marginTop: 30,
-                        backgroundColor: 'orange',
-                        width: '80%',
-                        height: 40,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        borderRadius: 20,
-
-                    }}
+                    style={styles.buttonSave}
                     onPress={salva}>
                     <Text style={{
                         color: 'white',
@@ -133,17 +124,27 @@ const styles = ScaledSheet.create({
     },
     textInput: {
         width: '100%',
-        height: 50,
+        height: '43@s',
         fontSize: 18,
-        borderBottomWidth: 1,
-        paddingLeft: 10,
         backgroundColor: 'white',
-        borderColor: 'rgba(0, 0, 0, 0.2)',
+        borderColor: 'black',
+        borderWidth: 1,
+        borderRadius: 6,
+        marginTop: '6@s',
     },
     label: {
-        marginTop: 20,
-        fontWeight: '500',
-        letterSpacing: 2,
+        marginTop: '16@s',
+        fontWeight: '600',
+        color: 'black',
     },
+    buttonSave: {
+        flexDirection: 'row',
+        height: '60@s',
+        borderRadius: 6,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#0088ff',
+
+    }
 });
 export default ChangePassword;

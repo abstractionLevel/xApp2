@@ -104,7 +104,7 @@ const Account = (props) => {
                                 onPress={() => navigation.navigate('Foto', { image: imageProfile })}>
                                 <Image
                                     style={styles.profileImage}
-                                    source={{ uri: imageProfile ? imageProfile : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" }}
+                                    source={{ uri: imageProfile ? imageProfile : "https://oiir.illinois.edu/sites/prod/files/Profile%20Picture_1.png" }}
 
                                 />
                             </TouchableOpacity>
@@ -119,7 +119,7 @@ const Account = (props) => {
                         </TouchableOpacity>
                     </View> */}
                         <View style={styles.body}>
-                            <Text style={styles.label}>FULL NAME</Text>
+                            <Text style={styles.label}>Nome e Cognome</Text>
                             <TextInput
                                 style={styles.input}
                                 value={state.fullName}
@@ -127,7 +127,7 @@ const Account = (props) => {
                                 placeholderTextColor='black'
                                 onChangeText={(val) => setState({ ...state, fullName: val })}
                             />
-                            <Text style={styles.label}>EMAIL</Text>
+                            <Text style={styles.label}>Email</Text>
                             <TextInput
                                 editable={false}
                                 style={styles.input}
@@ -136,7 +136,7 @@ const Account = (props) => {
                                 placeholderTextColor='black'
                                 onChangeText={(val) => setState({ ...state, email: val })}
                             />
-                            <Text style={styles.label}>ADDRESS</Text>
+                            <Text style={styles.label}>Indirizzo completo</Text>
                             <TextInput
                                 style={styles.input}
                                 value={state.address}
@@ -149,10 +149,15 @@ const Account = (props) => {
                                 onPress={() => {
                                     navigation.navigate('ChangePassword');
                                 }}>
-                                <Text style={styles.text} >Change Password</Text>
-                                <AntDesign name="right" style={styles.icon} size={30} color={'gray'} />
+                                <Text style={styles.text} >Cambia Password</Text>
+                                <AntDesign name="right" style={{marginRight: 10}} size={30} color={'white'} />
                             </TouchableOpacity>
-                            <View style={{
+                            <TouchableOpacity
+                                style={[styles.button,{justifyContent:"center"}]}
+                                onPress={updateUser}>
+                                <Text style={styles.text} >Salva</Text>
+                            </TouchableOpacity>
+                            {/* <View style={{
                                 alignItems: 'center'
                             }}>
                                 <TouchableOpacity
@@ -172,7 +177,7 @@ const Account = (props) => {
                                         fontSize: 22
                                     }} >Save</Text>
                                 </TouchableOpacity>
-                            </View>
+                            </View> */}
                         </View>
                     </View>
                     <Modal
@@ -257,33 +262,34 @@ const styles = ScaledSheet.create({
     },
     input: {
         width: '100%',
-        height: 50,
+        height: '43@s',
         fontSize: 18,
-        borderBottomWidth: 1,
-        // paddingLeft: 10,
         backgroundColor: 'white',
-        borderColor: 'rgba(0, 0, 0, 0.2)',
+        borderColor: 'black',
+        borderWidth: 1,
+        borderRadius: 6,
+        marginTop: '6@s',
     },
     label: {
-        marginTop: 20,
-        fontWeight: '500',
-        letterSpacing: 2,
+        marginTop: '16@s',
+        fontWeight: '600',
+        color: 'black',
     },
     button: {
         flexDirection: 'row',
         height: '60@s',
-        borderWidth: 1,
-        borderColor: 'gray',
-        borderColor: 'rgba(0, 0, 0, 0.1)',
         borderRadius: 6,
         marginTop: '20@s',
         alignItems: 'center',
         justifyContent: 'space-between',
+        backgroundColor: '#0088ff',
     },
     text: {
         fontFamily: 'RobotoLight',
-        fontSize: '20@s',
+        fontSize: '18@s',
         marginLeft: '4@s',
+        color: 'white',
+        marginLeft: '10@s',
     },
 
 

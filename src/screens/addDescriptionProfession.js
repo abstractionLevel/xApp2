@@ -4,7 +4,8 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    AsyncStorage
+    AsyncStorage,
+    ScrollView
 } from 'react-native'
 import { ScaledSheet } from 'react-native-size-matters';
 import axios from "../http/axios";
@@ -12,7 +13,7 @@ import Url from "../utils/Urls";
 
 const AddDescriptionProfession = (props) => {
 
-
+    const [heightContent, setHeightContent] = useState('50%');
     const [description, setDescription] = useState(null);
     const onPressClose = props.onPressClose;
 
@@ -21,7 +22,7 @@ const AddDescriptionProfession = (props) => {
         const principalStored = await AsyncStorage.getItem("principal")
         const principal = JSON.parse(principalStored)
         if (description !== null) {
-            axios.put(Url.worker + "/" +principal.userId + "/descriptionJob", { description: description }, {
+            axios.put(Url.worker + "/" + principal.userId + "/descriptionJob", { description: description }, {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
@@ -29,55 +30,47 @@ const AddDescriptionProfession = (props) => {
                 .then(response => {
                     onPressClose();
                 }).catch(error => {
-                    console.log("ce un errore nel salvare la descrizione ", error );
+                    console.log("ce un errore nel salvare la descrizione ", error);
                 })
         } else {
             console.log("description e' null");
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         setDescription(props.descriptionJob ? props.descriptionJob : null);
-    },[])
+    }, [])
 
     return (
-        <View style={styles.container}>
-            <View style={styles.inner}>
-                <Text style={{
-                    marginTop: 20,
-                    fontWeight: '500',
-                    letterSpacing: 2,
-                }}>
-                    Aggiungi info sulla tua Professione
-                </Text>
-                <TextInput
-                    style={{
-                        width: '100%',
-                        height: 100,
-                        fontSize: 18,
-                        borderBottomWidth: 1,
-                        backgroundColor: 'white',
-                        borderColor: 'rgba(0, 0, 0, 0.2)',
-                    }}
-                    multiline
-                    onChangeText={(text) => setDescription(text)}
-                    value={description}
-                />
-            </View>
-            <View style={styles.buttonView}>
-                <TouchableOpacity
-                    style={styles.buttonClose}
-                    onPress={saveDescription}
-                >
-                    <Text style={styles.buttonText} >Salva</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.buttonClose}
-                    onPress={onPressClose}
-                >
-                    <Text style={styles.buttonText} >Close</Text>
-                </TouchableOpacity>
-            </View>
+        <View style={{
+            height: heightContent,
+            backgroundColor: 'white'
+        }}>
+                <View style={styles.inner}>
+                    <View style={{ width: '90%', marginTop: 20 }}>
+                        <Text style={styles.label}>
+                            Info Professione
+                        </Text>
+                    </View>
+                    <TextInput style={styles.input}
+                        multiline
+                        onChangeText={(text) => setDescription(text)}
+                        value={description}
+                        
+                    />
+                    <TouchableOpacity
+                        style={styles.buttonSave}
+                        onPress={saveDescription}
+                    >
+                        <Text style={styles.buttonText} >Salva</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.buttonClose}
+                        onPress={onPressClose}
+                    >
+                        <Text style={styles.buttonText} >Close</Text>
+                    </TouchableOpacity>
+                </View>
         </View>
     );
 }
@@ -88,34 +81,43 @@ const styles = ScaledSheet.create({
     },
     inner: {
         flex: 1,
-        padding: 24,
-        // justifyContent: 'center',
-        // alignItems: 'center',
-        // alignContent: 'center',
+        alignItems: 'center',
+        width: '100%',
     },
-
-    textArea: {
-        height: 100,
-        width: '90%',
-        textAlignVertical: 'top',
-        fontSize: '14@s',
-        fontFamily: 'RobotoItalic',
-        borderWidth: 1,
-        borderColor: 'grey',
-        borderRadius: 4,
+    label: {
+        fontWeight: '600',
+        color: 'black',
     },
-    buttonView: {
-        padding: 24,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+    input: {
+        // height: '100@s',
+        fontSize: '16@s',
+        backgroundColor: 'white',
+        borderColor: 'black',
+        borderWidth: 0.40,
+        borderRadius: 3,
+        marginTop: '6@s',
+        width: '90%'
     },
     buttonClose: {
-        backgroundColor: 'orange',
-        width: '40%',
-        height: 40,
+        flexDirection: 'row',
+        height: '40@s',
+        borderRadius: 6,
+        marginTop: '10@s',
         alignItems: 'center',
+        borderColor: 'gray',
         justifyContent: 'center',
-        borderRadius: 20,
+        borderWidth: 0.40,
+        width: '90%',
+    },
+    buttonSave: {
+        flexDirection: 'row',
+        height: '40@s',
+        borderRadius: 6,
+        marginTop: '18@s',
+        alignItems: 'center',
+        backgroundColor: '#0088ff',
+        justifyContent: 'center',
+        width: '90%',
     },
 });
 

@@ -71,6 +71,9 @@ const JobProfile = (props) => {
     const closeModalAddProfession = () => {
         setIsModalProfession(false);
     }
+    const closeModalAddDescriptionProfession = () => {
+        setIsModalDescriptionProfession(false);
+    }
 
     useEffect(() => {
         getJobs();
@@ -83,63 +86,69 @@ const JobProfile = (props) => {
     }, [isModalAddDescriptionProfession || isModalAddProfession])
 
     return (
-        <View style={styles.container}>
-            <View style={styles.inner}>
-                {worker && worker.job ?
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={openModalAddProfession}
-                    >
-                        <View>
-                            <Text style={styles.labelJobEdit} >Professione</Text>
-                            <Text style={styles.labelButton} >{worker.job}</Text>
-                        </View>
+        <>
+            <View style={styles.container}>
+                <View style={styles.inner}>
+                    {worker && worker.job ?
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={openModalAddProfession}
+                        >
+                            <View>
+                                <Text style={styles.labelJobEdit} >Professione</Text>
+                                <Text style={styles.labelButton} >{worker.job}</Text>
+                            </View>
 
-                        <MaterialIcons name="edit" style={styles.icon} size={30} color={'gray'} />
-                    </TouchableOpacity>
-                    :
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={openModalAddProfession}
-                    >
-                        <Text style={styles.labelButton} >Aggiungi Professione</Text>
-                        <MaterialCommunityIcons name="pen" style={styles.icon} size={30} color={'gray'} />
-                    </TouchableOpacity>
-                }
-                {worker && worker.descriptionJob
-                    ?
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={openModalAddDescriptionProfession}
-                    >
-                        <View style={{
-                            flex: 1,
-                        }}>
-                            <Text style={styles.labelJobEdit} >Informazioni Professionali</Text>
-                            <Text style={styles.labelButton} >{worker.descriptionJob}</Text>
-                        </View>
-                        <MaterialIcons name="edit" style={styles.icon} size={30} color={'gray'} />
-                    </TouchableOpacity>
-                    :
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={openModalAddDescriptionProfession}
-                    >
-                        <Text style={styles.labelButton} >Scrivi qualcosa sulla tua  professione</Text>
-                        <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'gray'} />
-                    </TouchableOpacity>}
+                            <MaterialIcons name="edit" style={styles.icon} size={30} color={'gray'} />
+                        </TouchableOpacity>
+                        :
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={openModalAddProfession}
+                        >
+                            <Text style={styles.labelButton} >Aggiungi Professione</Text>
+                            <MaterialCommunityIcons name="pen" style={styles.icon} size={30} color={'gray'} />
+                        </TouchableOpacity>
+                    }
+                    {worker && worker.descriptionJob
+                        ?
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={openModalAddDescriptionProfession}
+                        >
+                            <View style={{
+                                flex: 1,
+                            }}>
+                                <Text style={styles.labelJobEdit} >Informazioni Professionali</Text>
+                                <Text style={styles.labelButton} >{worker.descriptionJob}</Text>
+                            </View>
+                            <MaterialIcons name="edit" style={styles.icon} size={30} color={'gray'} />
+                        </TouchableOpacity>
+                        :
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={openModalAddDescriptionProfession}
+                        >
+                            <Text style={styles.labelButton} >Scrivi qualcosa sulla tua  professione</Text>
+                            <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'gray'} />
+                        </TouchableOpacity>}
+
+                </View>
 
             </View>
             <CustomModal
+            title={"Aggiungi la tua professione"} 
                 visible={isModalAddProfession}
                 onPressClose={closeModalAddProfession}
                 component={<AddProfession onPressClose={(() => setIsModalProfession(false))} job={worker && worker.job} />}
             />
             <CustomModal
+                onPressClose={closeModalAddDescriptionProfession}
+                title={"Aggiungi info sulla tua professione"}
                 visible={isModalAddDescriptionProfession}
                 component={<AddDescriptionProfession onPressClose={(() => setIsModalDescriptionProfession(false))} descriptionJob={worker && worker.descriptionJob} />}
             />
-        </View>
+        </>
     )
 }
 
@@ -147,7 +156,7 @@ const blue = '#1d4e89';
 // define your styles
 const styles = ScaledSheet.create({
     container: {
-        flex: 1,
+        // flex: 1,
         // backgroundColor: 'white',
     },
     inner: {

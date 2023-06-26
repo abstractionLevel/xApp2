@@ -29,7 +29,7 @@ const AddressComponent = () => {
 				< TouchableOpacity
 					style={styles.buttonMap}
 					onPress={() => console.log("Map")}>
-					<MaterialCommunityIcons style={styles.iconMap} name="map-marker-outline" size={28} color={'orange'} />
+					<MaterialCommunityIcons style={styles.iconMap} name="map-marker-outline" size={28} color={'#0096FF'} />
 				</TouchableOpacity>
 			</View>
             <Modal
@@ -131,7 +131,7 @@ const styles = ScaledSheet.create({
     },
 	textAddLocation: {
         fontFamily: 'RobotoMedium',
-        color: 'orange',
+        color: '#0096FF',
         fontSize: 20,
         padding: 5,
         //textAlign: 'center',

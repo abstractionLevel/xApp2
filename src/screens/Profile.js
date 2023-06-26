@@ -88,12 +88,6 @@ const Profile = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.head}>
-                <View style={styles.profileImageView}>
-                    <Image
-                        style={styles.profileImage}
-                        source={{ uri: false ? true : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" }}
-                    />
-                </View>
             </View>
             <View style={styles.body}>
                 <TouchableOpacity
@@ -101,7 +95,7 @@ const Profile = (props) => {
                     onPress={() => navigation.navigate("Account")}
                 >
                     <Text style={styles.text} >Account</Text>
-                    <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'gray'} />
+                    <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'white'} />
                 </TouchableOpacity>
                 {principal && principal.isWorker ?
                     <TouchableOpacity
@@ -109,7 +103,7 @@ const Profile = (props) => {
                         onPress={() => navigation.navigate("JobProfile")}
                     >
                         <Text style={styles.text} >Informazioni Lavorative</Text>
-                        <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'gray'} />
+                        <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'white'} />
                     </TouchableOpacity>
                     :
                     <TouchableOpacity
@@ -117,7 +111,7 @@ const Profile = (props) => {
                         onPress={becomeWorker}
                     >
                         <Text style={styles.text} >Diventa un Worker</Text>
-                        <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'gray'} />
+                        <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'white'} />
                     </TouchableOpacity>
                 }
 
@@ -129,7 +123,7 @@ const Profile = (props) => {
                         navigation.navigate('Home');
                     }}>
                     <Text style={styles.text} >Logout</Text>
-                    <MaterialCommunityIcons name="logout" style={styles.icon} size={30} color={'gray'} />
+                    <MaterialCommunityIcons name="logout" style={styles.icon} size={30} color={'white'} />
                 </TouchableOpacity>
 
             </View>
@@ -144,9 +138,8 @@ const imageSizePercentage = (width * 30) / 100;
 const styles = ScaledSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F0F0F0',
+        backgroundColor: 'white',
         alignItems: 'center',
-
     },
     head: {
         width: '100%',
@@ -176,17 +169,15 @@ const styles = ScaledSheet.create({
     body: {
         width: '100%',
         alignItems: 'center',
-        marginTop: '20@s',
+        marginTop: '29@s',
     },
     button: {
         flexDirection: 'row',
         width: '90%',
         height: '60@s',
-        borderWidth: 1,
-        borderColor: 'white',
-        backgroundColor: 'white',
+        backgroundColor: '#0088ff',
         borderRadius: 6,
-        marginTop: '20@s',
+        marginTop: '24@s',
         alignItems: 'center',
         justifyContent: 'space-between',
 
@@ -194,7 +185,8 @@ const styles = ScaledSheet.create({
     text: {
         fontFamily: 'RobotoLight',
         fontSize: '20@s',
-        marginLeft: '4@s',
+        marginLeft: '10@s',
+        color: 'white',
     },
     icon: {
         alignItems: 'flex-end',
@@ -203,6 +195,7 @@ const styles = ScaledSheet.create({
     pictText: {
         fontSize: '20@s',
         fontFamily: 'RobotoLight',
+        color: 'white',
     }
 
 });

@@ -61,8 +61,7 @@ const styles = ScaledSheet.create({
         height: 40,
         width: '100%',
         justifyContent: 'center',
-        backgroundColor: 'orange',
-        borderWidth: 0.50,
+        backgroundColor: '#0096FF',
         borderRadius: 6,
     },
 
@@ -71,7 +70,7 @@ const styles = ScaledSheet.create({
         fontFamily: 'RobotoBold',
         fontSize: 18,
         marginRight: 2,
-        color: 'gray',
+        color: 'white',
     },
 });
 

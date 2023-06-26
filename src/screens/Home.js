@@ -12,7 +12,7 @@ const Home = () => {
 
     return (
         <>
-            <View>
+            <View style={{backgroundColor: 'white'}}>
                 <AddressComponent/>
                 <Image
                     style={styles.imagePlumbers}
