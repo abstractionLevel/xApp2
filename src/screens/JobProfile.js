@@ -137,14 +137,12 @@ const JobProfile = (props) => {
 
             </View>
             <CustomModal
-            title={"Aggiungi la tua professione"} 
                 visible={isModalAddProfession}
                 onPressClose={closeModalAddProfession}
                 component={<AddProfession onPressClose={(() => setIsModalProfession(false))} job={worker && worker.job} />}
             />
             <CustomModal
                 onPressClose={closeModalAddDescriptionProfession}
-                title={"Aggiungi info sulla tua professione"}
                 visible={isModalAddDescriptionProfession}
                 component={<AddDescriptionProfession onPressClose={(() => setIsModalDescriptionProfession(false))} descriptionJob={worker && worker.descriptionJob} />}
             />

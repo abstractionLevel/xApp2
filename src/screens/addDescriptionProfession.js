@@ -10,10 +10,11 @@ import {
 import { ScaledSheet } from 'react-native-size-matters';
 import axios from "../http/axios";
 import Url from "../utils/Urls";
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 const AddDescriptionProfession = (props) => {
 
-    const [heightContent, setHeightContent] = useState('50%');
+    const [heightContent, setHeightContent] = useState('70%');
     const [description, setDescription] = useState(null);
     const onPressClose = props.onPressClose;
 
@@ -46,6 +47,11 @@ const AddDescriptionProfession = (props) => {
             height: heightContent,
             backgroundColor: 'white'
         }}>
+            <ScrollView>
+                <View style={styles.head}>
+                    <Text style={styles.headLabel}>Aggiungi info sulla tua professione</Text>
+                    <EvilIcons name="close" size={30} color={'black'} onPress={onPressClose} />
+                </View>
                 <View style={styles.inner}>
                     <View style={{ width: '90%', marginTop: 20 }}>
                         <Text style={styles.label}>
@@ -56,7 +62,8 @@ const AddDescriptionProfession = (props) => {
                         multiline
                         onChangeText={(text) => setDescription(text)}
                         value={description}
-                        
+                        onFocus={() => setHeightContent('100%')}
+
                     />
                     <TouchableOpacity
                         style={styles.buttonSave}
@@ -68,9 +75,10 @@ const AddDescriptionProfession = (props) => {
                         style={styles.buttonClose}
                         onPress={onPressClose}
                     >
-                        <Text style={styles.buttonText} >Close</Text>
+                        <Text style={styles.buttonText} >Anulla</Text>
                     </TouchableOpacity>
                 </View>
+            </ScrollView>
         </View>
     );
 }
@@ -83,6 +91,7 @@ const styles = ScaledSheet.create({
         flex: 1,
         alignItems: 'center',
         width: '100%',
+        backgroundColor: 'white'
     },
     label: {
         fontWeight: '600',
@@ -119,6 +128,19 @@ const styles = ScaledSheet.create({
         justifyContent: 'center',
         width: '90%',
     },
+    head: {
+        backgroundColor: 'white',
+        padding: 24,
+        borderBottomWidth: 0.40,
+        borderColor: 'gray',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    headLabel: {
+        fontSize: '20@s',
+        color: 'black',
+        width: '80%',
+    }
 });
 
 

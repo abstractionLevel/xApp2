@@ -23,10 +23,10 @@ const CustomModal = (props) => {
                 swipeDirection={['up', 'left', 'right', 'down']}
                 style={styles.view}>
 
-                <View style={styles.head}>
+                {/* <View style={styles.head}>
                     <Text style={styles.label}>{title}</Text>
                     <EvilIcons name="close" size={30} color={'black'} onPress={onPressClose} />
-                </View>
+                </View> */}
                 {component}
             </Modal>
         </ScrollView>

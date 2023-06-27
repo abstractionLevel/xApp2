@@ -11,6 +11,7 @@ import { AsyncStorage } from 'react-native';
 import Url from "../utils/Urls";
 import axios from '../http/axios';
 import { ScaledSheet } from 'react-native-size-matters';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 
 const AddProfession = (props) => {
@@ -18,7 +19,7 @@ const AddProfession = (props) => {
     const [jobs, setJobs] = useState();
     const [searchJob, setSearchJob] = useState(null);
     const [filterJobs, setFilterJobs] = useState([]);
-    const [heightContent, setHeightContent] = useState('40%');
+    const [heightContent, setHeightContent] = useState('60%');
     const onPressClose = props.onPressClose;
 
     const getJobs = async () => {
@@ -98,39 +99,45 @@ const AddProfession = (props) => {
             height: heightContent,
             backgroundColor: 'white'
         }}>
-            <View style={styles.inner}>
-                <View style={{ width: '90%', marginTop: 20 }}>
-                    <Text style={styles.label}>
-                        Professione
-                    </Text>
+            <ScrollView>
+                <View style={styles.head}>
+                    <Text style={styles.headLabel}>Aggiungi la tua professione</Text>
+                    <EvilIcons name="close" size={30} color={'black'} onPress={onPressClose} />
                 </View>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(text) => searchJobFilter(text)}
-                    value={searchJob}
-                    onFocus={() => setHeightContent('75%')}
-                />
-                <View style={styles.containerFilterJobs}>
-                    <FlatList
-                        data={filterJobs}
-                        keyboardShouldPersistTaps={'always'}
-                        keyExtractor={(item, index) => { return index.toString() }}
-                        renderItem={itemViewJob}
+                <View style={styles.inner}>
+                    <View style={{ width: '90%', marginTop: 20 }}>
+                        <Text style={styles.label}>
+                            Professione
+                        </Text>
+                    </View>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={(text) => searchJobFilter(text)}
+                        value={searchJob}
+                        onFocus={() => setHeightContent('75%')}
                     />
+                    <View style={styles.containerFilterJobs}>
+                        <FlatList
+                            data={filterJobs}
+                            keyboardShouldPersistTaps={'always'}
+                            keyExtractor={(item, index) => { return index.toString() }}
+                            renderItem={itemViewJob}
+                        />
+                    </View>
+                    <TouchableOpacity
+                        style={styles.buttonSave}
+                        onPress={saveJob}
+                    >
+                        <Text style={styles.text} >Salva</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.buttonClose}
+                        onPress={onPressClose}
+                    >
+                        <Text style={styles.textClose} >Close</Text>
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity
-                    style={styles.buttonSave}
-                    onPress={saveJob}
-                >
-                    <Text style={styles.text} >Salva</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.buttonClose}
-                    onPress={onPressClose}
-                >
-                    <Text style={styles.textClose} >Close</Text>
-                </TouchableOpacity>
-            </View>
+            </ScrollView>
         </View>
     )
 }
@@ -207,7 +214,15 @@ const styles = ScaledSheet.create({
         backgroundColor: 'white',
         padding: 24,
         borderBottomWidth: 0.40,
+        borderColor: 'gray',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
+    headLabel: {
+        fontSize: '20@s',
+        color: 'black',
+        width: '80%',
+    }
 });
 
 export default AddProfession;
