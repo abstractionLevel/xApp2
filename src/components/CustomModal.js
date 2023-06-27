@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import Modal from 'react-native-modal';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 const CustomModal = (props) => {
 
@@ -16,20 +15,14 @@ const CustomModal = (props) => {
     const title = props.title ? props.title : null;
 
     return (
-        <ScrollView>
-            <Modal
-                testID={'modal'}
-                isVisible={isVisible}
-                swipeDirection={['up', 'left', 'right', 'down']}
-                style={styles.view}>
-
-                {/* <View style={styles.head}>
-                    <Text style={styles.label}>{title}</Text>
-                    <EvilIcons name="close" size={30} color={'black'} onPress={onPressClose} />
-                </View> */}
-                {component}
-            </Modal>
-        </ScrollView>
+        <Modal
+            testID={'modal'}
+            isVisible={isVisible}
+            swipeDirection={['up', 'left', 'right', 'down']}
+            style={styles.view}
+            avoidKeyboard>
+            {component}
+        </Modal>
 
     );
 

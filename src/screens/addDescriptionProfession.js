@@ -43,11 +43,11 @@ const AddDescriptionProfession = (props) => {
     }, [])
 
     return (
-        <View style={{
+        <View keyboardShouldPersistTaps={'always'} style={{
             height: heightContent,
             backgroundColor: 'white'
         }}>
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps='always'>
                 <View style={styles.head}>
                     <Text style={styles.headLabel}>Aggiungi info sulla tua professione</Text>
                     <EvilIcons name="close" size={30} color={'black'} onPress={onPressClose} />

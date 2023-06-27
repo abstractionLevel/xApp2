@@ -99,7 +99,7 @@ const AddProfession = (props) => {
             height: heightContent,
             backgroundColor: 'white'
         }}>
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps='always'> 
                 <View style={styles.head}>
                     <Text style={styles.headLabel}>Aggiungi la tua professione</Text>
                     <EvilIcons name="close" size={30} color={'black'} onPress={onPressClose} />
