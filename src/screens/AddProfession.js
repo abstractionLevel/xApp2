@@ -60,12 +60,14 @@ const AddProfession = (props) => {
     const itemViewJob = ({ item }) => {
         return (
             <View style={styles.filterJobsView}>
-                <TouchableOpacity
-                    onPress={() => onPressJobsFIlter(item.name)}
-                >
-                    <Text style={styles.filterJobsText} >{item.name}</Text>
-                </TouchableOpacity>
-            </View>
+                <View style={{ width: '90%'}}>
+                    <TouchableOpacity
+                        onPress={() => onPressJobsFIlter(item.name)}
+                    >
+                        <Text style={styles.filterJobsText} >{item.name}</Text>
+                    </TouchableOpacity>
+                </View>
+            </View >
         )
     }
 
@@ -99,7 +101,7 @@ const AddProfession = (props) => {
             height: heightContent,
             backgroundColor: 'white'
         }}>
-            <ScrollView keyboardShouldPersistTaps='always'> 
+            <ScrollView keyboardShouldPersistTaps='always'>
                 <View style={styles.head}>
                     <Text style={styles.headLabel}>Aggiungi la tua professione</Text>
                     <EvilIcons name="close" size={30} color={'black'} onPress={onPressClose} />
@@ -114,9 +116,9 @@ const AddProfession = (props) => {
                         style={styles.input}
                         onChangeText={(text) => searchJobFilter(text)}
                         value={searchJob}
-                        onFocus={() => setHeightContent('75%')}
+                        onFocus={() => setHeightContent('90%')}
                     />
-                    <View style={styles.containerFilterJobs}>
+                    <View style={[styles.containerFilterJobs,{borderWidth: filterJobs.length>0 ? 0.40 : 0,}]}>
                         <FlatList
                             data={filterJobs}
                             keyboardShouldPersistTaps={'always'}
@@ -134,7 +136,7 @@ const AddProfession = (props) => {
                         style={styles.buttonClose}
                         onPress={onPressClose}
                     >
-                        <Text style={styles.textClose} >Close</Text>
+                        <Text style={styles.textClose} >Anulla</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>
@@ -153,10 +155,18 @@ const styles = ScaledSheet.create({
         flex: 1,
         alignItems: 'center',
         width: '100%',
+
+    },
+    filterJobsView: {
+        flex: 1,
+        alignItems: 'center',
+        width: '90%',
     },
     containerFilterJobs: {
-        width: '100%',
-        borderColor: '#0088ff',
+        width: '90%',
+        borderColor: 'black',
+        marginTop: 6,
+        borderRadius: 6,
     },
     buttonView: {
         padding: 24,
@@ -222,6 +232,12 @@ const styles = ScaledSheet.create({
         fontSize: '20@s',
         color: 'black',
         width: '80%',
+    },
+    filterJobsText: {
+        fontSize: '16@s',
+        color: blue,
+        padding: 8,
+
     }
 });
 

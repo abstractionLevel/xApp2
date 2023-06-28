@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import { View, Text, Image, TextInput, TouchableOpacity, ScrollView, Dimensions} from 'react-native';
 import Modal from 'react-native-modal';
 import { ScaledSheet } from 'react-native-size-matters';
 import AntDesign from 'react-native-vector-icons/AntDesign';

@@ -1,14 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ScaledSheet } from 'react-native-size-matters';
-import { Button, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
 import {
     Text,
     TouchableOpacity,
     View,
-    Image,
     AsyncStorage,
+    Card,
+    Dimensions
 } from 'react-native';
 import AppContext from '../context/appContext';
 import axios from '../http/axios';
@@ -48,9 +50,11 @@ const Profile = (props) => {
 
     useEffect(() => {
         getPrincipal();
+        getUser();
     }, []);
 
-    const getUser = (token) => {
+    const getUser = async () => {
+        const token = await AsyncStorage.getItem('logged');
         axios.get(Url.fetchUser + "/" + token, {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -59,7 +63,8 @@ const Profile = (props) => {
             .then(response => {
                 savePrincipal(response.data);
                 setPrincipal(response.data)
-            }).catch(error=>{
+                console.log(response.data , 'responsedata')
+            }).catch(error => {
                 console.log(error);
             })
     }
@@ -69,14 +74,14 @@ const Profile = (props) => {
         const payload = {
             userId: principal.userId
         }
-        axios.post(Url.worker, payload, {
+        axios.post(Url.woMaterialCommunityIconsrker, payload, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
         })
             .then(response => {
                 if (response.data) {
-                    getUser(token);
+                    getUser();
                     navigation.navigate("JobProfile")
                 }
             })
@@ -88,6 +93,29 @@ const Profile = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.head}>
+                {principal &&
+                    <>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 4, marginTop: 4 }}>
+                            <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'black'} />
+                            <Text style={{ color: 'green' }}>{principal.fullName}</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 4, marginTop: 4 }}>
+                            <MaterialCommunityIcons name="email" style={styles.icon} size={30} color={'black'} />
+                            <Text style={{ color: 'green' }}>{principal.email}</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 4, marginTop: 4 }}>
+                            <MaterialCommunityIcons name="map" style={styles.icon} size={30} color={'black'} />
+                            <Text style={{ color: 'green' }}>{principal.address}</Text>
+                        </View>
+                        {principal.worker &&
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 4, marginTop: 4 }}>
+                                <MaterialIcons name="work" style={styles.icon} size={30} color={'black'} />
+                                <Text style={{ color: 'green' }}>{principal.worker.job}</Text>
+                            </View>
+                        }
+
+                    </>
+                }
             </View>
             <View style={styles.body}>
                 <TouchableOpacity
@@ -142,8 +170,18 @@ const styles = ScaledSheet.create({
         alignItems: 'center',
     },
     head: {
-        width: '100%',
-        height: '20%',
+        width: '90%',
+        height: '30%',
+        marginTop: '45@s',
+        backgroundColor: 'rgb(240, 240, 240)',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.30,
+        shadowRadius: 4.65,
+        elevation: 8,
     },
     profileImageView: {
         marginTop: '30@s',
@@ -169,7 +207,7 @@ const styles = ScaledSheet.create({
     body: {
         width: '100%',
         alignItems: 'center',
-        marginTop: '29@s',
+        marginTop: '12@s',
     },
     button: {
         flexDirection: 'row',
@@ -177,7 +215,7 @@ const styles = ScaledSheet.create({
         height: '60@s',
         backgroundColor: '#0088ff',
         borderRadius: 6,
-        marginTop: '24@s',
+        marginTop: '20@s',
         alignItems: 'center',
         justifyContent: 'space-between',
 
