@@ -100,7 +100,7 @@ const Account = (props) => {
     return (
 
         <View style={styles.container}>
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps={'handled'}>
                 <> 
                     <View style={styles.head}>
                         <View style={styles.profileImageView}>
