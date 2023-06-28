@@ -21,7 +21,8 @@ import AppContext from './src/context/appContext'
 import { navigationRef } from './src/utils/navigationRef'
 import ChangePassword from './src/screens/ChangePassword'
 import JobProfile from './src/screens/JobProfile'
-
+import { Provider } from 'react-redux';
+import store from './src/redux/store'
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
     const [auth,setAuth] = useState(null);
 
     return (
+        <Provider store={store}>
         <AppContext.Provider value={{auth,setAuth}} >
             <NavigationContainer ref={navigationRef}>
                 <Stack.Navigator>
@@ -82,6 +84,7 @@ const App = () => {
                 </Stack.Navigator>
             </NavigationContainer>
         </AppContext.Provider>
+        </Provider>
     )
 }
 export default App

@@ -3,7 +3,6 @@ import { ScaledSheet } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
 import {
     Text,
     TouchableOpacity,
@@ -15,6 +14,7 @@ import {
 import AppContext from '../context/appContext';
 import axios from '../http/axios';
 import Url from '../utils/Urls';
+import { useSelector } from 'react-redux';
 
 const Profile = (props) => {
 
@@ -22,6 +22,7 @@ const Profile = (props) => {
 
     const [principal, setPrincipal] = useState();
     const { setAuth } = useContext(AppContext);
+    const { user } = useSelector((state) => state);
 
     const removeTokenAuth = async () => {
         try {
@@ -53,6 +54,13 @@ const Profile = (props) => {
         getUser();
     }, []);
 
+    useEffect(() => {
+        if (user) {
+            setPrincipal(user)
+        }
+    }, [user]);
+
+
     const getUser = async () => {
         const token = await AsyncStorage.getItem('logged');
         axios.get(Url.fetchUser + "/" + token, {
@@ -63,7 +71,6 @@ const Profile = (props) => {
             .then(response => {
                 savePrincipal(response.data);
                 setPrincipal(response.data)
-                console.log(response.data , 'responsedata')
             }).catch(error => {
                 console.log(error);
             })

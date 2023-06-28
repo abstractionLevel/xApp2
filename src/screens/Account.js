@@ -10,9 +10,12 @@ import Url from '../utils/Urls';
 import { AsyncStorage } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import FlashMessage from 'react-native-flash-message';
+import { updateUser } from '../redux/store';
+import { useDispatch } from 'react-redux';
 
 const Account = (props) => {
 
+    const dispatch = useDispatch();
     const { navigation } = props;
     const [imageProfile, setImageProfile] = useState()
     const [tokenAuth, setTokenAuth] = useState();
@@ -56,7 +59,7 @@ const Account = (props) => {
             })
     }
 
-    const updateUser = async () => {
+    const updateUserInfo = async () => {
         const payload = {
             fullName: state.fullName,
             address: state.address,
@@ -68,6 +71,7 @@ const Account = (props) => {
             }
         })
         .then(response => {
+            dispatch(updateUser(response.data));
             setState(prevState => ({
                 ...prevState,
                 address:response.data.address,
@@ -154,7 +158,7 @@ const Account = (props) => {
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={[styles.button,{justifyContent:"center"}]}
-                                onPress={updateUser}>
+                                onPress={updateUserInfo}>
                                 <Text style={styles.text} >Salva</Text>
                             </TouchableOpacity>
                             {/* <View style={{
