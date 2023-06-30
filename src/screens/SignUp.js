@@ -69,19 +69,19 @@ const SignUp = props => {
             setStateError({ ...stateError, password: validatePassword(password), email: validateEmail(email) })
         }
         else {
-            const payload = { password: password, email: email,isWorker: false }
+            const payload = { password: password, email: email, isWorker: false }
             const headers = {
                 'Content-Type': 'text/json',
                 'Access-Control-Allow-Origin': '*',
             }
-            axios.post(Url.register, payload,headers)
+            axios.post(Url.register, payload, headers)
                 .then(response => {
                     if (response) {
                         navigation.navigate('Login', { isRegistered: true });
                         setPassword(null);
                         setEmail(null);
-                        
-                        
+
+
                     }
                 }).catch((error) => {
                     console.log("Errore:" + error)
@@ -94,18 +94,26 @@ const SignUp = props => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>SignUp</Text>
             <View style={styles.containerForm}>
+                <View style={{ width: '80%', marginTop: 10 }}>
+                    <Text style={styles.label}>
+                        Email
+                    </Text>
+                </View>
                 <TextInput
                     value={email}
                     onChangeText={email => {
                         setEmail(email)
                         setStateError({ ...stateError, email: null })
                     }}
-                    placeholder={'Email'}
                     style={styles.inputText}
                 />
                 {stateError.email && <Text style={styles.errorMessage}>{stateError.email}</Text>}
+                <View style={{ width: '80%', marginTop: 10 }}>
+                    <Text style={styles.label}>
+                        Password
+                    </Text>
+                </View>
                 <TextInput
                     value={password}
                     PP
@@ -113,13 +121,12 @@ const SignUp = props => {
                         setPassword(password)
                         setStateError({ ...stateError, password: null })
                     }}
-                    placeholder={'Password'}
                     secureTextEntry={true}
                     style={styles.inputText}
                 />
                 {stateError.password && <Text style={styles.errorMessage}>{stateError.password}</Text>}
                 <TouchableOpacity style={styles.loginBtn} onPress={save}>
-                    <Text style={styles.loginText}>REGISTRATI</Text>
+                    <Text style={{color: 'white'}}>REGISTRATI</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.links}>
@@ -151,19 +158,19 @@ const styles = ScaledSheet.create({
         width: '80%',
         height: '50@s',
         fontSize: '18@s',
-        borderRadius: 7,
+        borderRadius: 6,
         borderWidth: 0.6,
         color: 'black',
         paddingLeft: 10,
         backgroundColor: 'white',
         marginBottom: 5,
         marginTop: '10@s',
-        borderColor: 'orange',
+        borderColor: 'black',
     },
     loginBtn: {
         width: '80%',
-        backgroundColor: '#fb5b5a',
-        borderRadius: 25,
+        backgroundColor: '#0088ff',
+        borderRadius: 6,
         height: 50,
         alignItems: 'center',
         justifyContent: 'center',
@@ -194,7 +201,11 @@ const styles = ScaledSheet.create({
     },
     errorMessage: {
         color: 'red',
-    }
+    },
+    label: {
+        fontWeight: '600',
+        color: 'black',
+    },
 })
 
 export default SignUp

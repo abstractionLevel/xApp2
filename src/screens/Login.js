@@ -25,7 +25,7 @@ const Login = props => {
         passError: false
     })
 
-    const { setAuth} = useContext(AppContext);
+    const { setAuth } = useContext(AppContext);
     const route = useRoute();
     const navigation = useNavigation()
 
@@ -95,32 +95,39 @@ const Login = props => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Welcome</Text>
             <Toast />
             <View style={styles.containerForm}>
+                <View style={{ width: '80%', marginTop: 10 }}>
+                    <Text style={styles.label}>
+                        Email
+                    </Text>
+                </View>
                 <TextInput
                     value={email}
                     onChangeText={email => {
                         setEmail(email)
                         setStateError({ ...stateError, emailErr: null })
                     }}
-                    placeholder={'Email'}
                     style={styles.inputText}
                 />
                 {stateError.emailErr && <Text style={styles.errorMessage}>{stateError.emailErr}</Text>}
+                <View style={{ width: '80%', marginTop: 10 }}>
+                    <Text style={styles.label}>
+                        Password
+                    </Text>
+                </View>
                 <TextInput
                     value={password}
                     onChangeText={password => {
                         setPassword(password)
                         setStateError({ ...stateError, passError: null })
                     }}
-                    placeholder={'Password'}
                     secureTextEntry={true}
                     style={styles.inputText}
                 />
                 {stateError.passError && <Text style={styles.errorMessage}>{stateError.passError}</Text>}
                 <TouchableOpacity style={styles.loginBtn} onPress={login}>
-                    <Text style={styles.loginText}>LOGIN</Text>
+                    <Text style={{ color: 'white' }}>LOGIN</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.links}>
@@ -128,13 +135,13 @@ const Login = props => {
                     style={styles.buttonRouteR}
                     onPress={() => navigation.navigate('SignUp')}>
                     <Text style={styles.buttonTexRoute}>
-                        Forgot  Password
+                        Password dimenticata?
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.buttonRouteL}
                     onPress={() => navigation.navigate('SignUp')}>
-                    <Text style={styles.buttonTexRoute}>SignUp</Text>
+                    <Text style={styles.buttonTexRoute}>Registrati</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -157,22 +164,22 @@ const styles = ScaledSheet.create({
         marginLeft: '10%',
     },
     inputText: {
-        width: '80%',
+        width: '90%',
         height: '50@s',
         fontSize: '18@s',
-        borderRadius: 7,
+        borderRadius: 6,
         borderWidth: 0.6,
         color: 'black',
         paddingLeft: 10,
         backgroundColor: 'white',
         marginBottom: 5,
         marginTop: '10@s',
-        borderColor: 'orange',
+        borderColor: 'black',
     },
     loginBtn: {
-        width: '80%',
-        backgroundColor: '#fb5b5a',
-        borderRadius: 25,
+        width: '90%',
+        backgroundColor: '#0088ff',
+        borderRadius: 6,
         height: 50,
         alignItems: 'center',
         justifyContent: 'center',
@@ -184,7 +191,7 @@ const styles = ScaledSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         color: 'black',
-        margin: 50,
+        margin: 30,
         marginTop: -5,
     },
     buttonRouteR: {
@@ -203,7 +210,11 @@ const styles = ScaledSheet.create({
     },
     errorMessage: {
         color: 'red',
-    }
+    },
+    label: {
+        fontWeight: '600',
+        color: 'black',
+    },
 })
 
 export default Login
