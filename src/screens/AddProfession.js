@@ -184,7 +184,7 @@ const styles = ScaledSheet.create({
     },
     buttonSave: {
         flexDirection: 'row',
-        height: '40@s',
+        height: '50@s',
         borderRadius: 6,
         marginTop: '18@s',
         alignItems: 'center',
@@ -193,7 +193,7 @@ const styles = ScaledSheet.create({
         width: '90%',
     },
     input: {
-        height: '43@s',
+        height: '50@s',
         fontSize: 18,
         backgroundColor: 'white',
         borderColor: 'black',

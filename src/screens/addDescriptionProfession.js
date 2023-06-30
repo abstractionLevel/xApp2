@@ -109,7 +109,7 @@ const styles = ScaledSheet.create({
     },
     buttonClose: {
         flexDirection: 'row',
-        height: '40@s',
+        height: '50@s',
         borderRadius: 6,
         marginTop: '10@s',
         alignItems: 'center',
@@ -120,7 +120,7 @@ const styles = ScaledSheet.create({
     },
     buttonSave: {
         flexDirection: 'row',
-        height: '40@s',
+        height: '50@s',
         borderRadius: 6,
         marginTop: '18@s',
         alignItems: 'center',
