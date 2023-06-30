@@ -42,6 +42,7 @@ const styles = ScaledSheet.create({
         width: '100%',
         alignItems: 'center',
         padding: 10,
+        
 
     },
     inputSearch: {
