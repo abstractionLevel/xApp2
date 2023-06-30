@@ -90,7 +90,7 @@ const styles = ScaledSheet.create({
     },
     buttonSearch: {
         marginTop: 4,
-        height: 40,
+        height: '50@s',
         width: '90%',
         backgroundColor: '#0096FF',
         borderRadius: 6,
