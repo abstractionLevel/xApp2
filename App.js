@@ -44,6 +44,7 @@ const App = () => {
                         component={Account}
                         options={{
                             headerShown: true,
+                            title: ""
                         }}
                     />
                     <Stack.Screen
@@ -57,28 +58,32 @@ const App = () => {
                         name={'WorkerList'}
                         component={WorkerList}
                         options={{
-                            headerShown: false,
+                            headerShown: true,
+                            title: ""
                         }}
                     />
                     <Stack.Screen
                         name={'ProfileWorker'}
                         component={ProfileWorker}
                         options={{
-                            headerShown: false,
+                            headerShown: true,
+                            title: ""
                         }}
                     />
                     <Stack.Screen
                         name={'ChangePassword'}
                         component={ChangePassword}
                         options={{
-                            headerShown: false,
+                            headerShown: true,
+                            title: ""
                         }}
                     />
                     <Stack.Screen
                         name={'JobProfile'}
                         component={JobProfile}
                         options={{
-                            headerShown: false,
+                            headerShown: true,
+                            title: ""
                         }}
                     />
                 </Stack.Navigator>

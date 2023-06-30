@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Home from '../screens/Home'
 import Login from '../screens/Login'
@@ -7,20 +7,23 @@ import SavedWorker from '../screens/SavedWorker'
 import Chat from '../screens/Chat'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Fontisto from 'react-native-vector-icons/Fontisto'
-import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import Feather from 'react-native-vector-icons/Feather'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { AsyncStorage } from 'react-native';
+import {
+	AsyncStorage,
+	TouchableOpacity,
+	Text,
+} from 'react-native';
 import AppContext from '../context/appContext';
-import ChangePassword from '../screens/ChangePassword'
+
 
 const HomeTabNavigation = ({ route }) => {
 
-	const  logout = route.params?.logout;
+	const logout = route.params?.logout;
 	const Tab = createBottomTabNavigator();
 	const Stack = createNativeStackNavigator();
 
-	const {auth} = useContext(AppContext);
+	const { auth } = useContext(AppContext);
 
 	const [authUser, setAuthUser] = useState(null);
 
@@ -49,7 +52,13 @@ const HomeTabNavigation = ({ route }) => {
 	return (
 		<>
 			{authUser ? (
-				<Tab.Navigator>
+				<Tab.Navigator
+					tabBarOptions={{
+						activeTintColor: '#0088ff', // Colore icona attiva
+						inactiveTintColor: 'gray', // Colore icona inattiva
+					}}
+				// screenOptions={{ headerShown: false }}
+				>
 					<Tab.Screen
 						name={'Home'}
 						component={Home}
@@ -58,35 +67,108 @@ const HomeTabNavigation = ({ route }) => {
 							tabBarIcon: ({ color }) => (
 								<Fontisto name='search' size={25} color={color} />
 							),
+							title: ""
 						}}
 					/>
 					<Tab.Screen
 						name={'SavedWorker'}
 						component={SavedWorker}
-						options={{
+						options={({ navigation }) => ({
 							tabBarIcon: ({ color }) => (
 								<FontAwesome5 name='heart' size={25} color={color} />
 							),
-						}}
+							headerLeft: () => (
+								<TouchableOpacity
+									style={{ marginLeft: 16 }}
+									onPress={() => navigation.goBack()}
+								>
+									<Feather name='arrow-left' size={25} color='black' />
+								</TouchableOpacity>
+							), 
+							headerRight: () => (
+								<TouchableOpacity
+									style={{ marginLeft: 16 }}
+									onPress={() =>  navigation.navigate('Home')}
+								>
+									<Text style={{
+										marginRight: 20,
+										fontWeight: '900',
+										color: 'black',
+										fontSize: 20
+
+									}}>xApp</Text>
+								</TouchableOpacity>
+
+							),
+							title: ""
+						})}
 					/>
 
 					<Tab.Screen
 						name={'Message'}
 						component={Chat}
-						options={{
+						options={({ navigation }) => ({
 							tabBarIcon: ({ color }) => (
 								<Feather name='message-square' size={25} color={color} />
 							),
-						}}
+							headerLeft: () => (
+								<TouchableOpacity
+									style={{ marginLeft: 16 }}
+									onPress={() => navigation.goBack()}
+								>
+									<Feather name='arrow-left' size={25} color='black' />
+								</TouchableOpacity>
+							),
+							headerRight: () => (
+								<TouchableOpacity
+									style={{ marginLeft: 16 }}
+									onPress={() =>  navigation.navigate('Home')}
+								>
+									<Text style={{
+										marginRight: 20,
+										fontWeight: '900',
+										color: 'black',
+										fontSize: 20
+
+									}}>xApp</Text>
+								</TouchableOpacity>
+
+							),
+							title: ""
+						})}
 					/>
 					<Tab.Screen
 						name={'Profile'}
 						component={Profile}
-						options={{
+						options={({ navigation }) => ({
 							tabBarIcon: ({ color }) => (
-								<EvilIcons name='user' size={25} color={color} />
+								<Feather name='user' size={25} color={color} />
 							),
-						}}
+							headerLeft: () => (
+								<TouchableOpacity
+									style={{ marginLeft: 16 }}
+									onPress={() => navigation.goBack()}
+								>
+									<Feather name='arrow-left' size={25} color='black' />
+								</TouchableOpacity>
+							),
+							headerRight: () => (
+								<TouchableOpacity
+									style={{ marginLeft: 16 }}
+									onPress={() =>  navigation.navigate('Home')}
+								>
+									<Text style={{
+										marginRight: 20,
+										fontWeight: '900',
+										color: 'black',
+										fontSize: 20
+
+									}}>xApp</Text>
+								</TouchableOpacity>
+
+							),
+							title: ""
+						})}
 					/>
 				</Tab.Navigator>
 			) : (
