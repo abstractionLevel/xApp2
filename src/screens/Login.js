@@ -97,7 +97,7 @@ const Login = props => {
         <View style={styles.container}>
             <Toast />
             <View style={styles.containerForm}>
-                <View style={{ width: '80%', marginTop: 10 }}>
+                <View style={{ width: '90%', marginTop: 10 }}>
                     <Text style={styles.label}>
                         Email
                     </Text>
@@ -111,7 +111,7 @@ const Login = props => {
                     style={styles.inputText}
                 />
                 {stateError.emailErr && <Text style={styles.errorMessage}>{stateError.emailErr}</Text>}
-                <View style={{ width: '80%', marginTop: 10 }}>
+                <View style={{ width: '90%', marginTop: 10 }}>
                     <Text style={styles.label}>
                         Password
                     </Text>
@@ -191,7 +191,7 @@ const styles = ScaledSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         color: 'black',
-        margin: 30,
+        margin: 20,
         marginTop: -5,
     },
     buttonRouteR: {
