@@ -139,7 +139,7 @@ const Profile = (props) => {
                         onPress={() => navigation.navigate("JobProfile")}
                     >
                         <Text style={styles.text} >Informazioni Lavorative</Text>
-                        <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'white'} />
+                        <MaterialIcons name="work" style={styles.icon} size={30} color={'white'} />
                     </TouchableOpacity>
                     :
                     <TouchableOpacity
@@ -179,7 +179,6 @@ const styles = ScaledSheet.create({
     },
     head: {
         width: '90%',
-        height: '30%',
         marginTop: '45@s',
         backgroundColor: 'rgb(240, 240, 240)',
         shadowColor: "#000",

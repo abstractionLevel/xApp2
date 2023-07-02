@@ -16,8 +16,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import CustomModal from "../components/CustomModal";
 import AddProfession from "./AddProfession";
 import AddDescriptionProfession from "./addDescriptionProfession";
-
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AddAddressWork from "./addAddressWork";
 
 const JobProfile = (props) => {
 
@@ -25,6 +25,7 @@ const JobProfile = (props) => {
     const [jobs, setJobs] = useState();
     const [isModalAddProfession, setIsModalProfession] = useState(false);
     const [isModalAddDescriptionProfession, setIsModalDescriptionProfession] = useState(false);
+    const [isModalAddAddressWork, setIsModalAddAddressWork] = useState(false);
 
     const getJobs = async () => {
         const token = await AsyncStorage.getItem('logged');
@@ -131,7 +132,16 @@ const JobProfile = (props) => {
                         >
                             <Text style={styles.labelButton} >Scrivi qualcosa sulla tua  professione</Text>
                             <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'gray'} />
-                        </TouchableOpacity>}
+                        </TouchableOpacity>
+                    }
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={()=>setIsModalAddAddressWork(true)}
+                    >
+                        <Text style={styles.labelButtonAdd} >Aggiungi Indirizzo lavorativo</Text>
+                        <Ionicons name="add" style={styles.icon} size={30} color={'black'} />
+                    </TouchableOpacity>
+
 
                 </View>
 
@@ -145,6 +155,11 @@ const JobProfile = (props) => {
                 onPressClose={closeModalAddDescriptionProfession}
                 visible={isModalAddDescriptionProfession}
                 component={<AddDescriptionProfession onPressClose={(() => setIsModalDescriptionProfession(false))} descriptionJob={worker && worker.descriptionJob} />}
+            />
+            <CustomModal
+                onPressClose={()=>setIsModalAddAddressWork(false)}
+                visible={isModalAddAddressWork}
+                component={<AddAddressWork onPressClose={(() => setIsModalDescriptionProfession(false))} descriptionJob={worker && worker.descriptionJob} />}
             />
         </>
     )
@@ -238,7 +253,7 @@ const styles = ScaledSheet.create({
     button: {
         flexDirection: 'row',
         width: '100%',
-        height: '160@s',
+        height: '130@s',
         borderWidth: 1,
         borderColor: 'white',
         backgroundColor: 'white',
@@ -258,6 +273,11 @@ const styles = ScaledSheet.create({
         marginLeft: '4@s',
         color: 'black',
 
+    },
+    labelButtonAdd: {
+        fontSize: '16@s',
+        marginLeft: '4@s',
+        fontWeight: '900'
     }
 });
 

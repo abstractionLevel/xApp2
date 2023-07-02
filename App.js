@@ -25,7 +25,6 @@ import {
     TouchableOpacity,
     Text
 } from 'react-native';
-import Feather from 'react-native-vector-icons/Feather'
 
 const Stack = createNativeStackNavigator();
 

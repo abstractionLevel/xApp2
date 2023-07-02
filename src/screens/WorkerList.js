@@ -6,6 +6,7 @@ import {useGlobalContext} from '../../context';
 import { useNavigation } from '@react-navigation/native';
 
 const WorkerList = props => {
+    
     const [workers, setWorkers] = useState()
 
     const navigation = useNavigation();

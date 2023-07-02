@@ -43,7 +43,7 @@ const HomeTabNavigation = ({ route }) => {
 	const getToken = async () => {
 		try {
 			const logged = await AsyncStorage.getItem('logged');
-			setAuthUser(logged)
+			setAuthUser(logged);
 		} catch (error) {
 			console.log(error)
 		}
