@@ -157,9 +157,8 @@ const JobProfile = (props) => {
                 component={<AddDescriptionProfession onPressClose={(() => setIsModalDescriptionProfession(false))} descriptionJob={worker && worker.descriptionJob} />}
             />
             <CustomModal
-                onPressClose={()=>setIsModalAddAddressWork(false)}
                 visible={isModalAddAddressWork}
-                component={<AddAddressWork onPressClose={(() => setIsModalDescriptionProfession(false))} descriptionJob={worker && worker.descriptionJob} />}
+                component={<AddAddressWork onPressClose={(() => setIsModalAddAddressWork(false))} descriptionJob={worker && worker.descriptionJob} />}
             />
         </>
     )
