@@ -53,6 +53,7 @@ const JobProfile = (props) => {
         })
             .then(response => {
                 if (response.data) {
+                    console.log(response.data)
                     setWorker(response.data);
                 }
             })
@@ -84,7 +85,7 @@ const JobProfile = (props) => {
     useEffect(() => {
         getJobs();
         getWorkerInfo();
-    }, [isModalAddDescriptionProfession || isModalAddProfession])
+    }, [isModalAddDescriptionProfession || isModalAddProfession || isModalAddAddressWork])
 
     return (
         <>
@@ -134,13 +135,30 @@ const JobProfile = (props) => {
                             <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'gray'} />
                         </TouchableOpacity>
                     }
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={()=>setIsModalAddAddressWork(true)}
-                    >
-                        <Text style={styles.labelButtonAdd} >Aggiungi Indirizzo lavorativo</Text>
-                        <Ionicons name="add" style={styles.icon} size={30} color={'black'} />
-                    </TouchableOpacity>
+                    {worker && worker.address
+                        ?
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => setIsModalAddAddressWork(true)}
+                        >
+                            <View style={{
+                                flex: 1,
+                            }}>
+                                <Text style={styles.labelJobEdit} >Indirizzo lavorativo</Text>
+                                <Text style={styles.labelButton} >{worker.address}</Text>
+                            </View>
+                            <MaterialIcons name="edit" style={styles.icon} size={30} color={'gray'} />
+                        </TouchableOpacity>
+                        :
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => setIsModalAddAddressWork(true)}
+                        >
+                            <Text style={styles.labelButtonAdd} >Aggiungi Indirizzo lavorativo</Text>
+                            <Ionicons name="add" style={styles.icon} size={30} color={'black'} />
+                        </TouchableOpacity>
+                    }
+
 
 
                 </View>
@@ -158,7 +176,7 @@ const JobProfile = (props) => {
             />
             <CustomModal
                 visible={isModalAddAddressWork}
-                component={<AddAddressWork onPressClose={(() => setIsModalAddAddressWork(false))} descriptionJob={worker && worker.descriptionJob} />}
+                component={<AddAddressWork onPressClose={(() => setIsModalAddAddressWork(false))} descriptionJob={worker && worker.descriptionJob} worker={worker && worker} />}
             />
         </>
     )

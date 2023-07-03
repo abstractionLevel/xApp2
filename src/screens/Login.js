@@ -63,7 +63,7 @@ const Login = props => {
                         saveToken(response.data.token);
                         savePrincipal(response.data);
                         setAuth(true);
-                        navigation.navigate('Home');
+                        navigation.navigate('HomeScreen');
                     }
                 }).catch((error) => {
                     console.log(error)

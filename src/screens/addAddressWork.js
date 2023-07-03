@@ -1,22 +1,35 @@
+import axios from "../http/axios";
 import React, { useState } from "react";
 import {
     View,
     Text,
     TextInput,
     TouchableOpacity,
+    AsyncStorage
 } from "react-native";
 import { ScaledSheet } from "react-native-size-matters";
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import Url from "../utils/Urls";
 
 const AddAddressWork = (props) => {
 
     const onPressClose = props.onPressClose;
-    const [address, setAddress] = useState(null);
+    const worker = props.worker;
+    const [addressWork, setAddressWork] = useState(null);
 
-    const save = () => {
-        if(address!==null) {
-            console.log('salvataggio');
-        }else {
+    const save = async () => {
+        const token = await AsyncStorage.getItem('logged');
+        if (addressWork !== null) {
+            axios.put(Url.worker + "/" + worker.id + '/address', { address: addressWork }, {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            }).then(response=>{
+                onPressClose();
+            }).catch(error=>{
+                console.log("errore: ", error);
+            })
+        } else {
             console.log("deve essere diverso da null")
         }
     }
@@ -30,8 +43,8 @@ const AddAddressWork = (props) => {
             <View style={styles.inner}>
                 <TextInput
                     style={styles.input}
-                    onChange={(text) => setAddress(text)}
-                    value={address}
+                    onChangeText={text => setAddressWork(text)}
+                    value={addressWork}
                 />
                 <TouchableOpacity
                     style={styles.buttonSave}
