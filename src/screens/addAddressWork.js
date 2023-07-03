@@ -1,5 +1,5 @@
 import axios from "../http/axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     View,
     Text,
@@ -33,6 +33,10 @@ const AddAddressWork = (props) => {
             console.log("deve essere diverso da null")
         }
     }
+
+    useEffect(()=>{
+        setAddressWork(props.worker && props.worker.address )
+    })
 
     return (
         <View style={{ height: '100%', backgroundColor: 'white' }}>
