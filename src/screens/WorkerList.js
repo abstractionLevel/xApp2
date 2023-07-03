@@ -1,40 +1,46 @@
-import React, {useState, useEffect} from 'react'
-import services from '../services'
-import {View, FlatList, StyleSheet,Text} from 'react-native'
+import React, { useState, useEffect } from 'react'
+import {
+    View,
+    FlatList,
+    StyleSheet,
+    Text,
+    AsyncStorage
+} from 'react-native'
 import WorkerItem from "./WorkerItem"
-import {useGlobalContext} from '../../context';
 import { useNavigation } from '@react-navigation/native';
+import axios from '../http/axios';
+import Url from '../utils/Urls';
 
 const WorkerList = props => {
-    
+
     const [workers, setWorkers] = useState()
-
+    const [principal, setPrincipal] = useState();
     const navigation = useNavigation();
-    const {removeTokenAuth} = useGlobalContext()
 
+    const findWorkers = async () => {
+        const principalStored = await AsyncStorage.getItem('principal');
+        const token = await AsyncStorage.getItem("logged");
+        const principal = JSON.parse(principalStored)
+        const job = props.route.params.searched;
+        axios.get(Url.worker + "/city/" + principalStored.address + "/job/" + job, {
+            headers: {
+                "Authorizazion": "Bearer " + token
+            }
+        }).then(response=>{
+            if(response.data) {
+                console.log(response.data);
+            }
+        }).catch(error=>{
+            console.log("ce un errore nel cercare i workers: ", error)
+        })
 
+    }
     useEffect(() => {
-        services
-            .findWorkers({
-                worker: props.route.params.searched,
-                citta: 'gorizia',
-            })
-            .then(response => {
-                setWorkers(response.data)
-            })
-            .catch(err => {
-                if(err.response.status===404) {
-                    setWorkers(null)
-                }
-                if(err.response.status===401) {
-                    removeTokenAuth()
-                    navigation.navigate('Home', {logout:true })
-                }
-                
-            })
+        findWorkers();
+
     }, [props.route.params.searched])
 
-    const Item = ({item}) => (
+    const Item = ({ item }) => (
         <View>
             <Text>{item.type}</Text>
             <Text>{item.vote}</Text>
@@ -43,11 +49,11 @@ const WorkerList = props => {
 
     return (
         <View>
-            {workers ? <FlatList 
-                data={workers && workers} 
-                renderItem={({item})=> <WorkerItem item={item} />}
-                keyExtractor={item => item.id}    
-                />
+            {workers ? <FlatList
+                data={workers && workers}
+                renderItem={({ item }) => <WorkerItem item={item} />}
+                keyExtractor={item => item.id}
+            />
                 :
                 <View style={styles.viewNoWorkers}>
                     <Text style={styles.labelNoWorkers}>Nessun {props.route.params.searched} Trovato</Text>
@@ -59,7 +65,7 @@ const WorkerList = props => {
 }
 
 const styles = StyleSheet.create({
-    
+
     labelNoWorkers: {
         fontSize: 40,
         textAlign: 'center',

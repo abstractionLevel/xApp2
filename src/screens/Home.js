@@ -5,19 +5,17 @@ import {
     TextInput,
     TouchableOpacity,
     Text,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView
 } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import AddressComponent from '../components/AddressComponent';
-import SearchWorker from '../components/SearchWorker';
 import { Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const Home = () => {
 
     const [hideAddress, setHideAddress] = useState(false);
     const [searched, setSearched] = useState(null)
+    const navigation = useNavigation();
 
     return (
         <View
