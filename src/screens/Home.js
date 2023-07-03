@@ -17,41 +17,49 @@ import { Dimensions } from 'react-native';
 const Home = () => {
 
     const [hideAddress, setHideAddress] = useState(false);
-    const [searched,setSearched] = useState(null)
+    const [searched, setSearched] = useState(null)
 
     return (
         <View
             style={styles.container}>
             {hideAddress === false &&
-                <AddressComponent />
+                <>
+                    <AddressComponent />
+
+                    <Image
+                        style={styles.imagePlumbers}
+                        source={require('../../assets/plumbers.jpg')}
+                    />
+                </>
             }
-            <Image
-                style={styles.imagePlumbers}
-                source={require('../../assets/plumbers.jpg')}
-            />
-            <View style={{ alignItems: 'center', }}>
+            <View style={{ alignItems: 'center', flex: 1 }}>
+                {hideAddress &&
+                    <View style={{width: '90%',marginTop: 20}}>
+                        <Text style={{marginBottom: 20,fontSize: 20,color: 'black'}}>Di cosa hai bisogno?</Text>
+                    </View>
+                }
                 <TextInput
                     placeholderTextColor="gray"
                     underlineColorAndroid="white"
                     style={styles.inputSearch}
-                    placeholder='Cosa Cerchi?'
+                    placeholder={hideAddress ? 'Es: Avvocato ' : 'digita una professione'}
                     onFocus={() => setHideAddress(true)}
                     onBlur={() => setHideAddress(false)}
 
-                onChangeText={(val) => setSearched(val)}
-                value={searched}
+                    onChangeText={(val) => setSearched(val)}
+                    value={searched}
                 />
                 <TouchableOpacity
                     style={styles.buttonSearch}
-                onPress={() => navigation.navigate('WorkerList', { searched: searched })}
+                    onPress={() => navigation.navigate('WorkerList', { searched: searched })}
                 >
                     <Text style={styles.buttonText} >Cerca</Text>
                 </TouchableOpacity>
             </View>
-            <Image
+            {/* <Image
                 style={styles.imageConnectionWorkers}
                 source={require('../../assets/connectionWorker2.png')}
-            />
+            /> */}
         </View>
     )
 };
@@ -70,6 +78,7 @@ const styles = ScaledSheet.create({
         opacity: 0.5,
     },
     imageConnectionWorkers: {
+        height: '20%',
         resizeMode: "contain",
         width: width,
         marginTop: 20,
@@ -86,15 +95,17 @@ const styles = ScaledSheet.create({
         borderColor: '#0088ff',
         borderWidth: 1,
         paddingLeft: 10,
+        marginTop: '10@s'
 
     },
     buttonSearch: {
-        marginTop: 4,
+        marginTop: '18@s',
         height: '50@s',
         width: '90%',
         backgroundColor: '#0096FF',
         borderRadius: 6,
         justifyContent: 'center',
+
     },
     inputContainer: {
         marginBottom: '10@s',
