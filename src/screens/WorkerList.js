@@ -22,14 +22,13 @@ const WorkerList = props => {
         const token = await AsyncStorage.getItem("logged");
         const principal = JSON.parse(principalStored)
         const job = props.route.params.searched;
-        axios.get(Url.worker + "/workers", {
-            params: {
-                city:principal.address,
-                job:job
-            }
-        }, {
+        axios.get(Url.worker,{
             headers: {
-                "Authorizazion": "Bearer " + token
+                'Authorization': 'Bearer ' + token
+            },
+            params: {
+                city: principal.user.address,
+                job: job
             }
         }).then(response => {
             if (response.data) {
