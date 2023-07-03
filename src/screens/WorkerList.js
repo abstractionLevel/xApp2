@@ -24,7 +24,7 @@ const WorkerList = props => {
         const job = props.route.params.searched;
         axios.get(Url.worker + "/workers", {
             params: {
-                city:principalStored.address,
+                city:principal.address,
                 job:job
             }
         }, {
