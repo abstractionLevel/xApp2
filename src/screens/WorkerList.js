@@ -22,15 +22,20 @@ const WorkerList = props => {
         const token = await AsyncStorage.getItem("logged");
         const principal = JSON.parse(principalStored)
         const job = props.route.params.searched;
-        axios.get(Url.worker + "/city/" + principalStored.address + "/job/" + job, {
+        axios.get(Url.worker + "/workers", {
+            params: {
+                city:principalStored.address,
+                job:job
+            }
+        }, {
             headers: {
                 "Authorizazion": "Bearer " + token
             }
-        }).then(response=>{
-            if(response.data) {
+        }).then(response => {
+            if (response.data) {
                 console.log(response.data);
             }
-        }).catch(error=>{
+        }).catch(error => {
             console.log("ce un errore nel cercare i workers: ", error)
         })
 
