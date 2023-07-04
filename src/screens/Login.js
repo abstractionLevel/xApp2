@@ -52,6 +52,21 @@ const Login = props => {
         }
     }
 
+    const getInfoUser = async () => {
+        const token = await AsyncStorage.getItem("logged");
+        axios.get(Url.fetchUser + "/" + token,{
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        }).then(response=>{
+            if(response.data) {
+                savePrincipal(response.data);
+            }
+        }).catch(error=>{
+            console.log("ce un errore nel recuperare i dati dell'utente " + error);
+        })
+    }
+
     const login = () => {
         if (!email.trim() || !password.trim()) {
             setStateError({ ...stateError, emailErr: isBlank(email), passError: isBlank(password) })
@@ -61,7 +76,7 @@ const Login = props => {
                 .then(response => {
                     if (response) {
                         saveToken(response.data.token);
-                        savePrincipal(response.data);
+                        getInfoUser();
                         setAuth(true);
                         navigation.navigate('HomeScreen');
                     }

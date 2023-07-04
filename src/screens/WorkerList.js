@@ -27,12 +27,12 @@ const WorkerList = props => {
                 'Authorization': 'Bearer ' + token
             },
             params: {
-                city: principal.user.address,
+                city: principal.address,
                 job: job
             }
         }).then(response => {
             if (response.data) {
-                console.log(response.data);
+                setWorkers(response.data);
             }
         }).catch(error => {
             console.log("ce un errore nel cercare i workers: ", error)
@@ -55,7 +55,7 @@ const WorkerList = props => {
         <View>
             {workers ? <FlatList
                 data={workers && workers}
-                renderItem={({ item }) => <WorkerItem item={item} />}
+                renderItem={({ item }) => <WorkerItem worker={item} />}
                 keyExtractor={item => item.id}
             />
                 :

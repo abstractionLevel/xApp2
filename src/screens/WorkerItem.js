@@ -10,12 +10,9 @@ import { calcultate5starsVote } from '../utils/calculate5starsVote';
 const WorkerItem = props => {
     
     const navigation = useNavigation()
-    // const {job, id} = props.worker.worker
-    // const user = props.worker.worker.user
-    // const distance = props.worker.distance
 
-    const {type,vote,avarage_vote,citta,username,id_user} = props.item
-
+    const worker = props.worker;
+    console.log(worker.user.fullName)
     const [avarageVote, setAvarageVote] = useState()
     const [isAvarageVote, setIsAvarageVote] = useState(false)
     const [totalVote, setTotalVote] = useState(0)
@@ -56,14 +53,14 @@ const WorkerItem = props => {
                 />
                 <View style={styles.titles}>
                     <Text style={styles.title}>
-                        {username}
+                        {worker.user.fullName}
                     </Text>
-                    <Text style={styles.subtitle}>{type}</Text>
+                    <Text style={styles.subtitle}>{worker.user.worker.job}</Text>
                 </View>
                 <View style={styles.position}>
                     <Text style={styles.labelPosition}>12334</Text>
                 </View>
-                <View style={styles.voted}>
+                {/* <View style={styles.voted}>
                     {avarage_vote &&
                      <Rating
                      type='custom'
@@ -80,11 +77,11 @@ const WorkerItem = props => {
                    
 
                     <Text style={styles.totalVoted}>{avarage_vote} </Text>
-                </View>
+                </View> */}
                 <View style={styles.buttonsContainer}>
                     <TouchableOpacity
                         style={styles.buttonGoToProfile}
-                        onPress={() => navigation.navigate('ProfileWorker', {id_worker:id_user})}>
+                        onPress={() => navigation.navigate('ProfileWorker', {worker:worker.user})}>
                         <Text style={styles.buttonText}>Profile</Text>
                     </TouchableOpacity>
                 </View>

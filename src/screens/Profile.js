@@ -71,6 +71,7 @@ const Profile = (props) => {
             .then(response => {
                 savePrincipal(response.data);
                 setPrincipal(response.data)
+                console.log(response.data)
             }).catch(error => {
                 console.log(error);
             })
