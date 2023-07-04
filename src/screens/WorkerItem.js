@@ -12,7 +12,6 @@ const WorkerItem = props => {
     const navigation = useNavigation()
 
     const worker = props.worker;
-    console.log(worker.user.fullName)
     const [avarageVote, setAvarageVote] = useState()
     const [isAvarageVote, setIsAvarageVote] = useState(false)
     const [totalVote, setTotalVote] = useState(0)

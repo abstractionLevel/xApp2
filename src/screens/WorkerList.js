@@ -41,7 +41,6 @@ const WorkerList = props => {
     }
     useEffect(() => {
         findWorkers();
-
     }, [props.route.params.searched])
 
     const Item = ({ item }) => (
