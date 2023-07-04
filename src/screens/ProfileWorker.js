@@ -17,8 +17,9 @@ const ProfileWorker = (props) => {
     const [followedWorker, setFollowedWorker] =  useState(null);
     const [visibleModalReview, setVisibleModalReview] = useState(false);
     const [visibleModalWriteReview, setVisibleModalWriteReview] = useState(false);
-
     const worker = props.route.params.worker
+    const navigate = useNavigation();
+
     const toggleModalReview = () => {
         setVisibleModalReview(true);
     }
@@ -26,7 +27,6 @@ const ProfileWorker = (props) => {
     const onPressWriteReview = () => {
         setVisibleModalWriteReview(true)
     }
-
 
     const toggleFollow = () => {
         if (!isFollowed) {
@@ -101,7 +101,7 @@ const ProfileWorker = (props) => {
                         <View style={styles.contactView}>
                             <TouchableOpacity
                                 style={styles.buttonContact}
-                                onPress={() => console.log("")}>
+                                onPress={() => navigate.navigate("Chat")}>
                                 <Text style={styles.contact} >Chat</Text>
                             </TouchableOpacity>
                         </View>

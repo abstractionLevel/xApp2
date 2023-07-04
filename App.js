@@ -25,6 +25,7 @@ import {
     TouchableOpacity,
     Text
 } from 'react-native';
+import Chat from './src/screens/Chat'
 
 const Stack = createNativeStackNavigator();
 
@@ -140,6 +141,28 @@ const App = () => {
                         <Stack.Screen
                             name={'JobProfile'}
                             component={JobProfile}
+                            options={({ navigation }) => ({
+                                title: "",
+                                headerRight: () => (
+                                    <TouchableOpacity
+                                        style={{ marginLeft: 16 }}
+                                        onPress={() => navigation.navigate('Home')}
+                                    >
+                                        <Text style={{
+                                            marginRight: 20,
+                                            fontWeight: '900',
+                                            color: 'black',
+                                            fontSize: 20
+
+                                        }}>xApp</Text>
+                                    </TouchableOpacity>
+
+                                ),
+                            })}
+                        />
+                          <Stack.Screen
+                            name={'Chat'}
+                            component={Chat}
                             options={({ navigation }) => ({
                                 title: "",
                                 headerRight: () => (
