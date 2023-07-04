@@ -11,7 +11,6 @@ import WriteReviewModal from '../components/WriteReviewModal';
 
 const ProfileWorker = (props) => {
 
-    const [worker, setWorker] = useState();
     const [reviews, setReviews] = useState();
     const [auth, setAuth] = useState();
     const [isFollowed, setIsFollowed] = useState(null);
@@ -19,7 +18,7 @@ const ProfileWorker = (props) => {
     const [visibleModalReview, setVisibleModalReview] = useState(false);
     const [visibleModalWriteReview, setVisibleModalWriteReview] = useState(false);
 
-    const idUserOfWorker = props.route.params.id_worker
+    const worker = props.route.params.worker
     const toggleModalReview = () => {
         setVisibleModalReview(true);
     }
@@ -53,53 +52,6 @@ const ProfileWorker = (props) => {
         }
     }
 
-    const getAuth = async () => {
-        const auth = await AsyncStorage.getItem('auth')
-        setAuth(JSON.parse(auth))
-    }
-
-    const isUserFollowedWorker = (workerId, userId) => {
-        
-        services.fetchUserFollowedWorker({ workerId: workerId, userId: userId })
-            .then(response => {
-                if (response.data) {
-                    setIsFollowed(true)
-                    setFollowedWorker(response.data);
-                }
-            })
-            .catch(err => {
-                if(err.response.status===401) {
-                    setIsFollowed(false)
-                }else {
-                    console.log(err)
-                }
-            })
-    }
-
-
-    useEffect(() => {
-        getAuth()
-        services.findWorkerById(idUserOfWorker)
-            .then(response => {
-                if (response) {
-                    setWorker(response.data)
-                    isUserFollowedWorker(response.data.id, auth.id)
-                    services.getReviewOfWorkerById(response.data.id)
-                        .then(resp => {
-                            if (resp) {
-                                setReviews(resp.data)
-                            }
-                        }).catch(e => {
-                            console.log("getReviewOfWorkerById " , e.response.data.message)
-                        })
-                }
-            }).catch(e => {
-                console.log(e.response.data.message)
-            })
-    }, [])
-
-
-
     return (
         <View style={styles.container}>
             {worker &&
@@ -114,12 +66,12 @@ const ProfileWorker = (props) => {
                         <View style={styles.infoWorkerView} >
                             <View style={styles.nameView}>
                                 <Text style={styles.name} >
-                                    {worker.username}
+                                    {worker.fullName}
                                 </Text>
                             </View>
                             <View style={styles.workView}>
                                 <Text style={styles.workText} >
-                                    {worker.type}
+                                    {worker.worker.job}
                                 </Text>
                             </View>
                         </View>
@@ -158,7 +110,7 @@ const ProfileWorker = (props) => {
                         <View style={styles.bodyLeft}>
                             <Text style={styles.descriptionTitle}>Descrizione</Text>
                             <Text style={styles.descriptionText} >
-                                {worker.descrizione}
+                                {worker.worker.descriptionJob}
                             </Text>
                         </View>
                         <View style={styles.bodyRight}>
@@ -212,15 +164,13 @@ const styles = ScaledSheet.create({
         borderBottomColor: 'white',
         borderBottomWidth: 2,
         backgroundColor: '#1d4e89',
-
-
     },
     profileImageView: {
         width: '30%',
         height: '67%',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: '30@s',
+        marginTop: '20@s',
         marginLeft: '30@s',
     },
     profileImage: {
@@ -231,11 +181,12 @@ const styles = ScaledSheet.create({
     infoWorkerView: {
         width: '70%',
         height: '38%',
-        marginTop: '50@s',
+        marginTop: '30@s',
         marginLeft: '16@s',
     },
     nameView: {
         height: '60%',
+        marginBottom: '10@s',
     },
     name: {
         fontSize: '24@s',
