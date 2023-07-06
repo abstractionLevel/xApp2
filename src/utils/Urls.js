@@ -2,7 +2,8 @@ const url = "http://192.168.1.7:8080";
 const apiUser = "/api/users";
 const auth = "/public/api/auth";
 const apiJob = "/public/api/jobs";
-const apiWorker = "/api/workers"
+const apiWorker = "/api/workers";
+const apiMessage = "/api/messages";
 
 const Url = {
     fetchUser: url + apiUser,
@@ -12,5 +13,6 @@ const Url = {
     changePassword: url + apiUser,
     getAllJob: url + apiJob,
     worker: url + apiWorker,
+    message: url + apiMessage,
 }
 export default Url; 
