@@ -15,8 +15,8 @@ const Chat = () => {
 
     const userId = 3;
     const [messageInput, setMessageInput] = useState(null);
-    const [isChatRoomExists,setIsChatRoomExists] = useEffect(null);
-    
+    const [isChatRoomExists, setIsChatRoomExists] = useState(null);
+
     const socket = io('http://192.168.1.7:3000', {
         auth: {
             userId: userId,
@@ -44,7 +44,7 @@ const Chat = () => {
                 userId: response.recipientId
             }
         }
-        axios.post(Url.message , pyload, {
+        axios.post(Url.message, pyload, {
             headers: {
                 "Authorization": "Bearer " + token
             }
@@ -57,27 +57,16 @@ const Chat = () => {
 
     const checkIfChatRoomExists = async () => {
         const token = await AsyncStorage.getItem("logged");
-        const pyload = {
-            user1: {
-                userId:3
-            },
-            user2: {
-                userId:7
-            }
-        }
-        axios.get(Url.chat,pyload,{
+        axios.get(Url.chat + "/" + 3 + "/" + 7, {
             headers: {
-                "Authorization": "Bearer " + token
-            }
-        }).then(response=>{
-            console.log("response ", response);
-            if(response.data) {
-                setIsChatRoomExists(true);
-            }else {
+                'Authorization': 'Bearer ' + token
+            },
+        }).then(response => {
+            setIsChatRoomExists(true);
+        }).catch(error => {
+            if (error.response.status === 404) {
                 setIsChatRoomExists(false);
             }
-        }).catch(error=>{
-            console.log("errore ", error);
         })
     }
 
@@ -92,8 +81,8 @@ const Chat = () => {
 
     }, [socket]);
 
-    console.log("la chat esiste:? " , isChatRoomExists);
-    useEffect(()=>{
+    console.log("la chat esiste:? ", isChatRoomExists);
+    useEffect(() => {
         checkIfChatRoomExists();
     })
 

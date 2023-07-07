@@ -4,7 +4,7 @@ const auth = "/public/api/auth";
 const apiJob = "/public/api/jobs";
 const apiWorker = "/api/workers";
 const apiMessage = "/api/messages";
-const apiChat = "/api/chat";
+const apiChat = "/api/chats";
 
 const Url = {
     fetchUser: url + apiUser,
