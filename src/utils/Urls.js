@@ -4,6 +4,7 @@ const auth = "/public/api/auth";
 const apiJob = "/public/api/jobs";
 const apiWorker = "/api/workers";
 const apiMessage = "/api/messages";
+const apiChat = "/api/chat";
 
 const Url = {
     fetchUser: url + apiUser,
@@ -14,5 +15,6 @@ const Url = {
     getAllJob: url + apiJob,
     worker: url + apiWorker,
     message: url + apiMessage,
+    chat: url + apiChat,
 }
 export default Url; 
