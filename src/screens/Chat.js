@@ -16,6 +16,7 @@ const Chat = () => {
     const userId = 3;
     const [messageInput, setMessageInput] = useState(null);
     const [isChatRoomExists, setIsChatRoomExists] = useState(null);
+    const [chatRoomId , setChatRoomId] = useState(null);
 
     const socket = io('http://192.168.1.7:3000', {
         auth: {
@@ -33,7 +34,7 @@ const Chat = () => {
         socket.emit('message', pyaload);
     }
 
-    const saveReceivedMessage = async (response) => {
+    const saveReceivedMessage = async (response,id) => {
         const token = await AsyncStorage.getItem("logged");
         const pyload = {
             text: response.message,
@@ -42,6 +43,9 @@ const Chat = () => {
             },
             recipient: {
                 userId: response.recipientId
+            },
+            chat: {
+                id: id
             }
         }
         axios.post(Url.message, pyload, {
@@ -62,29 +66,56 @@ const Chat = () => {
                 'Authorization': 'Bearer ' + token
             },
         }).then(response => {
+            setChatRoomId(response.data.id);
             setIsChatRoomExists(true);
         }).catch(error => {
             if (error.response.status === 404) {
                 setIsChatRoomExists(false);
-            }
+            } 
         })
+    }
+
+    const createChatRoom = async (payload) => {
+        const token = await AsyncStorage.getItem("logged");
+        const chatPayload = {
+            user1: {
+                userId:payload.senderId,
+            },
+            user2: {
+                userId:payload.recipientId,
+            }
+        }
+        axios.post(Url.chat, chatPayload, {
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        }).then(response=>{
+            saveReceivedMessage(payload,response.data.chatId);
+        }).catch(error=>{
+            console.log("ce un errore nel salvataggio della chat ", error);
+        });
     }
 
     useEffect(() => {
         //ricevo messaggio da chat-be
         socket.on('message', (response) => {
             if (response) {
-                saveReceivedMessage(response)
+                if(isChatRoomExists) {
+                    saveReceivedMessage(response,chatRoomId)
+                }else {
+                    //passo il response in mododo da salvare il messaggio dopo
+                    //aver creato la chat
+                    createChatRoom(response);
+                }
                 console.log("messaggio ricevuto: ", response);
             }
         });
 
     }, [socket]);
 
-    console.log("la chat esiste:? ", isChatRoomExists);
     useEffect(() => {
         checkIfChatRoomExists();
-    })
+    },[])
 
     return (
         <View style={styles.conteiner}>
