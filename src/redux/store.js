@@ -10,6 +10,11 @@ export const updateWorker = (worker) => ({
     payload: worker,
 });
 
+export const connectedToChat = (socket) => ({
+    type: "CONNECTED",
+    payload: socket,
+})
+
 
 const workerReducer = (state = {}, action) => {
     switch(action.type) {
