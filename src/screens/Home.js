@@ -8,12 +8,16 @@ import {
 } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import AddressComponent from '../components/AddressComponent';
-import { Dimensions } from 'react-native';
+import { 
+    Dimensions,
+    AsyncStorage,
+ } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import io from 'socket.io-client';
-import { AsyncStorage } from 'react-native';
 import Url from '../utils/Urls';
 import axios from '../http/axios';
+import { useDispatch } from 'react-redux';
+import { connectedToChat } from '../redux/store';
 
 const Home = () => {
 
@@ -24,7 +28,7 @@ const Home = () => {
         email: null,
         fullName: null,
     })
-    const [socket, setSocket] = useState(null);
+    const dispatch = useDispatch();
 
     const getUserInfo = async () => {
         const token = await AsyncStorage.getItem('logged');
@@ -42,12 +46,12 @@ const Home = () => {
                         address: response.data.address,
                     }))
                     // connesione a chat
-                    const prevSocket = io('http://192.168.1.7:3000', {
+                    const socket = io('http://192.168.1.7:3000', {
                         auth: {
                             username: response.data.email,
                         }
                     });
-                    setSocket(prevSocket);
+                    dispatch(connectedToChat(socket));
                 }
             }).catch((e) => {
                 console.log(e);
