@@ -26,7 +26,7 @@ const getHeaders = async () => {
     }
 }
 
-getHeaders()
+// getHeaders()
 
 const signIn = async payload => {
     const response = await axios.post(localhost + '/authenticate', payload, headers);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     View,
     Image,
@@ -10,12 +10,53 @@ import { ScaledSheet } from 'react-native-size-matters';
 import AddressComponent from '../components/AddressComponent';
 import { Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import io from 'socket.io-client';
+import { AsyncStorage } from 'react-native';
+import Url from '../utils/Urls';
+import axios from '../http/axios';
 
 const Home = () => {
 
     const [hideAddress, setHideAddress] = useState(false);
     const [searched, setSearched] = useState(null)
     const navigation = useNavigation();
+    const [principal, setPrincipal] = useState({
+        email: null,
+        fullName: null,
+    })
+    const [socket, setSocket] = useState(null);
+
+    const getUserInfo = async () => {
+        const token = await AsyncStorage.getItem('logged');
+        axios.get(Url.fetchUser + "/" + token, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+            .then(response => {
+                if (response.data) {
+                    setPrincipal(prevState => ({
+                        ...prevState,
+                        email: response.data.email,
+                        fullName: response.data.fullName,
+                        address: response.data.address,
+                    }))
+                    // connesione a chat
+                    const prevSocket = io('http://192.168.1.7:3000', {
+                        auth: {
+                            username: response.data.email,
+                        }
+                    });
+                    setSocket(prevSocket);
+                }
+            }).catch((e) => {
+                console.log(e);
+            })
+    }
+
+    useEffect(() => {
+        getUserInfo();
+    }, [])
 
     return (
         <View
@@ -23,7 +64,6 @@ const Home = () => {
             {hideAddress === false &&
                 <>
                     <AddressComponent />
-
                     <Image
                         style={styles.imagePlumbers}
                         source={require('../../assets/plumbers.jpg')}
@@ -32,8 +72,8 @@ const Home = () => {
             }
             <View style={{ alignItems: 'center', flex: 1 }}>
                 {hideAddress &&
-                    <View style={{width: '90%',marginTop: 20}}>
-                        <Text style={{marginBottom: 20,fontSize: 20,color: 'black'}}>Di cosa hai bisogno?</Text>
+                    <View style={{ width: '90%', marginTop: 20 }}>
+                        <Text style={{ marginBottom: 20, fontSize: 20, color: 'black' }}>Di cosa hai bisogno?</Text>
                     </View>
                 }
                 <TextInput

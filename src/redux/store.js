@@ -29,9 +29,19 @@ const userReducer = (state = {}, action) => {
     }
 };
 
+const chatReducer = (state = {}, action) => {
+    switch(action.type) {
+        case 'CONNECTED':
+            return {...state, ...action.payload};
+        default:
+            return state;
+    }
+};
+
 const rootReducer = combineReducers({
     user:userReducer,
     worker:workerReducer,
+    chat:chatReducer,
 })
 
 const store = createStore(rootReducer);

@@ -82,7 +82,7 @@ const Profile = (props) => {
         const payload = {
             userId: principal.userId
         }
-        axios.post(Url.woMaterialCommunityIconsrker, payload, {
+        axios.post(Url.worker, payload, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }

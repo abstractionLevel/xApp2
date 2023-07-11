@@ -28,6 +28,8 @@ const ProfileWorker = (props) => {
         setVisibleModalWriteReview(true)
     }
 
+    
+
     const toggleFollow = () => {
         if (!isFollowed) {
             services.followWorker({ userid: auth.id, workerid: worker.id })
@@ -101,7 +103,7 @@ const ProfileWorker = (props) => {
                         <View style={styles.contactView}>
                             <TouchableOpacity
                                 style={styles.buttonContact}
-                                onPress={() => navigate.navigate("Chat")}>
+                                onPress={() => navigate.navigate("Chat",{workerId:worker.userId})}>
                                 <Text style={styles.contact} >Chat</Text>
                             </TouchableOpacity>
                         </View>

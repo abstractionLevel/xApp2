@@ -11,9 +11,10 @@ import { ScaledSheet } from 'react-native-size-matters';
 import io from 'socket.io-client';
 import Url from '../utils/Urls';
 
-const Chat = () => {
+const Chat = (props) => {
 
     const userId = 3;
+    const workerId = props.route.params.workerId
     const [messageInput, setMessageInput] = useState(null);
     const [isChatRoomExists, setIsChatRoomExists] = useState(null);
     const [chatRoomId , setChatRoomId] = useState(null);
@@ -29,7 +30,7 @@ const Chat = () => {
         const pyaload = {
             message: messageInput,
             senderId: userId,
-            recipientId: 3
+            recipientId: workerId
         }
         socket.emit('message', pyaload);
     }
