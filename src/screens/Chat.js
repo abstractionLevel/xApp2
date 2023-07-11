@@ -10,6 +10,7 @@ import {
 import { ScaledSheet } from 'react-native-size-matters';
 import io from 'socket.io-client';
 import Url from '../utils/Urls';
+import { useSelector } from 'react-redux';
 
 const Chat = (props) => {
 
@@ -18,12 +19,7 @@ const Chat = (props) => {
     const [messageInput, setMessageInput] = useState(null);
     const [isChatRoomExists, setIsChatRoomExists] = useState(null);
     const [chatRoomId , setChatRoomId] = useState(null);
-
-    const socket = io('http://192.168.1.7:3000', {
-        auth: {
-            userId: userId,
-        }
-    });
+    const {socket} = useSelector((state)=>state);
 
     //manda il messaggio al be della chat
     const sendMessage = () => {

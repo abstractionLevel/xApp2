@@ -51,6 +51,7 @@ const Home = () => {
                             username: response.data.email,
                         }
                     });
+                    console.log("socket io ", socket)
                     dispatch(connectedToChat(socket));
                 }
             }).catch((e) => {
