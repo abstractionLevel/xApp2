@@ -90,7 +90,8 @@ const Chat = () => {
                 "Authorization": "Bearer " + token
             }
         }).then(response=>{
-            saveReceivedMessage(payload,response.data.chatId);
+            console.log("chat creata " , response.data)
+            saveReceivedMessage(payload,response.data.id);
         }).catch(error=>{
             console.log("ce un errore nel salvataggio della chat ", error);
         });
@@ -107,7 +108,6 @@ const Chat = () => {
                     //aver creato la chat
                     createChatRoom(response);
                 }
-                console.log("messaggio ricevuto: ", response);
             }
         });
 
