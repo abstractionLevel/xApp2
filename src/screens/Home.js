@@ -48,10 +48,9 @@ const Home = () => {
                     // connesione a chat
                     const socket = io('http://192.168.1.7:3000', {
                         auth: {
-                            username: response.data.email,
+                            username: response.data.userId,
                         }
                     });
-                    console.log("socket io ", socket)
                     dispatch(connectedToChat(socket));
                 }
             }).catch((e) => {

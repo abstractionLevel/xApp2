@@ -71,7 +71,6 @@ const Chat = (props) => {
             } 
         })
     }
-
     const createChatRoom = async (payload) => {
         const token = await AsyncStorage.getItem("logged");
         const chatPayload = {
@@ -93,10 +92,11 @@ const Chat = (props) => {
             console.log("ce un errore nel salvataggio della chat ", error);
         });
     }
-
+    
     useEffect(() => {
         //ricevo messaggio da chat-be
         socket.on('message', (response) => {
+            console.log("messaggio in entrata ", response)
             if (response) {
                 if(isChatRoomExists) {
                     saveReceivedMessage(response,chatRoomId)

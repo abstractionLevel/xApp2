@@ -1,12 +1,12 @@
-import { createStore, combineReducers} from "redux";
+import { createStore, combineReducers } from "redux";
 
 export const updateUser = (user) => ({
-    type:'UPDATE_USER',
+    type: 'UPDATE_USER',
     payload: user,
 });
 
 export const updateWorker = (worker) => ({
-    type:'UPDATE_WORKER',
+    type: 'UPDATE_WORKER',
     payload: worker,
 });
 
@@ -15,27 +15,27 @@ export const connectedToChat = (socket) => ({
     payload: socket,
 })
 
-
 const workerReducer = (state = {}, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case 'UPDATE_WORKER':
-            return {...state, ...action.payload};
+            return { ...state, ...action.payload };
         default:
             return state;
     }
 };
 
 const userReducer = (state = {}, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case 'UPDATE_USER':
-            return {...state, ...action.payload};
+            return { ...state, ...action.payload };
         default:
             return state;
     }
 };
 
 const chatReducer = (state = {}, action) => {
-    switch(action.type) {
+    console.log(action.type)
+    switch (action.type) {
         case 'CONNECTED':
             return action.payload;
         default:
@@ -44,9 +44,9 @@ const chatReducer = (state = {}, action) => {
 };
 
 const rootReducer = combineReducers({
-    user:userReducer,
-    worker:workerReducer,
-    socket:chatReducer,
+    user: userReducer,
+    worker: workerReducer,
+    socket: chatReducer,
 })
 
 const store = createStore(rootReducer);
