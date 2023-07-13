@@ -36,7 +36,7 @@ const AddAddressWork = (props) => {
 
     useEffect(()=>{
         setAddressWork(props.worker && props.worker.address )
-    })
+    },[])
 
     return (
         <View style={{ height: '100%', backgroundColor: 'white' }}>

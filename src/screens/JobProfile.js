@@ -87,6 +87,7 @@ const JobProfile = (props) => {
         getWorkerInfo();
     }, [isModalAddDescriptionProfession || isModalAddProfession || isModalAddAddressWork])
 
+    console.log("worker ",worker)
     return (
         <>
             <View style={styles.container}>

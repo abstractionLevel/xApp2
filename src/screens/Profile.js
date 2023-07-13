@@ -78,6 +78,7 @@ const Profile = (props) => {
 
     const becomeWorker = async () => {
         const token = await AsyncStorage.getItem('logged');
+        console.log("uer user ",user)
         const payload = {
             userId: principal.userId
         }

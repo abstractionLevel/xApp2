@@ -30,6 +30,14 @@ const Home = () => {
     })
     const dispatch = useDispatch();
 
+    const savePrincipal = async (user) => {
+        try {
+            await AsyncStorage.setItem('principal', JSON.stringify(user));
+        } catch (error) {
+            console.log('Errore nel savlare il principal ', error);
+        }
+    }
+
     const getUserInfo = async () => {
         const token = await AsyncStorage.getItem('logged');
         axios.get(Url.fetchUser + "/" + token, {
@@ -39,12 +47,8 @@ const Home = () => {
         })
             .then(response => {
                 if (response.data) {
-                    setPrincipal(prevState => ({
-                        ...prevState,
-                        email: response.data.email,
-                        fullName: response.data.fullName,
-                        address: response.data.address,
-                    }))
+                    savePrincipal(response.data);
+                    setPrincipal(response.data);
                     // connesione a chat
                     const socket = io('http://192.168.1.7:3000', {
                         auth: {
