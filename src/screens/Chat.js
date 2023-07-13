@@ -20,6 +20,8 @@ const Chat = (props) => {
     const [chatRoomId , setChatRoomId] = useState(null);
     const {socket} = useSelector((state)=>state);
     const [principal,setPrincipal] = useState(null);
+    const [messages,setMessages] = useState([]);
+
     //manda il messaggio al be della chat
     const sendMessage = () => {
         const pyaload = {
@@ -35,30 +37,44 @@ const Chat = (props) => {
         }
     }
 
+    const getMessages = async (chatRoomId) => {
+        const token = await AsyncStorage.getItem("logged");
+        axios.get(Url.chat + "/" + chatRoomId + "/messages" , {
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        })
+            .then(response=>{
+                console.log(response.data);
+            }).catch(error=>{
+                console.log("ce un errore nel prelevare i messaggi : ", error);
+            })
+    }
 
     const checkIfChatRoomExists = async () => {
         const token = await AsyncStorage.getItem("logged");
-        axios.get(Url.chat + "/" + principal.userId + "/" + workerId, {
+        const principalStored = await AsyncStorage.getItem("principal");
+        const principaParse = JSON.parse(principalStored);
+        setPrincipal(principaParse);
+        axios.get(Url.chat + "/" + principaParse.userId + "/" + workerId, {
             headers: {
                 'Authorization': 'Bearer ' + token
             },
         }).then(response => {
-            setChatRoomId(response.data.id);
-            setIsChatRoomExists(true);
+            if(response.data) {
+                setIsChatRoomExists(true);
+                setChatRoomId(response.data.id);
+                getMessages(response.data.id);
+            }
+
         }).catch(error => {
             if (error.response.status === 404) {
                 setIsChatRoomExists(false);
             } 
         })
     }
-  
-    const getPrincipal = async () =>{
-        const principalStored = await AsyncStorage.getItem("principal");
-        setPrincipal(JSON.parse(principalStored))
-    }
 
     useEffect(() => {
-        getPrincipal();
         checkIfChatRoomExists();
     },[])
 
