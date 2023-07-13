@@ -13,6 +13,7 @@ import Url from "../utils/Urls";
 
 const AddAddressWork = (props) => {
 
+   
     const onPressClose = props.onPressClose;
     const worker = props.worker;
     const [addressWork, setAddressWork] = useState(null);
@@ -25,6 +26,7 @@ const AddAddressWork = (props) => {
                     'Authorization': 'Bearer ' + token
                 }
             }).then(response=>{
+                
                 onPressClose();
             }).catch(error=>{
                 console.log("errore: ", error);

@@ -53,7 +53,6 @@ const JobProfile = (props) => {
         })
             .then(response => {
                 if (response.data) {
-                    console.log(response.data)
                     setWorker(response.data);
                 }
             })
@@ -87,7 +86,6 @@ const JobProfile = (props) => {
         getWorkerInfo();
     }, [isModalAddDescriptionProfession || isModalAddProfession || isModalAddAddressWork])
 
-    console.log("worker ",worker)
     return (
         <>
             <View style={styles.container}>

@@ -95,18 +95,18 @@ const Chat = (props) => {
     
     useEffect(() => {
         //ricevo messaggio da chat-be
-        socket.on('message', (response) => {
-            console.log("messaggio in entrata ", response)
-            if (response) {
-                if(isChatRoomExists) {
-                    saveReceivedMessage(response,chatRoomId)
-                }else {
-                    //passo il response in mododo da salvare il messaggio dopo
-                    //aver creato la chat
-                    createChatRoom(response);
-                }
-            }
-        });
+        // socket.on('message', (response) => {
+        //     console.log("messaggio in entrata ", response)
+        //     if (response) {
+        //         if(isChatRoomExists) {
+        //             saveReceivedMessage(response,chatRoomId)
+        //         }else {
+        //             //passo il response in mododo da salvare il messaggio dopo
+        //             //aver creato la chat
+        //             createChatRoom(response);
+        //         }
+        //     }
+        // });
 
     }, [socket]);
 

@@ -5,67 +5,18 @@ import {
     TextInput,
     TouchableOpacity,
     Text,
+    Dimensions,
 } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import AddressComponent from '../components/AddressComponent';
-import { 
-    Dimensions,
-    AsyncStorage,
- } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import io from 'socket.io-client';
-import Url from '../utils/Urls';
-import axios from '../http/axios';
-import { useDispatch } from 'react-redux';
-import { connectedToChat } from '../redux/store';
 
 const Home = () => {
 
     const [hideAddress, setHideAddress] = useState(false);
     const [searched, setSearched] = useState(null)
     const navigation = useNavigation();
-    const [principal, setPrincipal] = useState({
-        email: null,
-        fullName: null,
-    })
-    const dispatch = useDispatch();
-
-    const savePrincipal = async (user) => {
-        try {
-            await AsyncStorage.setItem('principal', JSON.stringify(user));
-        } catch (error) {
-            console.log('Errore nel savlare il principal ', error);
-        }
-    }
-
-    const getUserInfo = async () => {
-        const token = await AsyncStorage.getItem('logged');
-        axios.get(Url.fetchUser + "/" + token, {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        })
-            .then(response => {
-                if (response.data) {
-                    savePrincipal(response.data);
-                    setPrincipal(response.data);
-                    // connesione a chat
-                    const socket = io('http://192.168.1.7:3000', {
-                        auth: {
-                            username: response.data.userId,
-                        }
-                    });
-                    dispatch(connectedToChat(socket));
-                }
-            }).catch((e) => {
-                console.log(e);
-            })
-    }
-
-    useEffect(() => {
-        getUserInfo();
-    }, [])
-
+  
     return (
         <View
             style={styles.container}>

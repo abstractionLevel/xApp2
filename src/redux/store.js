@@ -34,7 +34,6 @@ const userReducer = (state = {}, action) => {
 };
 
 const chatReducer = (state = {}, action) => {
-    console.log(action.type)
     switch (action.type) {
         case 'CONNECTED':
             return action.payload;

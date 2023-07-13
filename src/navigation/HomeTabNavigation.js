@@ -16,34 +16,79 @@ import {
 } from 'react-native';
 import AppContext from '../context/appContext';
 import { useSelector } from 'react-redux';
-
+import axios from '../http/axios';
+import Url from '../utils/Urls'
+import io from 'socket.io-client';
+import { useDispatch } from 'react-redux';
+import { connectedToChat } from '../redux/store';
 
 const HomeTabNavigation = ({ route }) => {
 
 	const logout = route.params?.logout;
 	const Tab = createBottomTabNavigator();
 	const Stack = createNativeStackNavigator();
+    const dispatch = useDispatch();
 
 	const { auth } = useContext(AppContext);
 	const [authUser, setAuthUser] = useState(null);
-	const {socket} = useSelector((state)=>state);
+	const [socketChat,setSocketChat] = useState(null);
+	const [principal,setPrincipal] = useState(null);
 
-	// useEffect(() => {
-    //     //ricevo messaggio da chat-be
-    //     socket.on('message', (response) => {
-    //         console.log("messaggio in entrata ", response);
-    //         // if (response) {
-    //         //     if(isChatRoomExists) {
-    //         //         saveReceivedMessage(response,chatRoomId)
-    //         //     }else {
-    //         //         //passo il response in mododo da salvare il messaggio dopo
-    //         //         //aver creato la chat
-    //         //         createChatRoom(response);
-    //         //     }
-    //         // }
-    //     });
+	const savePrincipal = async (user) => {
+        try {
+            await AsyncStorage.setItem('principal', JSON.stringify(user));
+        } catch (error) {
+            console.log('Errore nel savlare il principal ', error);
+        }
+    }
 
-    // }, [socket]);
+	const getUserInfo = async () => {
+		console.log("prelevamento dati utente")
+        const token = await AsyncStorage.getItem('logged');
+        axios.get(Url.fetchUser + "/" + token, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+            .then(response => {
+                if (response.data) {
+                    savePrincipal(response.data);
+					setPrincipal(response.data);
+                    // connesione a chat
+                    const socket = io('http://192.168.1.9:3000', {
+                        auth: {
+                            username: response.data.userId,
+                        }
+                    });
+					setSocketChat(socket);
+                    dispatch(connectedToChat(socket));
+                }
+            }).catch((e) => {
+                console.log(e)
+            })
+    }
+
+	useEffect(() => {
+        //ricevo messaggio da chat-be
+		if(socketChat!=null) {
+			socketChat.on('message', (response) => {
+				
+				console.log("messaggio arrivato ", response, " a" , principal.fullName)
+				// console.log("messaggio in entrata ", response);
+				// if (response) {
+				//     if(isChatRoomExists) {
+				//         saveReceivedMessage(response,chatRoomId)
+				//     }else {
+				//         //passo il response in mododo da salvare il messaggio dopo
+				//         //aver creato la chat
+				//         createChatRoom(response);
+				//     }
+				// }
+			});
+		}
+      
+
+    }, [socketChat]);
 
 
 	useEffect(() => {
@@ -57,6 +102,11 @@ const HomeTabNavigation = ({ route }) => {
 	useEffect(() => {
 		getToken();
 	}, [logout]);
+
+	useEffect(() => {
+        getUserInfo();
+    }, [])
+
 
 	const getToken = async () => {
 		try {

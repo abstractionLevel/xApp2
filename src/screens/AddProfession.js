@@ -12,7 +12,8 @@ import Url from "../utils/Urls";
 import axios from '../http/axios';
 import { ScaledSheet } from 'react-native-size-matters';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-
+import { useDispatch } from "react-redux";
+import { updateUser } from "../redux/store";
 
 const AddProfession = (props) => {
 
@@ -21,6 +22,23 @@ const AddProfession = (props) => {
     const [filterJobs, setFilterJobs] = useState([]);
     const [heightContent, setHeightContent] = useState('60%');
     const onPressClose = props.onPressClose;
+    const dispatch = useDispatch();
+
+    const getUserInfo = async () => {
+        const token = await AsyncStorage.getItem('logged');
+        axios.get(Url.fetchUser + "/" + token, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+            .then(response => {
+                if (response.data) {
+                    dispatch(updateUser(response.data));
+                }
+            }).catch((e) => {
+                console.log(e)
+            })
+    }
 
     const getJobs = async () => {
         const token = await AsyncStorage.getItem('logged');
@@ -48,6 +66,7 @@ const AddProfession = (props) => {
                 }
             })
                 .then(response => {
+                    getUserInfo();
                     onPressClose();
                 }).catch(error => {
                     console.log("ce un errore nel salvataggio del job ", error);
