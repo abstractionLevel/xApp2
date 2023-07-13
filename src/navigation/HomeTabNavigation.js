@@ -43,7 +43,6 @@ const HomeTabNavigation = ({ route }) => {
     }
 
 	const getUserInfo = async () => {
-		console.log("prelevamento dati utente")
         const token = await AsyncStorage.getItem('logged');
         axios.get(Url.fetchUser + "/" + token, {
             headers: {
@@ -108,7 +107,6 @@ const HomeTabNavigation = ({ route }) => {
                 "Authorization": "Bearer " + token
             }
         }).then(response => {
-            console.log(response.data);
         }).catch(error => {
             console.log("ce un problema nel salvare il messaggio ", error);
         })
