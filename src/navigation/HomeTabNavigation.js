@@ -68,22 +68,63 @@ const HomeTabNavigation = ({ route }) => {
             })
     }
 
+	const createChatRoom = async (payload) => {
+        const token = await AsyncStorage.getItem("logged");
+        const chatPayload = {
+            user1: {
+                userId:payload.senderId,
+            },
+            user2: {
+                userId:payload.recipientId,
+            }
+        }
+        axios.post(Url.chat, chatPayload, {
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        }).then(response=>{
+            saveReceivedMessage(payload,response.data.id);
+        }).catch(error=>{
+            console.log("ce un errore nel salvataggio della chat ", error);
+        });
+    }
+
+ 	const saveReceivedMessage = async (response,id) => {
+        const token = await AsyncStorage.getItem("logged");
+        const pyload = {
+            text: response.message,
+            sender: {
+                userId: response.senderId
+            },
+            recipient: {
+                userId: response.recipientId
+            },
+            chat: {
+                id: id
+            }
+        }
+        axios.post(Url.message, pyload, {
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        }).then(response => {
+            console.log(response.data);
+        }).catch(error => {
+            console.log("ce un problema nel salvare il messaggio ", error);
+        })
+    }
 	useEffect(() => {
         //ricevo messaggio da chat-be
 		if(socketChat!=null) {
 			socketChat.on('message', (response) => {
-				
-				console.log("messaggio arrivato ", response, " a" , principal.fullName)
-				// console.log("messaggio in entrata ", response);
-				// if (response) {
-				//     if(isChatRoomExists) {
-				//         saveReceivedMessage(response,chatRoomId)
-				//     }else {
-				//         //passo il response in mododo da salvare il messaggio dopo
-				//         //aver creato la chat
-				//         createChatRoom(response);
-				//     }
-				// }
+				console.log("ricezione messaggio ", response)
+				if (response) {
+				    if(response.isChatRoomExists) {
+				        saveReceivedMessage(response,response.chatRoomId)
+				    }else {
+				        createChatRoom(response);
+				    }
+				}
 			});
 		}
       

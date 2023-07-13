@@ -14,51 +14,31 @@ import { useSelector } from 'react-redux';
 
 const Chat = (props) => {
 
-    const userId = 3;
     const workerId = props.route.params.workerId
     const [messageInput, setMessageInput] = useState(null);
     const [isChatRoomExists, setIsChatRoomExists] = useState(null);
     const [chatRoomId , setChatRoomId] = useState(null);
     const {socket} = useSelector((state)=>state);
-
+    const [principal,setPrincipal] = useState(null);
     //manda il messaggio al be della chat
     const sendMessage = () => {
         const pyaload = {
             message: messageInput,
-            senderId: userId,
-            recipientId: workerId
+            senderId: principal.userId,
+            recipientId: workerId,
+            chatRoomId: chatRoomId,
+            isChatRoomExists:isChatRoomExists,
         }
         socket.emit('message', pyaload);
+        if(chatRoomId===null) {
+            checkIfChatRoomExists();
+        }
     }
 
-    const saveReceivedMessage = async (response,id) => {
-        const token = await AsyncStorage.getItem("logged");
-        const pyload = {
-            text: response.message,
-            sender: {
-                userId: response.senderId
-            },
-            recipient: {
-                userId: response.recipientId
-            },
-            chat: {
-                id: id
-            }
-        }
-        axios.post(Url.message, pyload, {
-            headers: {
-                "Authorization": "Bearer " + token
-            }
-        }).then(response => {
-            console.log(response);
-        }).catch(error => {
-            console.log("ce un problema nel salvare il messaggio ", error);
-        })
-    }
 
     const checkIfChatRoomExists = async () => {
         const token = await AsyncStorage.getItem("logged");
-        axios.get(Url.chat + "/" + 3 + "/" + 7, {
+        axios.get(Url.chat + "/" + principal.userId + "/" + workerId, {
             headers: {
                 'Authorization': 'Bearer ' + token
             },
@@ -71,46 +51,14 @@ const Chat = (props) => {
             } 
         })
     }
-    const createChatRoom = async (payload) => {
-        const token = await AsyncStorage.getItem("logged");
-        const chatPayload = {
-            user1: {
-                userId:payload.senderId,
-            },
-            user2: {
-                userId:payload.recipientId,
-            }
-        }
-        axios.post(Url.chat, chatPayload, {
-            headers: {
-                "Authorization": "Bearer " + token
-            }
-        }).then(response=>{
-            console.log("chat creata " , response.data)
-            saveReceivedMessage(payload,response.data.id);
-        }).catch(error=>{
-            console.log("ce un errore nel salvataggio della chat ", error);
-        });
+  
+    const getPrincipal = async () =>{
+        const principalStored = await AsyncStorage.getItem("principal");
+        setPrincipal(JSON.parse(principalStored))
     }
-    
-    useEffect(() => {
-        //ricevo messaggio da chat-be
-        // socket.on('message', (response) => {
-        //     console.log("messaggio in entrata ", response)
-        //     if (response) {
-        //         if(isChatRoomExists) {
-        //             saveReceivedMessage(response,chatRoomId)
-        //         }else {
-        //             //passo il response in mododo da salvare il messaggio dopo
-        //             //aver creato la chat
-        //             createChatRoom(response);
-        //         }
-        //     }
-        // });
-
-    }, [socket]);
 
     useEffect(() => {
+        getPrincipal();
         checkIfChatRoomExists();
     },[])
 
