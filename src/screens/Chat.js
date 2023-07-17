@@ -20,7 +20,7 @@ const Chat = (props) => {
     const [chatRoomId , setChatRoomId] = useState(null);
     const {socket} = useSelector((state)=>state);
     const [principal,setPrincipal] = useState(null);
-    const [messages,setMessages] = useState([]);
+    const [messages,setMessages] = useState(null);
 
     //manda il messaggio al be della chat
     const sendMessage = () => {
@@ -37,6 +37,12 @@ const Chat = (props) => {
         }
     }
 
+    const isMyMessage = (id) => {
+        console.log("isMEssage principal: ", principal.userId)
+        console.log( principal.userId ===  id)
+        return principal.userId ===  id;
+    }
+
     const getMessages = async (chatRoomId) => {
         const token = await AsyncStorage.getItem("logged");
         axios.get(Url.chat + "/" + chatRoomId + "/messages" , {
@@ -45,7 +51,7 @@ const Chat = (props) => {
             }
         })
             .then(response=>{
-                console.log(response.data);
+                setMessages(response.data.messageList);
             }).catch(error=>{
                 console.log("ce un errore nel prelevare i messaggi : ", error);
             })
@@ -68,6 +74,7 @@ const Chat = (props) => {
             }
 
         }).catch(error => {
+            console.log("ce un problema nel recuperare la chat ", error)
             if (error.response.status === 404) {
                 setIsChatRoomExists(false);
             } 
@@ -78,11 +85,24 @@ const Chat = (props) => {
         checkIfChatRoomExists();
     },[])
 
+
+
     return (
         <View style={styles.conteiner}>
-            <View style={styles.conteinerChat}>
-
-            </View>
+                {messages && messages.length > 0 && 
+                    messages.map(val=>(
+                        <View style={[styles.messageBox,{
+                            backgroundColor: isMyMessage(val.user.userId) ?  'red' : 'white',
+                            marginLeft: isMyMessage(val.user.userId) ? 10 : 70,
+                        }]}>
+                            <Text>
+                                {val.text}
+                            </Text>
+                        </View>
+                    ))
+                
+                }
+               
             <View style={styles.conteinerInput}>
                 <TextInput
                     value={messageInput}
@@ -104,10 +124,7 @@ const Chat = (props) => {
 const styles = ScaledSheet.create({
     conteiner: {
         flex: 1,
-        justifyContent: 'flex-end'
-    },
-    conteinerChat: {
-
+        justifyContent: 'flex-end',
     },
     conteinerInput: {
         flexDirection: 'row',
@@ -129,6 +146,13 @@ const styles = ScaledSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    messageBox: {
+        borderRadius: '5@s',
+        padding: '20@s',
+        marginBottom: '20@s',
+        width: "70%"
+
+    }
 })
 
 export default Chat;
