@@ -15,6 +15,7 @@ import { useDispatch } from 'react-redux';
 
 const Account = (props) => {
 
+    console.log("sono nell account ")
     const dispatch = useDispatch();
     const { navigation } = props;
     const [imageProfile, setImageProfile] = useState()

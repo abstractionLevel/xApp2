@@ -8,7 +8,6 @@ import {
     AsyncStorage
 } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
-import io from 'socket.io-client';
 import Url from '../utils/Urls';
 import { useSelector } from 'react-redux';
 
@@ -38,8 +37,6 @@ const Chat = (props) => {
     }
 
     const isMyMessage = (id) => {
-        console.log("isMEssage principal: ", principal.userId)
-        console.log( principal.userId ===  id)
         return principal.userId ===  id;
     }
 

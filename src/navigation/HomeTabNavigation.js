@@ -60,7 +60,7 @@ const HomeTabNavigation = ({ route }) => {
                         }
                     });
 					setSocketChat(socket);
-                    dispatch(connectedToChat(socket));
+                    dispatch(connectedToChat(socket))
                 }
             }).catch((e) => {
                 console.log(e)
@@ -92,11 +92,8 @@ const HomeTabNavigation = ({ route }) => {
         const token = await AsyncStorage.getItem("logged");
         const pyload = {
             text: response.message,
-            sender: {
+            user: {
                 userId: response.senderId
-            },
-            recipient: {
-                userId: response.recipientId
             },
             chat: {
                 id: id
@@ -120,6 +117,7 @@ const HomeTabNavigation = ({ route }) => {
 				    if(response.isChatRoomExists) {
 				        saveReceivedMessage(response,response.chatRoomId)
 				    }else {
+						console.log("creao la chat")
 				        createChatRoom(response);
 				    }
 				}
@@ -136,15 +134,17 @@ const HomeTabNavigation = ({ route }) => {
 
 	useEffect(() => {
 		getToken();
+		if(auth) {
+			console.log(" authenticate: ", auth)
+			getUserInfo();
+		}
 	}, [auth]);
 
 	useEffect(() => {
 		getToken();
 	}, [logout]);
 
-	useEffect(() => {
-        getUserInfo();
-    }, [])
+
 
 
 	const getToken = async () => {
