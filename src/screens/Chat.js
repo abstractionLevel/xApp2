@@ -19,7 +19,7 @@ const Chat = (props) => {
     const [chatRoomId , setChatRoomId] = useState(null);
     const {socket} = useSelector((state)=>state);
     const [principal,setPrincipal] = useState(null);
-    const [messages,setMessages] = useState(null);
+    const [messages,setMessages] = useState();
 
     //manda il messaggio al be della chat
     const sendMessage = () => {
@@ -31,6 +31,8 @@ const Chat = (props) => {
             isChatRoomExists:isChatRoomExists,
         }
         socket.emit('message', pyaload);
+        setMessageInput(null);
+        // setMessages([...messages,messageInput]);
         if(chatRoomId===null) {
             checkIfChatRoomExists();
         }
@@ -40,15 +42,17 @@ const Chat = (props) => {
         return principal.userId ===  id;
     }
 
-    const getMessages = async (chatRoomId) => {
+    const getMessages = async (id) => {
         const token = await AsyncStorage.getItem("logged");
-        axios.get(Url.chat + "/" + chatRoomId + "/messages" , {
+        axios.get(Url.message + "/chat/" + id  , {
             headers: {
                 "Authorization": "Bearer " + token
             }
         })
             .then(response=>{
-                setMessages(response.data.messageList);
+                console.log("response " + response.data)
+                setMessages(response.data);
+                console.log(response.data)
             }).catch(error=>{
                 console.log("ce un errore nel prelevare i messaggi : ", error);
             })
@@ -77,19 +81,22 @@ const Chat = (props) => {
             } 
         })
     }
-
     useEffect(() => {
         checkIfChatRoomExists();
     },[])
 
-
+    useEffect(()=>{
+        socket.on('updateChatRom', (response) => {
+            getMessages(response);
+        });
+    },[socket])
 
     return (
         <View style={styles.conteiner}>
                 {messages && messages.length > 0 && 
                     messages.map(val=>(
                         <View style={[styles.messageBox,{
-                            backgroundColor: isMyMessage(val.user.userId) ?  'red' : 'white',
+                            backgroundColor: isMyMessage(val.user.userId) ?  'azure' : 'white',
                             marginLeft: isMyMessage(val.user.userId) ? 10 : 70,
                         }]}>
                             <Text>

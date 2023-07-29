@@ -103,7 +103,11 @@ const HomeTabNavigation = ({ route }) => {
             headers: {
                 "Authorization": "Bearer " + token
             }
-        }).then(response => {
+        }).then(res => {
+			if(res.data) {
+				console.log("res ", res.data)
+				socketChat.emit("updateChatRom",res.data,response.senderId,id);
+			}
         }).catch(error => {
             console.log("ce un problema nel salvare il messaggio ", error);
         })
@@ -135,7 +139,6 @@ const HomeTabNavigation = ({ route }) => {
 	useEffect(() => {
 		getToken();
 		if(auth) {
-			console.log(" authenticate: ", auth)
 			getUserInfo();
 		}
 	}, [auth]);
