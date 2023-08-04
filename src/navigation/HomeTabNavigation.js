@@ -105,8 +105,7 @@ const HomeTabNavigation = ({ route }) => {
             }
         }).then(res => {
 			if(res.data) {
-				console.log("res ", res.data)
-				socketChat.emit("updateChatRom",res.data,response.senderId,id);
+				socketChat.emit("messageRecivied",response.senderId,response.recipientId, id);
 			}
         }).catch(error => {
             console.log("ce un problema nel salvare il messaggio ", error);
@@ -116,12 +115,10 @@ const HomeTabNavigation = ({ route }) => {
         //ricevo messaggio da chat-be
 		if(socketChat!=null) {
 			socketChat.on('message', (response) => {
-				console.log("ricezione messaggio ", response)
 				if (response) {
 				    if(response.isChatRoomExists) {
 				        saveReceivedMessage(response,response.chatRoomId)
 				    }else {
-						console.log("creao la chat")
 				        createChatRoom(response);
 				    }
 				}

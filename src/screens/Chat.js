@@ -50,9 +50,7 @@ const Chat = (props) => {
             }
         })
             .then(response=>{
-                console.log("response " + response.data)
                 setMessages(response.data);
-                console.log(response.data)
             }).catch(error=>{
                 console.log("ce un errore nel prelevare i messaggi : ", error);
             })
@@ -86,9 +84,12 @@ const Chat = (props) => {
     },[])
 
     useEffect(()=>{
-        socket.on('updateChatRom', (response) => {
-            getMessages(response);
-        });
+        if(socket) {
+            socket.on('messageRecivied', (response) => {
+                getMessages(response);
+            });
+        }
+       
     },[socket])
 
     return (
