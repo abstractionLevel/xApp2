@@ -26,6 +26,7 @@ import {
     Text
 } from 'react-native';
 import Chat from './src/screens/Chat'
+import ChatList from './src/screens/ChatList'
 
 const Stack = createNativeStackNavigator();
 
@@ -160,7 +161,7 @@ const App = () => {
                                 ),
                             })}
                         />
-                          <Stack.Screen
+                        <Stack.Screen
                             name={'Chat'}
                             component={Chat}
                             options={({ navigation }) => ({
@@ -182,6 +183,28 @@ const App = () => {
                                 ),
                             })}
                         />
+                        {/* <Stack.Screen
+                            name={'ChatList'}
+                            component={ChatList}
+                            options={({ navigation }) => ({
+                                title: "",
+                                headerRight: () => (
+                                    <TouchableOpacity
+                                        style={{ marginLeft: 16 }}
+                                        onPress={() => navigation.navigate('Home')}
+                                    >
+                                        <Text style={{
+                                            marginRight: 20,
+                                            fontWeight: '900',
+                                            color: 'black',
+                                            fontSize: 20
+
+                                        }}>xApp</Text>
+                                    </TouchableOpacity>
+
+                                ),
+                            })}
+                        /> */}
                     </Stack.Navigator>
                 </NavigationContainer>
             </AppContext.Provider>

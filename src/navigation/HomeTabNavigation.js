@@ -21,6 +21,7 @@ import Url from '../utils/Urls'
 import io from 'socket.io-client';
 import { useDispatch } from 'react-redux';
 import { connectedToChat } from '../redux/store';
+import ChatList from '../screens/ChatList'
 
 const HomeTabNavigation = ({ route }) => {
 
@@ -213,7 +214,7 @@ const HomeTabNavigation = ({ route }) => {
 
 					<Tab.Screen
 						name={'Message'}
-						component={Chat}
+						component={ChatList}
 						options={({ navigation }) => ({
 							tabBarIcon: ({ color }) => (
 								<Feather name='message-square' size={25} color={color} />

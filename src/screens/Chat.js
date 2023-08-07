@@ -1,5 +1,5 @@
 import axios from '../http/axios';
-import React, { useState, useEffect, useId } from 'react';
+import React, { useState, useEffect} from 'react';
 import {
     Text,
     TextInput,
@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux';
 
 const Chat = (props) => {
 
-    const workerId = props.route.params.workerId
+    const otherUser = props.route.params.otherUser;
     const [messageInput, setMessageInput] = useState(null);
     const [isChatRoomExists, setIsChatRoomExists] = useState(null);
     const [chatRoomId , setChatRoomId] = useState(null);
@@ -26,7 +26,7 @@ const Chat = (props) => {
         const pyaload = {
             message: messageInput,
             senderId: principal.userId,
-            recipientId: workerId,
+            recipientId: otherUser,
             chatRoomId: chatRoomId,
             isChatRoomExists:isChatRoomExists,
         }
@@ -61,7 +61,7 @@ const Chat = (props) => {
         const principalStored = await AsyncStorage.getItem("principal");
         const principaParse = JSON.parse(principalStored);
         setPrincipal(principaParse);
-        axios.get(Url.chat + "/" + principaParse.userId + "/" + workerId, {
+        axios.get(Url.chat + "/" + principaParse.userId + "/" + otherUser, {
             headers: {
                 'Authorization': 'Bearer ' + token
             },
@@ -79,6 +79,7 @@ const Chat = (props) => {
             } 
         })
     }
+
     useEffect(() => {
         checkIfChatRoomExists();
     },[])

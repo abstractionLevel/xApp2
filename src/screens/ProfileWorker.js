@@ -32,7 +32,7 @@ const ProfileWorker = (props) => {
 
     const toggleFollow = () => {
         if (!isFollowed) {
-            services.followWorker({ userid: auth.id, workerid: worker.id })
+            services.followWorker({ userid: auth.id, otherUser: worker.id })
                 .then(response => {
                     if (response) {
                         setIsFollowed(true)
@@ -103,7 +103,7 @@ const ProfileWorker = (props) => {
                         <View style={styles.contactView}>
                             <TouchableOpacity
                                 style={styles.buttonContact}
-                                onPress={() => navigate.navigate("Chat",{workerId:worker.userId})}>
+                                onPress={() => navigate.navigate("Chat",{otherUser:worker.userId})}>
                                 <Text style={styles.contact} >Chat</Text>
                             </TouchableOpacity>
                         </View>
