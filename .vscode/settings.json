@@ -2,4 +2,5 @@
     "compile-hero.disable-compile-files-on-did-save-code": true,
     "java.format.enable": true,
     "java.compile.nullAnalysis.mode": "disabled",
+    "java.configuration.updateBuildConfiguration": "automatic",
 }

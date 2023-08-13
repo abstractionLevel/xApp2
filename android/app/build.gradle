@@ -1,5 +1,5 @@
 apply plugin: "com.android.application"
-
+apply plugin: "com.google.gms.google-services"
 import com.android.build.OutputFile
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle" 
@@ -257,6 +257,9 @@ android {
 }
 
 dependencies {
+
+    implementation platform('com.google.firebase:firebase-bom:32.2.2')
+    
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     //noinspection GradleDynamicVersion

@@ -20,19 +20,25 @@ import { navigationRef } from './src/utils/navigationRef'
 import ChangePassword from './src/screens/ChangePassword'
 import JobProfile from './src/screens/JobProfile'
 import { Provider } from 'react-redux';
-import store from './src/redux/store'
+import store from './src/redux/store';
 import {
     TouchableOpacity,
     Text
 } from 'react-native';
-import Chat from './src/screens/Chat'
-import ChatList from './src/screens/ChatList'
+import Chat from './src/screens/Chat';
+import Login from './src/screens/Login';
+import { requestUserPermission,notificationListener } from './src/notificationService';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
 
     const [auth, setAuth] = useState(null);
+
+    useEffect(()=>{
+        requestUserPermission();
+        notificationListener();
+    },[]);
 
     return (
         <Provider store={store}>
@@ -182,6 +188,10 @@ const App = () => {
 
                                 ),
                             })}
+                        />
+                          <Stack.Screen
+                            name={'Login'}
+                            component={Login}
                         />
                         {/* <Stack.Screen
                             name={'ChatList'}

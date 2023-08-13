@@ -25,7 +25,6 @@ import ChatList from '../screens/ChatList'
 
 const HomeTabNavigation = ({ route }) => {
 
-	const logout = route.params?.logout;
 	const Tab = createBottomTabNavigator();
 	const Stack = createNativeStackNavigator();
     const dispatch = useDispatch();
@@ -33,7 +32,6 @@ const HomeTabNavigation = ({ route }) => {
 	const { auth } = useContext(AppContext);
 	const [authUser, setAuthUser] = useState(null);
 	const [socketChat,setSocketChat] = useState(null);
-	const [principal,setPrincipal] = useState(null);
 
 	const savePrincipal = async (user) => {
         try {
@@ -52,8 +50,8 @@ const HomeTabNavigation = ({ route }) => {
         })
             .then(response => {
                 if (response.data) {
+					console.log("salvo il principal")
                     savePrincipal(response.data);
-					setPrincipal(response.data);
                     // connesione a chat
                     const socket = io('http://192.168.1.9:3000', {
                         auth: {
@@ -131,21 +129,13 @@ const HomeTabNavigation = ({ route }) => {
 
 
 	useEffect(() => {
-		getToken();
-	}, []);
-
-	useEffect(() => {
-		getToken();
-		if(auth) {
-			getUserInfo();
-		}
+		getToken()//auth fa parte del context, quindi se si fa il login/logout si aggiorna la  view perche authUser cambia
 	}, [auth]);
 
 	useEffect(() => {
 		getToken();
-	}, [logout]);
-
-
+		getUserInfo();
+	}, []);
 
 
 	const getToken = async () => {

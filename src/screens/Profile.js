@@ -157,7 +157,7 @@ const Profile = (props) => {
                     onPress={() => {
                         removeTokenAuth()
                         setAuth(false);
-                        navigation.navigate('Home');
+                        navigation.navigate('Login');
                     }}>
                     <Text style={styles.text} >Logout</Text>
                     <MaterialCommunityIcons name="logout" style={styles.icon} size={30} color={'white'} />
