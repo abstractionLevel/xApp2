@@ -15,13 +15,13 @@ import {
 	Text,
 } from 'react-native';
 import AppContext from '../context/appContext';
-import { useSelector } from 'react-redux';
 import axios from '../http/axios';
 import Url from '../utils/Urls'
 import io from 'socket.io-client';
 import { useDispatch } from 'react-redux';
 import { connectedToChat } from '../redux/store';
 import ChatList from '../screens/ChatList'
+import { requestUserPermission,notificationListener } from '../notificationService';
 
 const HomeTabNavigation = ({ route }) => {
 
@@ -50,7 +50,6 @@ const HomeTabNavigation = ({ route }) => {
         })
             .then(response => {
                 if (response.data) {
-					console.log("salvo il principal")
                     savePrincipal(response.data);
                     // connesione a chat
                     const socket = io('http://192.168.1.9:3000', {
@@ -123,13 +122,11 @@ const HomeTabNavigation = ({ route }) => {
 				}
 			});
 		}
-      
-
     }, [socketChat]);
-
 
 	useEffect(() => {
 		getToken()//auth fa parte del context, quindi se si fa il login/logout si aggiorna la  view perche authUser cambia
+	
 	}, [auth]);
 
 	useEffect(() => {
@@ -137,6 +134,13 @@ const HomeTabNavigation = ({ route }) => {
 		getUserInfo();
 	}, []);
 
+	useEffect(()=>{
+		if(authUser) {
+			requestUserPermission();
+			notificationListener();
+			getToken();
+		}
+	},[authUser])
 
 	const getToken = async () => {
 		try {

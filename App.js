@@ -27,7 +27,6 @@ import {
 } from 'react-native';
 import Chat from './src/screens/Chat';
 import Login from './src/screens/Login';
-import { requestUserPermission,notificationListener } from './src/notificationService';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,10 +34,8 @@ const App = () => {
 
     const [auth, setAuth] = useState(null);
 
-    useEffect(()=>{
-        requestUserPermission();
-        notificationListener();
-    },[]);
+ 
+
 
     return (
         <Provider store={store}>

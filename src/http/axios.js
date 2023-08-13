@@ -5,7 +5,7 @@ import { navigationRef } from '../utils/navigationRef';
 const logout = async () => {
     try {
         await AsyncStorage.removeItem('logged');
-        navigationRef.current.navigate("HomeScreen",{ logout: "true" });
+        navigationRef.current.navigate("Login");
     } catch (error) {
         console.log(error);
     }
