@@ -23,6 +23,29 @@ const Chat = (props) => {
     const [messages,setMessages] = useState();
 
 
+    const sendFcmMessage = async () => {
+        const message = {
+            data: {},
+            notification: {
+              title: 'Ugo',
+              body: messageInput,
+            },
+            to: fcmToken,
+        }
+
+
+        axios.post("https://fcm.googleapis.com/fcm/send",message,{
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'key=AAAAesWI9J8:APA91bGOgt_zVaAZfCLyzfKgAuy4MVQ2_E-ap3_HACpKmeeU0v95HyULHbJbsEsUcxG_EYv5NNLj9X_SnlEKkUM_8hdbp0KLuiXV5qJZr8OBcFBzop07msaY04aOOxWXnsSPhlcBbbox'
+            }
+        }).then(response=>{
+            console.log("response ", response)
+        }).catch(error=>{
+            console.log("ce un problema ", error)
+        })
+    }
+
     //manda il messaggio al be della chat
     const sendMessage = () => {
         const pyaload = {
@@ -33,7 +56,9 @@ const Chat = (props) => {
             isChatRoomExists:isChatRoomExists,
         }
         socket.emit('message', pyaload);
+        sendFcmMessage();
         setMessageInput(null);
+
         // setMessages([...messages,messageInput]);
         if(chatRoomId===null) {
             checkIfChatRoomExists();
