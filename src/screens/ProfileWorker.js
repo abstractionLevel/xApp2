@@ -20,6 +20,7 @@ const ProfileWorker = (props) => {
     const worker = props.route.params.worker
     const navigate = useNavigation();
 
+
     const toggleModalReview = () => {
         setVisibleModalReview(true);
     }
@@ -103,7 +104,7 @@ const ProfileWorker = (props) => {
                         <View style={styles.contactView}>
                             <TouchableOpacity
                                 style={styles.buttonContact}
-                                onPress={() => navigate.navigate("Chat",{otherUser:worker.userId})}>
+                                onPress={() => navigate.navigate("Chat",{otherUser:worker.userId,fcmToken:worker.fcmToken})}>
                                 <Text style={styles.contact} >Chat</Text>
                             </TouchableOpacity>
                         </View>

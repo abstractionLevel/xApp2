@@ -14,12 +14,14 @@ import { useSelector } from 'react-redux';
 const Chat = (props) => {
 
     const otherUser = props.route.params.otherUser;
+    const fcmToken = props.route.params?.fcmToken;
     const [messageInput, setMessageInput] = useState(null);
     const [isChatRoomExists, setIsChatRoomExists] = useState(null);
     const [chatRoomId , setChatRoomId] = useState(null);
     const {socket} = useSelector((state)=>state);
     const [principal,setPrincipal] = useState(null);
     const [messages,setMessages] = useState();
+
 
     //manda il messaggio al be della chat
     const sendMessage = () => {

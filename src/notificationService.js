@@ -1,5 +1,6 @@
 import {
-    AsyncStorage
+    AsyncStorage,
+    Alert,
 } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import Url from './utils/Urls';
@@ -15,12 +16,14 @@ export async function requestUserPermission() {
 }
 
 const getFcmToken = async () => {
-    let fcmToken = await AsyncStorage.getItem("fcmToken222");
+    let fcmToken = await AsyncStorage.getItem("fcmToken");
+    console.log("current token ", fcmToken);
     if(!fcmToken) {
         try {
             const fcmToken = await messaging().getToken();
             if(fcmToken) {
                 await AsyncStorage.setItem("fcmToken", fcmToken);
+                console.log("new token ", fcmToken)
                 const principalStored = await AsyncStorage.getItem("principal");
                 const principal = JSON.parse(principalStored);
                 const token = await AsyncStorage.getItem('logged');
@@ -58,6 +61,6 @@ export const notificationListener = () => {
     });
 
     messaging().onMessage(async remoteMessage=>{
-        console.log("notification on... ", remoteMessage);
+        Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
     })
 }

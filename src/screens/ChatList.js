@@ -57,7 +57,7 @@ const ChatList = () => {
                 {chatList && chatList !== null &&
                     chatList.map(res=>(
                         <View style={styles.messageContainer}
-                            onTouchStart={()=>navigation.navigate("Chat",{otherUser:res.otherUser.userId})}>
+                            onTouchStart={()=>navigation.navigate("Chat",{otherUser:res.otherUser.userId,fcmToken:res.otherUser.fcmToken})}>
                             <Image
                                 style={styles.profileImage}
                                 source={{ uri: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png' }}
