@@ -15,6 +15,10 @@ import axios from 'axios'
 import Url from '../utils/Urls';
 import { EventEmitter } from 'events';
 import AppContext from '../context/appContext';
+import { useDispatch } from 'react-redux';
+import io from 'socket.io-client';
+import { connectedToChat } from '../redux/store';
+
 
 const Login = props => {
 
@@ -24,7 +28,7 @@ const Login = props => {
         emailErr: false,
         passError: false
     })
-
+    const dispatch = useDispatch();
     const { setAuth } = useContext(AppContext);
     const route = useRoute();
     const navigation = useNavigation()
@@ -52,22 +56,7 @@ const Login = props => {
         }
     }
 
-    const getInfoUser = async () => {
-        const token = await AsyncStorage.getItem("logged");
-        axios.get(Url.fetchUser + "/" + token,{
-            headers: {
-                "Authorization": "Bearer " + token
-            }
-        }).then(response=>{
-            if(response.data) {
-                savePrincipal(response.data);
-            }
-        }).catch(error=>{
-            console.log("ce un errore nel recuperare i dati dell'utente " + error);
-        })
-    }
-
-    const login = () => {
+    const login =  () => {
         if (!email.trim() || !password.trim()) {
             setStateError({ ...stateError, emailErr: isBlank(email), passError: isBlank(password) })
         } else {
@@ -76,8 +65,15 @@ const Login = props => {
                 .then(response => {
                     if (response) {
                         saveToken(response.data.token);
-                        getInfoUser();
+                        savePrincipal(response.data.user);
                         setAuth(true);
+                        // connesione a chat-be
+                        const socket =  io('http://192.168.1.9:3000', {
+                            auth: {
+                                username: response.data.userId,
+                            }
+                        });
+                        dispatch(connectedToChat(socket))
                         navigation.navigate('HomeScreen');
                     }
                 }).catch((error) => {

@@ -17,9 +17,6 @@ import {
 import AppContext from '../context/appContext';
 import axios from '../http/axios';
 import Url from '../utils/Urls'
-import io from 'socket.io-client';
-import { useDispatch } from 'react-redux';
-import { connectedToChat } from '../redux/store';
 import ChatList from '../screens/ChatList'
 import { requestUserPermission,notificationListener } from '../notificationService';
 
@@ -27,7 +24,6 @@ const HomeTabNavigation = ({ route }) => {
 
 	const Tab = createBottomTabNavigator();
 	const Stack = createNativeStackNavigator();
-    const dispatch = useDispatch();
 
 	const { auth } = useContext(AppContext);
 	const [authUser, setAuthUser] = useState(null);
@@ -51,14 +47,7 @@ const HomeTabNavigation = ({ route }) => {
             .then(response => {
                 if (response.data) {
                     savePrincipal(response.data);
-                    // connesione a chat
-                    const socket = io('http://192.168.1.9:3000', {
-                        auth: {
-                            username: response.data.userId,
-                        }
-                    });
 					setSocketChat(socket);
-                    dispatch(connectedToChat(socket))
                 }
             }).catch((e) => {
                 console.log(e)
@@ -106,6 +95,7 @@ const HomeTabNavigation = ({ route }) => {
 				socketChat.emit("messageRecivied",response.senderId,response.recipientId, id);
 			}
         }).catch(error => {
+			//TO DO: RITORNARE AL MITENTE L'ERRORE 
             console.log("ce un problema nel salvare il messaggio ", error);
         })
     }
