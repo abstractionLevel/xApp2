@@ -19,7 +19,6 @@ import { useSelector } from 'react-redux';
 const Profile = (props) => {
 
     const navigation = useNavigation();
-
     const [principal, setPrincipal] = useState();
     const { setAuth } = useContext(AppContext);
     const { user } = useSelector((state) => state);
@@ -78,7 +77,7 @@ const Profile = (props) => {
 
     const becomeWorker = async () => {
         const token = await AsyncStorage.getItem('logged');
-        console.log("uer user ",user)
+        console.log("uer user ", user)
         const payload = {
             userId: principal.userId
         }
@@ -98,6 +97,25 @@ const Profile = (props) => {
             })
     }
 
+    const addName = () => {
+        return <>
+            <TouchableOpacity
+                onPress={() => navigation.navigate("Account")}
+            >
+                <Text style={{ color: 'green' }}>Aggiungi nome</Text>
+            </TouchableOpacity>
+        </>
+    }
+
+    const addAddress = () => {
+        return <>
+            <TouchableOpacity
+                onPress={() => navigation.navigate("Account")}
+            >
+                <Text style={{ color: 'green' }}>Aggiungi indirizzo</Text>
+            </TouchableOpacity>
+        </>
+    }
 
     return (
         <View style={styles.container}>
@@ -106,7 +124,7 @@ const Profile = (props) => {
                     <>
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 4, marginTop: 4 }}>
                             <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'black'} />
-                            <Text style={{ color: 'green' }}>{principal.fullName}</Text>
+                            <Text style={{ color: 'green' }}>{principal.fullname ? principal.fullname : addName()}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 4, marginTop: 4 }}>
                             <MaterialCommunityIcons name="email" style={styles.icon} size={30} color={'black'} />
@@ -114,15 +132,14 @@ const Profile = (props) => {
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 4, marginTop: 4 }}>
                             <MaterialCommunityIcons name="map" style={styles.icon} size={30} color={'black'} />
-                            <Text style={{ color: 'green' }}>{principal.address}</Text>
+                            <Text style={{ color: 'green' }}>{principal.address ? principal.address : addAddress()}</Text>
                         </View>
-                        {principal.worker &&
+                        {principal.job &&
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 4, marginTop: 4 }}>
                                 <MaterialIcons name="work" style={styles.icon} size={30} color={'black'} />
-                                <Text style={{ color: 'green' }}>{principal.worker.job}</Text>
+                                <Text style={{ color: 'green' }}>{principal?.job}</Text>
                             </View>
                         }
-
                     </>
                 }
             </View>
@@ -134,7 +151,7 @@ const Profile = (props) => {
                     <Text style={styles.text} >Account</Text>
                     <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'white'} />
                 </TouchableOpacity>
-                {principal && principal.isWorker ?
+                {principal && principal.worker ?
                     <TouchableOpacity
                         style={styles.button}
                         onPress={() => navigation.navigate("JobProfile")}

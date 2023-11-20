@@ -65,7 +65,7 @@ const Login = props => {
                 .then(response => {
                     if (response) {
                         saveToken(response.data.token);
-                        savePrincipal(response.data.user);
+                        savePrincipal(response.data);
                         setAuth(true);
                         // connesione a chat-be
                         const socket =  io('http://192.168.1.9:3000', {
@@ -77,17 +77,8 @@ const Login = props => {
                         navigation.navigate('HomeScreen');
                     }
                 }).catch((error) => {
-                    console.log(error)
+                    console.log("ce un problema" + error)
                 })
-            // services.signIn(payload).then(response => {
-            //     if (response) {
-            //         saveToken(response)
-            //         navigation.navigate('Home', { logout: false })
-            //     }
-            // }).catch((error) => {
-            //     console.log(error)
-
-            // })
         }
     }
 

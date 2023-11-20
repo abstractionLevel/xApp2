@@ -69,7 +69,7 @@ const SignUp = props => {
             setStateError({ ...stateError, password: validatePassword(password), email: validateEmail(email) })
         }
         else {
-            const payload = { password: password, email: email, isWorker: false }
+            const payload = {email: email, password: password,  isWorker: false }
             const headers = {
                 'Content-Type': 'text/json',
                 'Access-Control-Allow-Origin': '*',
@@ -80,17 +80,12 @@ const SignUp = props => {
                         navigation.navigate('Login', { isRegistered: true });
                         setPassword(null);
                         setEmail(null);
-
-
                     }
                 }).catch((error) => {
                     console.log("Errore:" + error)
                 })
         }
     }
-
-    useEffect(() => {
-    }, [])
 
     return (
         <View style={styles.container}>

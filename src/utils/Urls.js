@@ -1,6 +1,7 @@
-const url = "http://192.168.1.9:8080";
+const url = "http://192.168.1.8:5000";
 const apiUser = "/api/users";
-const auth = "/public/api/auth";
+const signIn = "/api/signIn";
+const signUp = "/api/signUp";
 const apiJob = "/public/api/jobs";
 const apiWorker = "/api/workers";
 const apiMessage = "/api/messages";
@@ -9,8 +10,8 @@ const apiChat = "/api/chats";
 const Url = {
     fetchUser: url + apiUser,
     saveUser: url + apiUser,
-    login: url + auth + "/authenticate",
-    register: url + auth + "/register",
+    login: url + signIn,
+    register: url  + signUp,
     changePassword: url + apiUser,
     getAllJob: url + apiJob,
     worker: url + apiWorker,

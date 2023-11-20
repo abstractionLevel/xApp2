@@ -2,9 +2,10 @@ import axios from 'axios'
 import { AsyncStorage } from 'react-native';
 
 
-const url = "http://192.168.1.5:8080/";
+const url = "http://192.168.1.8:5000/api";
 const localhost = url+"/public/api/auth";
 const apiUsers = url + "/public/api/users";
+
 
 
 
@@ -29,7 +30,7 @@ const getHeaders = async () => {
 // getHeaders()
 
 const signIn = async payload => {
-    const response = await axios.post(localhost + '/authenticate', payload, headers);
+    const response = await axios.post(url + '/signin', payload, headers);
     return response.data;
 }
 

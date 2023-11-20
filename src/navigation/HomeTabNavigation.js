@@ -19,6 +19,7 @@ import axios from '../http/axios';
 import Url from '../utils/Urls'
 import ChatList from '../screens/ChatList'
 import { requestUserPermission,notificationListener } from '../notificationService';
+import { useSelector } from 'react-redux';
 
 const HomeTabNavigation = ({ route }) => {
 
@@ -27,8 +28,8 @@ const HomeTabNavigation = ({ route }) => {
 
 	const { auth } = useContext(AppContext);
 	const [authUser, setAuthUser] = useState(null);
-	const [socketChat,setSocketChat] = useState(null);
-
+	const {socket} = useSelector((state)=>state);
+	
 	const savePrincipal = async (user) => {
         try {
             await AsyncStorage.setItem('principal', JSON.stringify(user));
@@ -47,7 +48,6 @@ const HomeTabNavigation = ({ route }) => {
             .then(response => {
                 if (response.data) {
                     savePrincipal(response.data);
-					setSocketChat(socket);
                 }
             }).catch((e) => {
                 console.log(e)
@@ -92,7 +92,7 @@ const HomeTabNavigation = ({ route }) => {
             }
         }).then(res => {
 			if(res.data) {
-				socketChat.emit("messageRecivied",response.senderId,response.recipientId, id);
+				socket.emit("messageRecivied",response.senderId,response.recipientId, id);
 			}
         }).catch(error => {
 			//TO DO: RITORNARE AL MITENTE L'ERRORE 
@@ -101,8 +101,8 @@ const HomeTabNavigation = ({ route }) => {
     }
 	useEffect(() => {
         //ricevo messaggio da chat-be
-		if(socketChat!=null) {
-			socketChat.on('message', (response) => {
+		if(socket && auth) {
+			socket.on('message', (response) => {
 				if (response) {
 				    if(response.isChatRoomExists) {
 				        saveReceivedMessage(response,response.chatRoomId)
@@ -112,11 +112,10 @@ const HomeTabNavigation = ({ route }) => {
 				}
 			});
 		}
-    }, [socketChat]);
+    }, [socket]);
 
 	useEffect(() => {
 		getToken()//auth fa parte del context, quindi se si fa il login/logout si aggiorna la  view perche authUser cambia
-	
 	}, [auth]);
 
 	useEffect(() => {
