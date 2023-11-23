@@ -77,9 +77,8 @@ const Profile = (props) => {
 
     const becomeWorker = async () => {
         const token = await AsyncStorage.getItem('logged');
-        console.log("uer user ", user)
         const payload = {
-            userId: principal.userId
+            userId: principal.id
         }
         axios.post(Url.worker, payload, {
             headers: {
@@ -87,7 +86,7 @@ const Profile = (props) => {
             }
         })
             .then(response => {
-                if (response.data) {
+                if (response) {
                     getUser();
                     navigation.navigate("JobProfile")
                 }
