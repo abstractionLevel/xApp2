@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, ScrollView, Dimensions} from 'react-native';
+import { View, Text, Image, TextInput, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import Modal from 'react-native-modal';
 import { ScaledSheet } from 'react-native-size-matters';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -24,6 +24,7 @@ const Account = (props) => {
         fullName: null,
     })
     const [isVisibleModalAccount, setIsVisibleModalAccount] = useState(false)
+    const [principal, setPrincipal] = useState(null);
 
 
     const deleteAccount = () => { }
@@ -35,24 +36,24 @@ const Account = (props) => {
             duration: 3000,
             autoHide: true,
         });
-      };
+    };
 
     const getUserInfo = async () => {
-        const token = await AsyncStorage.getItem('logged');
-        setTokenAuth(token);
-        axios.get(Url.fetchUser + "/" + token, {
+        const principalStore = await AsyncStorage.getItem('principal');
+        const principal = JSON.parse(principalStore)
+        setPrincipal(principal)
+        axios.get(Url.fetchUser + "/" + principal.id, {
             headers: {
-                'Authorization': 'Bearer ' + token
+                'Authorization': 'Bearer ' + principal.token
             }
         })
             .then(response => {
                 if (response.data) {
-                    setState(prevState => ({
-                        ...prevState,
+                    setState({
                         email: response.data.email,
-                        fullName: response.data.fullName,
+                        fullName: response.data.fullname,
                         address: response.data.address,
-                    }))
+                    })
                 }
             }).catch((e) => {
                 console.log(e);
@@ -63,26 +64,25 @@ const Account = (props) => {
         const payload = {
             fullName: state.fullName,
             address: state.address,
-            email: state.email
         }
-        axios.put(Urls.saveUser, payload, {
+        axios.put(Urls.updateUser + "/" + principal.id, payload, {
             headers: {
-                'Authorization': 'Bearer ' + tokenAuth
+                'Authorization': 'Bearer ' + principal.token
             }
         })
-        .then(response => {
-            dispatch(updateUser(response.data));
-            setState(prevState => ({
-                ...prevState,
-                address:response.data.address,
-                fullName:response.data.fullName
-            }))
-            showRegistrationAlert();
+            .then(response => {
+                dispatch(updateUser(response.data));
+                setState({
+                    address: response.data.address,
+                    fullName: response.data.fullname,
+                    email: response.data.email
+                });
+                showRegistrationAlert();
 
-        })
-        .catch(error => {
-            console.log(error);
-        })
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 
     useEffect(() => {
@@ -101,7 +101,7 @@ const Account = (props) => {
 
         <View style={styles.container}>
             <ScrollView keyboardShouldPersistTaps={'handled'}>
-                <> 
+                <>
                     <View style={styles.head}>
                         <View style={styles.profileImageView}>
                             <TouchableOpacity
@@ -154,10 +154,10 @@ const Account = (props) => {
                                     navigation.navigate('ChangePassword');
                                 }}>
                                 <Text style={styles.text} >Cambia Password</Text>
-                                <AntDesign name="right" style={{marginRight: 10}} size={30} color={'white'} />
+                                <AntDesign name="right" style={{ marginRight: 10 }} size={30} color={'white'} />
                             </TouchableOpacity>
                             <TouchableOpacity
-                                style={[styles.button,{justifyContent:"center"}]}
+                                style={[styles.button, { justifyContent: "center" }]}
                                 onPress={updateUserInfo}>
                                 <Text style={styles.text} >Salva</Text>
                             </TouchableOpacity>

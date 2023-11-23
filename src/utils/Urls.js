@@ -9,7 +9,7 @@ const apiChat = "/api/chats";
 
 const Url = {
     fetchUser: url + apiUser,
-    saveUser: url + apiUser,
+    updateUser: url + apiUser,
     login: url + signIn,
     register: url  + signUp,
     changePassword: url + apiUser,
