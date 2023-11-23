@@ -89,16 +89,7 @@ const Account = (props) => {
         getUserInfo();
     }, []);
 
-
-    const removeTokenAuth = async (token) => {
-        try {
-            await AsyncStorage.removeItem('logged', token);
-        } catch (error) {
-            console.log('Erro delete token:', error);
-        }
-    };
     return (
-
         <View style={styles.container}>
             <ScrollView keyboardShouldPersistTaps={'handled'}>
                 <>
@@ -151,7 +142,7 @@ const Account = (props) => {
                             <TouchableOpacity
                                 style={styles.button}
                                 onPress={() => {
-                                    navigation.navigate('ChangePassword');
+                                    navigation.navigate('ChangePassword',{userId:principal.id});
                                 }}>
                                 <Text style={styles.text} >Cambia Password</Text>
                                 <AntDesign name="right" style={{ marginRight: 10 }} size={30} color={'white'} />

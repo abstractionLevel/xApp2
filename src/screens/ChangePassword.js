@@ -17,8 +17,8 @@ import { showMessage } from 'react-native-flash-message';
 //KeyboardAvoidingView : wrappare solo attorno agli input
 
 const ChangePassword = (props) => {
-
     const { navigation } = props;
+    const userId  = props.route.params.userId;
     const [passwords, setPasswords] = useState({
         currentPassword: '',
         newPassword: '',
@@ -54,7 +54,7 @@ const ChangePassword = (props) => {
         const { currentPassword, newPassword, confirmPassword } = passwords;
         const payload = {
             currentPassword: currentPassword,
-            newPassword: newPassword
+            password: newPassword
         }
         if (!currentPassword || !newPassword || !confirmPassword) {
             setPasswords({ ...passwords, error: 'Tutti i campi password devono essere compilati.' });
@@ -64,8 +64,7 @@ const ChangePassword = (props) => {
             setPasswords({ ...passwords, error: 'Le nuove password non corrispondono.' });
             return;
         }
-
-        axios.put(Url.changePassword + "/" + tokenAuth + "/password", payload, {
+        axios.put(Url.changePassword + "/" + userId + "/password", payload, {
             headers: {
                 'Authorization': 'Bearer ' + tokenAuth
             }
