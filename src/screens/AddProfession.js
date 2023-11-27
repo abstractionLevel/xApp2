@@ -24,9 +24,11 @@ const AddProfession = (props) => {
     const onPressClose = props.onPressClose;
     const dispatch = useDispatch();
 
+    //todo:dopo che aggiorno la professione devo poter vedere la professione e non aggiungi professione
     const getUserInfo = async () => {
-        const token = await AsyncStorage.getItem('logged');
-        axios.get(Url.fetchUser + "/" + token, {
+        const principal = await AsyncStorage.getItem('principal');
+        const principalParsed = JSON.parse(principal);
+        axios.get(Url.fetchUser + "/" + principalParsed.id, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
@@ -60,7 +62,7 @@ const AddProfession = (props) => {
         const principalStored = await AsyncStorage.getItem("principal")
         const principal = JSON.parse(principalStored)
         if (searchJob !== null) {
-            axios.put(Url.worker + "/" + principal.userId + "/job", { job: searchJob }, {
+            axios.put(Url.worker + "/" + principal.id + "/job", { job: searchJob }, {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
@@ -69,7 +71,7 @@ const AddProfession = (props) => {
                     getUserInfo();
                     onPressClose();
                 }).catch(error => {
-                    console.log("ce un errore nel salvataggio del job ", error);
+                    console.log(error);
                 })
         } else {
             console.log("searchJob e' null");
@@ -91,18 +93,19 @@ const AddProfession = (props) => {
     }
 
     const searchJobFilter = (text) => {
-        if (text) {
-            const newData = jobs.filter((value) => {
-                const itemData = value.name ? value.name : '';
-                const textData = text.toLowerCase();
-                return itemData.indexOf(textData) > -1;
-            });
-            setFilterJobs(newData);
-            setSearchJob(text);
-        } else {
-            setFilterJobs([]);
-            setSearchJob(text)
-        }
+        setSearchJob(text);
+        // if (text) {
+        //     const newData = jobs.filter((value) => {
+        //         const itemData = value.name ? value.name : '';
+        //         const textData = text.toLowerCase();
+        //         return itemData.indexOf(textData) > -1;
+        //     });
+        //     setFilterJobs(newData);
+        //     setSearchJob(text);
+        // } else {
+        //     setFilterJobs([]);
+        //     setSearchJob(text)
+        // }
     }
 
     const onPressJobsFIlter = job => {
@@ -137,14 +140,14 @@ const AddProfession = (props) => {
                         value={searchJob}
                         onFocus={() => setHeightContent('90%')}
                     />
-                    <View style={[styles.containerFilterJobs,{borderWidth: filterJobs.length>0 ? 0.40 : 0,}]}>
+                    {/* <View style={[styles.containerFilterJobs,{borderWidth: filterJobs.length>0 ? 0.40 : 0,}]}>
                         <FlatList
                             data={filterJobs}
                             keyboardShouldPersistTaps={'always'}
                             keyExtractor={(item, index) => { return index.toString() }}
                             renderItem={itemViewJob}
                         />
-                    </View>
+                    </View> */}
                     <TouchableOpacity
                         style={styles.buttonSave}
                         onPress={saveJob}

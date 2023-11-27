@@ -23,7 +23,7 @@ const AddDescriptionProfession = (props) => {
         const principalStored = await AsyncStorage.getItem("principal")
         const principal = JSON.parse(principalStored)
         if (description !== null) {
-            axios.put(Url.worker + "/" + principal.userId + "/descriptionJob", { description: description }, {
+            axios.put(Url.worker + "/" + principal.id + "/descriptionJob", { description: description }, {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }

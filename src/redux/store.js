@@ -26,7 +26,6 @@ const workerReducer = (state = {}, action) => {
 };
 
 const userReducer = (state = {}, action) => {
-    console.log("userReducer")
     switch (action.type) {
         case 'UPDATE_USER':
             return { ...state, ...action.payload };
@@ -36,7 +35,6 @@ const userReducer = (state = {}, action) => {
 };
 
 const chatReducer = (state = {}, action) => {
-    console.log("chatreducer")
     switch (action.type) {
         case 'CONNECTED':
             return action.payload;

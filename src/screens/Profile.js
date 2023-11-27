@@ -77,10 +77,7 @@ const Profile = (props) => {
 
     const becomeWorker = async () => {
         const token = await AsyncStorage.getItem('logged');
-        const payload = {
-            userId: principal.id
-        }
-        axios.post(Url.worker, payload, {
+        axios.post(Url.worker+"/"+principal.id,{}, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
@@ -115,7 +112,6 @@ const Profile = (props) => {
             </TouchableOpacity>
         </>
     }
-
     return (
         <View style={styles.container}>
             <View style={styles.head}>

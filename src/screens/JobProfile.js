@@ -21,7 +21,7 @@ import AddAddressWork from "./addAddressWork";
 
 const JobProfile = (props) => {
 
-    const [worker, setWorker] = useState();
+    const [user, setUser] = useState();
     const [jobs, setJobs] = useState();
     const [isModalAddProfession, setIsModalProfession] = useState(false);
     const [isModalAddDescriptionProfession, setIsModalDescriptionProfession] = useState(false);
@@ -42,22 +42,22 @@ const JobProfile = (props) => {
             })
     }
 
-    const getWorkerInfo = async () => {
+    const getuserInfo = async () => {
         const principalStored = await AsyncStorage.getItem("principal");
         const token = await AsyncStorage.getItem('logged');
         const principal = JSON.parse(principalStored);
-        axios.get(Url.worker + "/" + principal.userId, {
+        axios.get(Url.fetchUser + "/" + principal.id, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
         })
             .then(response => {
                 if (response.data) {
-                    setWorker(response.data);
+                    setUser(response.data);
                 }
             })
             .catch(error => {
-                console.log("ce un errore nella chiamata al worker " + error);
+                console.log("ce un errore nella chiamata al user " + error);
             })
     }
 
@@ -78,26 +78,26 @@ const JobProfile = (props) => {
 
     useEffect(() => {
         getJobs();
-        getWorkerInfo();
+        getuserInfo();
     }, [])
 
     useEffect(() => {
         getJobs();
-        getWorkerInfo();
+        getuserInfo();
     }, [isModalAddDescriptionProfession || isModalAddProfession || isModalAddAddressWork])
 
     return (
         <>
             <View style={styles.container}>
                 <View style={styles.inner}>
-                    {worker && worker.job ?
+                    {user && user.job ?
                         <TouchableOpacity
                             style={styles.button}
                             onPress={openModalAddProfession}
                         >
                             <View>
                                 <Text style={styles.labelJobEdit} >Professione</Text>
-                                <Text style={styles.labelButton} >{worker.job}</Text>
+                                <Text style={styles.labelButton} >{user.job}</Text>
                             </View>
 
                             <MaterialIcons name="edit" style={styles.icon} size={30} color={'gray'} />
@@ -111,7 +111,7 @@ const JobProfile = (props) => {
                             <MaterialCommunityIcons name="pen" style={styles.icon} size={30} color={'gray'} />
                         </TouchableOpacity>
                     }
-                    {worker && worker.descriptionJob
+                    {user && user.descriptionProfession
                         ?
                         <TouchableOpacity
                             style={styles.button}
@@ -121,7 +121,7 @@ const JobProfile = (props) => {
                                 flex: 1,
                             }}>
                                 <Text style={styles.labelJobEdit} >Informazioni Professionali</Text>
-                                <Text style={styles.labelButton} >{worker.descriptionJob}</Text>
+                                <Text style={styles.labelButton} >{user.descriptionProfession}</Text>
                             </View>
                             <MaterialIcons name="edit" style={styles.icon} size={30} color={'gray'} />
                         </TouchableOpacity>
@@ -134,7 +134,7 @@ const JobProfile = (props) => {
                             <MaterialCommunityIcons name="account" style={styles.icon} size={30} color={'gray'} />
                         </TouchableOpacity>
                     }
-                    {worker && worker.address
+                    {user && user.address
                         ?
                         <TouchableOpacity
                             style={styles.button}
@@ -144,7 +144,7 @@ const JobProfile = (props) => {
                                 flex: 1,
                             }}>
                                 <Text style={styles.labelJobEdit} >Indirizzo lavorativo</Text>
-                                <Text style={styles.labelButton} >{worker.address}</Text>
+                                <Text style={styles.labelButton} >{user.address}</Text>
                             </View>
                             <MaterialIcons name="edit" style={styles.icon} size={30} color={'gray'} />
                         </TouchableOpacity>
@@ -166,16 +166,16 @@ const JobProfile = (props) => {
             <CustomModal
                 visible={isModalAddProfession}
                 onPressClose={closeModalAddProfession}
-                component={<AddProfession onPressClose={(() => setIsModalProfession(false))} job={worker && worker.job} />}
+                component={<AddProfession onPressClose={(() => setIsModalProfession(false))} job={user && user.job} />}
             />
             <CustomModal
                 onPressClose={closeModalAddDescriptionProfession}
                 visible={isModalAddDescriptionProfession}
-                component={<AddDescriptionProfession onPressClose={(() => setIsModalDescriptionProfession(false))} descriptionJob={worker && worker.descriptionJob} />}
+                component={<AddDescriptionProfession onPressClose={(() => setIsModalDescriptionProfession(false))} descriptionJob={user && user.descriptionJob} />}
             />
             <CustomModal
                 visible={isModalAddAddressWork}
-                component={<AddAddressWork onPressClose={(() => setIsModalAddAddressWork(false))} descriptionJob={worker && worker.descriptionJob} worker={worker && worker} />}
+                component={<AddAddressWork onPressClose={(() => setIsModalAddAddressWork(false))} descriptionJob={user && user.descriptionJob} user={user && user} />}
             />
         </>
     )
